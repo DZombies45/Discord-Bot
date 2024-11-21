@@ -54,34 +54,34 @@ module.exports = {
                     iconUrl: target.displayAvatarURL({ dynamic: true })
                 });
                 embed.addFields(
-                    { name: "ID", value: `${target.id}`, inline: true },
+                    { name: "**ID**", value: `${target.id}`, inline: true },
                     {
-                        name: "Nickname",
+                        name: "**Nickname**",
                         value: `${member.nickname || "-"}`,
                         inline: true
                     },
                     {
-                        name: "Username",
+                        name: "**Username**",
                         value: `${target.username}`,
                         inline: true
                     },
                     {
-                        name: "Status",
-                        value: `${getStatus(member.presence?.status ?? "")}`,
+                        name: "**Status**",
+                        value: `${getStatus(target)}`,
                         inline: true
                     },
                     {
-                        name: "Joined Server",
+                        name: "**Joined Server**",
                         value: `${time(member.joinedAt, "R")}`,
                         inline: true
                     },
                     {
-                        name: "Joined Discord",
+                        name: "**Joined Discord**",
                         value: `${time(target.createdAt, "R")}`,
                         inline: true
                     },
                     {
-                        name: "Highest Tag",
+                        name: "**Highest Tag**",
                         value: `${
                             discordSort(member.roles.cache).last().toString() ||
                             "no role"
@@ -103,27 +103,27 @@ module.exports = {
                 });
                 embed.addFields(
                     {
-                        name: "Owner",
+                        name: "**Owner**",
                         value: `<@${guild.ownerId}>`,
                         inline: true
                     },
                     {
-                        name: "Members",
+                        name: "**Members**",
                         value: `${guild.memberCount}`,
                         inline: true
                     },
                     {
-                        name: "roles",
+                        name: "**roles**",
                         value: `${guild.roles.cache.size}`,
                         inline: true
                     },
                     {
-                        name: "Channels",
+                        name: "**Channels**",
                         value: `${guild.channels.cache.size}`,
                         inline: true
                     },
                     {
-                        name: "Created At",
+                        name: "**Created At**",
                         value: `${time(guild.createdAt, "R")}`,
                         inline: true
                     }
@@ -139,17 +139,17 @@ module.exports = {
                 });
                 embed.addFields(
                     {
-                        name: "Ping",
+                        name: "**Ping**",
                         value: `${Math.round(client.ws.ping)}ms`,
                         inline: true
                     },
                     {
-                        name: "Uptime",
+                        name: "**Uptime**",
                         value: `${time(uptime, "R")}`,
                         inline: true
                     },
                     {
-                        name: "Memory Usage",
+                        name: "**Memory Usage**",
                         value: `${(
                             process.memoryUsage().heapUsed /
                             1024 /
@@ -158,7 +158,7 @@ module.exports = {
                         inline: true
                     },
                     {
-                        name: "Ram Usage",
+                        name: "**Ram Usage**",
                         value: `${(
                             process.cpuUsage().system /
                             1024 /
@@ -167,12 +167,12 @@ module.exports = {
                         inline: true
                     },
                     {
-                        name: "NodeJS V",
+                        name: "**NodeJS V**",
                         value: `${process.version}`,
                         inline: true
                     },
                     {
-                        name: "DiscordJS V",
+                        name: "**DiscordJS V**",
                         value: `${packageJson.dependencies[
                             "discord.js"
                         ].substring(1)}`,
@@ -191,19 +191,17 @@ module.exports = {
         });
     }
 };
-function getStatus(status) {
-    switch (status) {
+function getStatus(member) {
+    switch (member.presence ? member.presence.status : "offline") {
         case "online":
-            return "`🟢`Online";
+            return "🟢 Online";
         case "idle":
-            return "`⚪`Idle";
+            return "🟡 Idle";
         case "dnd":
-            return "`🔕`Do Not Disturb";
+            return "🔴 Do Not Disturb";
         case "offline":
-            return "`⚫`Offline";
-        case "invisible":
-            return "`🥷`Invisible";
+            return "⚫ Offline";
         default:
-            return "`🌫`Unknown";
+            return "⚫ unknown";
     }
 }

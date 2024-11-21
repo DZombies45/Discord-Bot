@@ -1,0 +1,36 @@
+//profileImage
+{
+  customTag?: string, // Text below the user
+  customBadges?: string[], // Your own png badges (path and URL) (46x46)
+  customBackground?: string, // Change the background to any image (path and URL) (885x303)
+  overwriteBadges?: boolean, // Merge your badges with the discord defaults
+  badgesFrame?: boolean, // Creates a small frame behind the badges
+  removeBadges?: boolean, // Removes badges, whether custom or from discord
+  removeBorder?: boolean, // Removes the image border, custom and normal
+  usernameColor?: string, // Username HEX color
+  tagColor?: string, // Tag HEX color
+  borderColor?: string | string[], // Border HEX color, can be gradient if 2 colors are used
+  borderAllign?: string, // Gradient alignment if 2 colors are used
+  disableProfileTheme?: boolean, // Disable the discord profile theme colors
+  presenceStatus?: string, // User status to be displayed below the avatar
+  squareAvatar?: boolean, // Change avatar shape to a square
+  removeAvatarFrame?: boolean, // Remove the discord avatar frame/decoration (if any)
+  rankData?: {
+    currentXp: number, // Current user XP
+    requiredXp: number, // XP required to level up
+    level: number, // Current user level
+    rank?: number, // Position on the leaderboard
+    barColor?: string, // HEX XP bar color
+
+    // === Options added by Cannicide#2753 ===
+    levelColor?: string, // HEX color of LVL text
+    autoColorRank?: boolean, // Whether to color ranks as medal colors for 1st, 2nd, 3rd
+  }
+
+  // === Options added by Cannicide#2753 ===
+  moreBackgroundBlur?: boolean, // Triples blur of background image
+  backgroundBrightness?: number, // Set brightness of background from 1-100%
+  customDate?: Date || string, // Custom date or text to use instead of when user joined Discord
+
+  localDateType?: string, // Local format for the date, e.g. 'en' | 'es' etc.
+})

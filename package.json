@@ -1,0 +1,23 @@
+{
+    "name": "discord_bot2",
+    "version": "1.0.0",
+    "description": "discord bot with ban/kick",
+    "main": "index.js",
+    "scripts": {
+        "bot": "echo \"Starting bot\" && node ."
+    },
+    "author": "DZombies45",
+    "license": "ISC",
+    "dependencies": {
+        "@iamtraction/google-translate": "^2.0.1",
+        "@napi-rs/canvas": "^0.1.56",
+        "dayjs": "^1.11.13",
+        "discord-arts": "^0.6.1",
+        "discord-gamecord": "^4.4.2",
+        "discord.js": "^14.16.3",
+        "dotenv": "^16.4.5",
+        "mongoose": "^8.7.0",
+        "node-html-parser": "^6.1.13",
+        "rss-parser": "^3.13.0"
+    }
+}

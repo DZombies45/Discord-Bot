@@ -57,17 +57,17 @@ module.exports = {
                     { name: "**ID**", value: `${target.id}`, inline: true },
                     {
                         name: "**Nickname**",
-                        value: `${member.nickname || "-"}`,
+                        value: `${target.nickname || "-"}`,
                         inline: true
                     },
                     {
                         name: "**Username**",
-                        value: `${target.username}`,
+                        value: `${member.username || "-"}`,
                         inline: true
                     },
                     {
                         name: "**Status**",
-                        value: `${getStatus(target)}`,
+                        value: `${getStatus(member)}`,
                         inline: true
                     },
                     {

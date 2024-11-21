@@ -1,7 +1,7 @@
 const {
     SlashCommandBuilder,
     Routes,
-    DataResolver,
+    resolveImage,
     EmbedBuilder
 } = require("discord.js");
 const {
@@ -44,7 +44,7 @@ module.exports = {
         let error = false;
         await client.rest
             .patch(Routes.user(), {
-                body: { banner: DataResolver.resolveImage(image.url) }
+                body: { banner: await resolveImage(image.url) }
             })
             .catch(async err => {
                 error = true;

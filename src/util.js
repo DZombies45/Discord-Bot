@@ -129,7 +129,7 @@ const TabbleConsole = {
             )}\x1B[0m|`
         );
         console.log(
-            "|                                                |\n+---+------------------------------------------+"
+            "|                                            |\n+---+------------------------------------------+"
         );
     },
     end: () => console.log("+---+------------------------------------------+"),
@@ -143,6 +143,15 @@ const TabbleConsole = {
     }
 };
 
+function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
+}
+
 module.exports = {
     Logger,
     recentMentions,
@@ -151,5 +160,6 @@ module.exports = {
     trimText,
     TabbleConsole,
     parseDate,
-    parseDuration
+    parseDuration,
+    getRandomColor
 };

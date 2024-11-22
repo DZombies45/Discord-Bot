@@ -39,7 +39,10 @@ module.exports = {
             image.contentType !== "image/gif" &&
             image.contentType !== "image/png"
         )
-            return say("image need to be gif or png", embedColorError);
+            return say(
+                `image need to be gif or png, your is ${image.contentType}`,
+                embedColorError
+            );
 
         let error = false;
         await client.rest

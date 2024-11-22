@@ -116,7 +116,11 @@ const postChangelog = async (client, title, thumbnail, url, bedrock) => {
                 versionType[0] === "Bedrock" ? "Stable" : "Preview"
             );
         } else {
-            if (versionType[0] === "Java" && versionType.length === 2) {
+            if (
+                versionType.some(value =>
+                    ["Java", "Hotfix", "Drop"].includes(value)
+                )
+            ) {
                 article.type = "java-stable-articles";
             } else {
                 article.type = "java-snapshot-articles";

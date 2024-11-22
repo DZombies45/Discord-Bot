@@ -125,7 +125,7 @@ const TabbleConsole = {
                 (46 - text.length) / 2
             )}${text}${TabbleConsole._repeatText(
                 " ",
-                Math.ceil((48 - text.length) / 2)
+                Math.ceil((46 - text.length) / 2)
             )}\x1B[0m|`
         );
         console.log(

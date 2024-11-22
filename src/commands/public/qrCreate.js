@@ -22,13 +22,21 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
+        if (!process.env.QRAPI) {
+            const embed = new EmbedBuilder()
+                .setColor("#bf2c04")
+                .setDescription("thare is an error, try again later");
+            await interaction.editReply({ embeds: [embed] });
+            Logger.error(`from ${__filename} :\nno qr api found`);
+            return;
+        }
         const { options, guildId, guild, member } = interaction;
         const text = encodeURIComponent(options.getString("text"));
         const url = `https://codzz-qr-cods.p.rapidapi.com/getQrcode?type=url&value=${text}`;
         const opts = {
             method: "GET",
             headers: {
-                "x-rapidapi-key": `${process.env.RAPIDAPI}`,
+                "x-rapidapi-key": `${process.env.QRAPI}`,
                 "x-rapidapi-host": "codzz-qr-cods.p.rapidapi.com"
             }
         };

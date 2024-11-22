@@ -3,7 +3,7 @@ const {
     PermissionFlagsBits,
     EmbedBuilder
 } = require("discord.js");
-
+const { Logger } = require("../../util.js");
 const warna = { error: "#f13131", aman: "#31f158", notaman: "#b221f1" };
 
 module.exports = {
@@ -23,6 +23,14 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
+        if (!process.env.VIRUSAPI) {
+            const embed = new EmbedBuilder()
+                .setColor("#bf2c04")
+                .setDescription("thare is an error, try again later");
+            await interaction.editReply({ embeds: [embed] });
+            Logger.error(`from ${__filename} :\nno qr api found`);
+            return;
+        }
         const { options, guildId, guild, user } = interaction;
         const opt = options.getString("url");
         await interaction.deferReply({ ephemeral: true });

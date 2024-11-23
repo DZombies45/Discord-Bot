@@ -23,7 +23,7 @@ module.exports = {
     run: async (client, interaction) => {
         const bomb = interaction?.options?.getInteger("amount") || 5;
         const Game = new Minesweeper({
-            message: message,
+            message: interaction,
             isSlashGame: true,
             embed: {
                 title: "Minesweeper",

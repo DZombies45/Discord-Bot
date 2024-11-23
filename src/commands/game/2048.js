@@ -14,8 +14,8 @@ module.exports = {
     botPermissions: [],
     run: async (client, interaction) => {
         const Game = new TwoZeroFourEight({
-            message: message,
-            isSlashGame: false,
+            message: interaction,
+            isSlashGame: true,
             embed: {
                 title: "2048",
                 color: getRandomColor()

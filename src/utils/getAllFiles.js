@@ -3,7 +3,9 @@ const fs = require("fs");
 
 module.exports = (dir, folderOnly = false) => {
     let fileName = [];
-    const files = fs.readdirSync(dir, { withFileTypes: true });
+    const files = fs
+        .readdirSync(dir, { withFileTypes: true })
+        .filter(d => !d.startsWith("."));
     for (const file of files) {
         const filePath = path.join(dir, file.name);
 

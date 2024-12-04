@@ -138,7 +138,11 @@ let javaSnapshotArticles = [];
 
 const makeChangelog = async interaction => {
     await interaction.deferReply({ ephemeral: true });
-    console.log("makeing changelog");
+    console.log("making changelog");
+    await interaction.editReply({
+        content: "changelog >> searching...",
+        ephemeral: false
+    });
     await fetch(
         "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json?per_page=100",
         {
@@ -148,6 +152,10 @@ const makeChangelog = async interaction => {
     )
         .then(res => res.json())
         .then(async dataw => {
+            await interaction.editReply({
+                content: "changelog >> formatting...",
+                ephemeral: false
+            });
             for (let i = 1; i <= dataw.page_count; i++) {
                 await fetch(
                     "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json?per_page=100&page=" +
@@ -201,6 +209,10 @@ const makeChangelog = async interaction => {
                         ];
                     });
             }
+            await interaction.editReply({
+                content: "changelog >> updating...",
+                ephemeral: false
+            });
             //delete all data
             await mcChangelogSch.deleteMany({});
             console.log("saving");

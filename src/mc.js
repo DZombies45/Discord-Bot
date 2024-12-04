@@ -40,6 +40,10 @@ const Logger = {
 
 const Utils = {
     Logger,
+    exist: async data => {
+        const hasil = changelogSch.findOne({ version: data.versiom });
+        return hasil !== null;
+    },
     getSavedDatas: async (data, articleSection) => {
         const article =
             articleSection == articleSections.BedrockPreview
@@ -105,15 +109,19 @@ const Utils = {
             .replace(/(Release Candidate|Pre-Release) \d*/gi, "");
     },
     getMCVersion: v => {
-        try {
-            const [title, version, _, platform] = new RegExp(
-                "Minecraft.* -\\s*([a-zA-Z\\- \\.0-9/]*)( \\((.*)\\))?",
-                "gm"
-            ).exec(v);
-            return version.replace("Snapshot", "").trim();
-        } catch {
-            return Utils.getVersion(v);
-        }
+        return v
+            .replace(
+                /(Minecraft|Beta & Preview|Snapshot|Release Candidate|Pre-Release|bedrock|java|edition|\:|\-|\(|\))/gi,
+                ""
+            )
+            .trim()
+            .replace("  ", "-");
+
+        //         try {
+        //             return new RegExp("\\b\\d+\\.\\d+\\.\\d+\\b", "gm").exec(v);
+        //         } catch {
+        //             return Utils.getVersion(v);
+        //         }
     },
     extractImage: body => {
         const parsed = htmlParser.parse(body);

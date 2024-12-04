@@ -28,7 +28,7 @@ module.exports = {
                 .setAutocomplete(true)
         )
         .toJSON(),
-    deleted: true,
+    deleted: false,
     devOnly: false,
     modOnly: false,
     userPermissions: [],

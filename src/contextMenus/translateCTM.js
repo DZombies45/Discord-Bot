@@ -17,7 +17,10 @@ module.exports = {
         const { targetMessage, user, channel } = interaction;
         const message = targetMessage.content;
         await interaction.deferReply({
-            content: "please type target language in 15s",
+            ephemeral: true
+        });
+        await interaction.editReply({
+            content: "please type target language in 10s",
             ephemeral: true
         });
 
@@ -27,7 +30,7 @@ module.exports = {
             .awaitMessages({
                 filter,
                 max: 1,
-                time: 15000,
+                time: 10000,
                 errors: ["time"]
             })
             .then(selLang => {
@@ -40,7 +43,7 @@ module.exports = {
             .catch(() => {
                 return;
             });
-        const langTo = parseBahasa(lang)[0];
+        const langTo = parseBahasa(lang)?.[0];
 
         if (!langTo)
             return interaction.editReply({
@@ -48,7 +51,7 @@ module.exports = {
                 ephemeral: true
             });
 
-        const tertranslate = await translate(message, { to: langTo });
+        const tertranslate = await translate(message, { to: langTo.value });
 
         const embed = new EmbedBuilder()
             .setColor("#afd50a")
@@ -70,6 +73,7 @@ module.exports = {
                 inline: false
             });
         await interaction.editReply({
+            content: "",
             embeds: [embed],
             ephemeral: true
         });

@@ -1,12 +1,12 @@
 module.exports = (lang = "en") => {
     const focus = lang.toLowerCase();
-    const result = lang.filter(l => {
+    const result = language.filter(l => {
         l.name.toLowerCase().include(focus) || l.value === focus;
     });
     return result;
 };
 
-const lang = [
+const language = [
     {
         name: "Afrikaans",
         value: "af"

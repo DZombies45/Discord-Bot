@@ -26,26 +26,16 @@ module.exports = async (client, message) => {
         ? contentArr[1]
         : "https://feedback.minecraft.net/temp";
 
+    const version = new RegExp("\\b\\d+\\.\\d+\\.\\d+\\b", "gm").exec(
+        contentArr[0]
+    );
+
     switch (message.channelId) {
         case Config.bedrockNews:
-            if (
-                !contentArr[0].startsWith("#") ||
-                link.startsWith("https://feedback.minecraft.net/")
-            )
-                bedrockCreate(client);
-            else {
-                postChangelog(client, title, null, link, true);
-            }
+            bedrockCreate(client);
             break;
         case Config.javaNews:
-            if (
-                !contentArr[0].startsWith("#") ||
-                link.startsWith("https://feedback.minecraft.net/")
-            )
-                javaCreate(client);
-            else {
-                postChangelog(client, title, null, link, false);
-            }
+            javaCreate(client);
             break;
 
         default:

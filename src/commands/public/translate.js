@@ -10,6 +10,13 @@ module.exports = {
         .setDescription("translate new message or message id to other language")
         .addStringOption(option =>
             option
+                .setName("lang")
+                .setDescription("language to translate to")
+                .setRequired(true)
+                .setAutocomplete(true)
+        )
+        .addStringOption(option =>
+            option
                 .setName("msg")
                 .setDescription("what you want to translate")
                 .setRequired(false)
@@ -19,13 +26,6 @@ module.exports = {
                 .setName("msg_id")
                 .setDescription("message id you want to translate")
                 .setRequired(false)
-        )
-        .addStringOption(option =>
-            option
-                .setName("lang")
-                .setDescription("language to translate to")
-                .setRequired(true)
-                .setAutocomplete(true)
         )
         .toJSON(),
     deleted: false,

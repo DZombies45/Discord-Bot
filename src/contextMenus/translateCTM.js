@@ -43,15 +43,15 @@ module.exports = {
             .catch(() => {
                 return;
             });
-        const langTo = parseBahasa(lang)?.[0];
+        const langTo = parseBahasa(lang);
 
-        if (!langTo)
+        if (langTo.length === 0)
             return interaction.editReply({
                 content: "no lang code provided",
                 ephemeral: true
             });
 
-        const tertranslate = await translate(message, { to: langTo.value });
+        const tertranslate = await translate(message, { to: langTo[0].value });
 
         const embed = new EmbedBuilder()
             .setColor("#afd50a")

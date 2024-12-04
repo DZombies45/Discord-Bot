@@ -1,5 +1,5 @@
-module.exports = (lang = "en") => {
-    const focus = lang.toLowerCase();
+module.exports = lang => {
+    const focus = lang?.toLowerCase() || "en";
     const result = language.filter(l => {
         l.name.toLowerCase().include(focus) || l.value === focus;
     });

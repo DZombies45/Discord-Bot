@@ -5,6 +5,7 @@
     "ghostPingLogChannel": "1174933005823901746",
     "clientId": "1046745737481953300",
     "guildId": "1046307329622167662",
+    "commandErrorChannel": "1317460870351032382",
     "repeateInterval": 60000,
     "bedrockChannel": "1206461716376985660",
     "bedrockNews": "1176044211259318302",

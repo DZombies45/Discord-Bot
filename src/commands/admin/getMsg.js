@@ -61,7 +61,7 @@ module.exports = {
 
             interaction.editReply({ embeds: [clearEmbed], ephemeral: true });
         } catch (e) {
-            Logger.error(`from cmd > clear.js :\n${e.stack}`);
+            Logger.error(`from cmd > getMsg.js :\n${e.stack}`);
             await interaction.editReply({
                 content: "an error occured while clearing message",
                 ephemeral: true

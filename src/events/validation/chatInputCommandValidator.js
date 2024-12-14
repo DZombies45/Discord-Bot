@@ -2,7 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 const {
     developerId,
     testServerId,
-    moderatorRoleId
+    moderatorRoleId,
+    commandErrorChannel
 } = require("../../config.json");
 const mConfig = require("../../messageConfig.json");
 const getLocalCommands = require("../../utils/getLocalCommands.js");
@@ -81,6 +82,31 @@ module.exports = async (client, interaction) => {
 
         await commandObject.run(client, interaction);
     } catch (err) {
+        const errorEmbed = new EmbedBuilder()
+            .setColor(`${mConfig.embedColorError}`)
+            .setDescription(`${mConfig.commandError}`);
+        await interaction
+            .reply({ embeds: [errorEmbed], ephemeral: true })
+            .catch(() => {});
+
+        const embed = new EmbedBuilder()
+            .setTitle("Command Error")
+            .setColor(`${mConfig.embedColorError}`)
+            .addFields({
+                name: `Command`,
+                value: `${interaction.commandName}`
+            })
+            .addFields({
+                name: `Run by user`,
+                value: `${interaction.user.username}`
+            })
+            .setDescription(`**error**\n\`\`\`\n${err.stack}\n\`\`\`\n`)
+            .setTimestamp();
+        const channel =
+            client.channels.cache.get(commandErrorChannel) ||
+            client.channels.fetch(commandErrorChannel);
+        await channel.send({ embeds: [errorEmbed] }).catch(() => {});
+
         Logger.error(`from chatInputCommandValidator.js :\n${err.stack}`);
     }
 };

@@ -33,24 +33,27 @@ function loop(client, guild) {
 function startTimeout(client, guild, obj) {
     let time = obj.endTime - Date.now();
     if (time < 1) time = 1;
-    setTimeout(async () => {
-        try {
-            const { GuildId, memberId, reason } = obj;
-            if (reason === "ban") {
-                await guild.members.unban(memberId);
-            } else if (reason === "mute") {
-                let dataDB = await moderationSch.findOne({
-                    GuildId: guildId
+    if (time > 3400000)
+        setTimeout(() => startTimeout(client, guild, obj), 3400000);
+    else
+        setTimeout(async () => {
+            try {
+                const { GuildId, memberId, reason } = obj;
+                if (reason === "ban") {
+                    await guild.members.unban(memberId);
+                } else if (reason === "mute") {
+                    let dataDB = await moderationSch.findOne({
+                        GuildId: guildId
+                    });
+                    await guild.members
+                        .fetch(memberId)
+                        .roles.remove(dataDB.MuteRoleId);
+                }
+                await tempBanSch.deleteOne({
+                    GuildId: GuildId,
+                    memberId: memberId
                 });
-                await guild.members
-                    .fetch(memberId)
-                    .roles.remove(dataDB.MuteRoleId);
-            }
-            await tempBanSch.deleteOne({
-                GuildId: GuildId,
-                memberId: memberId
-            });
-        } catch (e) {}
-    }, time);
+            } catch (e) {}
+        }, time);
 }
 module.exports = { startBanTimer, startTimeout };

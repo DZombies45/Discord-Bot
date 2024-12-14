@@ -10,6 +10,7 @@
     "commandModOnly": "This command can only be executed by moderators.",
     "commandTestMode": "This is in development and cannot be executed in this server.",
     "commandPremiumOnly": "This command can only be executed by premium users.",
+    "commandError": "thare is an error with this command, please wait a bit.",
 
     "userNoPermissions": "You do not have enough permissions to execute this command.",
     "botNoPermissions": "I do not have enough permissions to execute this command.",
@@ -17,7 +18,12 @@
     "unableToInteractWithSelf": "You can't do that to yourself.",
     "cannottUseButton": "You can't use this button.",
 
-    "welcomeMessage": ["on bridge", "welcome traveler", "has enter the cave","just enter the dream land"],
+    "welcomeMessage": [
+        "on bridge",
+        "welcome traveler",
+        "has enter the cave",
+        "just enter the dream land"
+    ],
     "goodbyeMessage": [
         "got stuck on bedrock",
         "is touching grass",

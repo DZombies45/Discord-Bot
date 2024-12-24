@@ -2,7 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 const {
     developerId,
     testServerId,
-    moderatorRoleId
+    moderatorRoleId,
+    commandErrorChannel
 } = require("../../config.json");
 const mConfig = require("../../messageConfig.json");
 const getLocalContextMenus = require("../../utils/getLocalContextMenus.js");
@@ -81,6 +82,35 @@ module.exports = async (client, interaction) => {
 
         await contextMenuObject.run(client, interaction);
     } catch (err) {
+        const errorEmbed = new EmbedBuilder()
+            .setColor(`${mConfig.embedColorError}`)
+            .setDescription(`${mConfig.commandError}`);
+        await interaction
+            .reply({ embeds: [errorEmbed], ephemeral: true })
+            .catch(async () => {
+                await interaction
+                    .editReply({ embeds: [errorEmbed], ephemeral: true })
+                    .catch(() => {});
+            });
+
+        const embed = new EmbedBuilder()
+            .setTitle("Context Menu Error")
+            .setColor(`${mConfig.embedColorError}`)
+            .addFields({
+                name: `menu`,
+                value: `${interaction.commandName}`
+            })
+            .addFields({
+                name: `Run by user`,
+                value: `${interaction.user.username}`
+            })
+            .setDescription(`**error**\n\`\`\`\n${err.stack}\n\`\`\`\n`)
+            .setTimestamp();
+        const channel =
+            client.channels.cache.get(commandErrorChannel) ||
+            client.channels.fetch(commandErrorChannel);
+        await channel.send({ embeds: [embed] }).catch(() => {});
+
         Logger.error(`from contextMenuCmdValidator.js :\n${err.stack}`);
     }
 };

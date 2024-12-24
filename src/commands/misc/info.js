@@ -43,7 +43,7 @@ module.exports = {
     run: async (client, interaction) => {
         const { options, guildId, guild } = interaction;
         const subCmd = options.getSubcommand();
-        await interaction.deferReply({ ephemeral: true, fetchReply: true });
+        await interaction.deferReply({ ephemeral: false, fetchReply: true });
         const embed = new EmbedBuilder().setColor("#acf7f2");
         let image = null;
 
@@ -98,7 +98,7 @@ module.exports = {
                 );
                 embed.setThumbnail(target.displayAvatarURL({ dynamic: true }));
                 await interaction.editReply({
-                    ephemeral: true,
+                    ephemeral: false,
                     files: [{ attachment: image, name: "user info.png" }]
                 });
                 break;
@@ -141,6 +141,7 @@ module.exports = {
             case "bot":
                 await client.user.fetch();
                 await client.application.fetch();
+                const command = await client.application.commands.fetch();
                 image = await profileImage(client.user.id, {
                     badgesFrame: true,
                     moreBackgroundBlur: true,
@@ -192,7 +193,7 @@ module.exports = {
                         },
                         {
                             name: "📌 Owner",
-                            value: `${client.application.owner.tag || "None"}`,
+                            value: `${client.application?.owner || "None"}`,
                             inline: true
                         },
                         {
@@ -210,7 +211,7 @@ module.exports = {
                         },
                         {
                             name: "🖥 CPU Model",
-                            value: `${os.cpus()[0].model}`,
+                            value: `${os.cpus()[0]?.model || "unknown"}`,
                             inline: true
                         },
                         {
@@ -246,7 +247,7 @@ module.exports = {
                         },
                         {
                             name: "⚒️ Commands",
-                            value: `${client.commands.size}`,
+                            value: `${command.size}`,
                             inline: true
                         },
                         {
@@ -289,7 +290,7 @@ module.exports = {
                         }
                     );
                 await interaction.editReply({
-                    ephemeral: true,
+                    ephemeral: false,
                     files: [{ attachment: image, name: "bot info.png" }]
                 });
                 break;

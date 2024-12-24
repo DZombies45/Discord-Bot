@@ -6,7 +6,7 @@ const { commandCannelDeny } = require("../../messageConfig.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("connect4")
+        .setName("tictactoe")
         .setDescription("[game] Connect4")
         .addUserOption(opt =>
             opt

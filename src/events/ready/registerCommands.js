@@ -8,7 +8,7 @@ module.exports = async client => {
     try {
         const [localCmds, appCmds] = await Promise.all([
             getLocalCommands(),
-            getAppCommand(client, testServerId)
+            getAppCommand(client)
         ]);
         let count = 0;
 
@@ -29,33 +29,38 @@ module.exports = async client => {
 
             count++;
 
+            let loading = null;
+
             if (deleted) {
                 if (existCommand) {
+                    loading = TabbleConsole.showLoading(commandName);
                     await appCmds.delete(existCommand.id);
                     count--;
-                    TabbleConsole.add("\x1B[91mD", commandName);
+                    TabbleConsole.add("\x1B[91mD", commandName, loading);
                     //Logger.log(`(-) aplication command "${commandName}" deleted`);
                 }
             } else if (existCommand) {
                 if (compareCommands(existCommand, localCmd)) {
+                    loading = TabbleConsole.showLoading(commandName);
                     await appCmds.edit(existCommand.id, {
                         name: commandName,
                         description: commandDesc,
                         options: commandOpt
                     });
-                    TabbleConsole.add("\x1B[33mR", commandName);
+                    TabbleConsole.add("\x1B[33mR", commandName, loading);
                     //Logger.log(`(*) aplication command "${commandName}" edited` );
                 } else {
                     //Logger.debug(`${commandName} id: ${existCommand.id}`);
                     TabbleConsole.add("\x1B[92mY", commandName);
                 }
             } else {
+                loading = TabbleConsole.showLoading(commandName);
                 await appCmds.create({
                     name: commandName,
                     description: commandDesc,
                     options: commandOpt
                 });
-                TabbleConsole.add("\x1B[32mC", commandName);
+                TabbleConsole.add("\x1B[32mC", commandName, loading);
                 //Logger.log(`(+) aplication command "${commandName}" added`);
             }
         }

@@ -133,13 +133,37 @@ const TabbleConsole = {
         );
     },
     end: () => console.log("+---+------------------------------------------+"),
-    add: (icon, text) => {
-        console.log(
-            `| ${icon}\x1B[0m | ${text}${TabbleConsole._repeatText(
+    add: (icon, text, loading = null) => {
+        if (!loading)
+            return console.log(
+                `| ${icon}\x1B[0m | ${text}${TabbleConsole._repeatText(
+                    " ",
+                    41 - text.replace(/\x1B\[\d+m/g, "").length
+                )}|`
+            );
+        clearInterval(loading);
+        process.stdout.write(
+            `\r| ${icon}\x1B[0m | ${text}${TabbleConsole._repeatText(
                 " ",
                 41 - text.replace(/\x1B\[\d+m/g, "").length
-            )}|`
+            )}|\n`
         );
+    },
+    showLoading: text => {
+        const frames = ["-", "\\", "|", "/"];
+        let index = 0;
+
+        return setInterval(() => {
+            process.stdout.write(
+                `\r| ${
+                    frames[index]
+                }\x1B[0m | ${text}${TabbleConsole._repeatText(
+                    " ",
+                    41 - text.replace(/\x1B\[\d+m/g, "").length
+                )}|`
+            );
+            index = (index + 1) % frames.length;
+        }, 200);
     }
 };
 

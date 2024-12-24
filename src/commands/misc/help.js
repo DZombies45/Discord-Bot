@@ -24,7 +24,7 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
-        const allCommans = {};
+        const allCommands = {};
 
         const commandFolders = getAllFiles(path.join(__dirname, ".."), true);
         for (const commandFolder of commandFolders) {
@@ -35,7 +35,10 @@ module.exports = {
                 if (cmdObject.deleted) continue;
                 cmds.push(cmdObject);
             }
-            allCommands[commandFolder] = cmds;
+            allCommands[commandFolder.split("/").pop()] = cmds.map(command => ({
+                name: `- **/${command.data.name}**`,
+                value: command.data.description || "no description provided"
+            }));
         }
 
         const embed = new EmbedBuilder()
@@ -70,14 +73,13 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(selectMenu);
 
-        await interaction.reply({
+        const msg = await interaction.reply({
             embeds: [embed],
-            components: [row],
-            ephemeral: true
+            components: [row]
         });
 
         const filter = i =>
-            i.isSelectMenu() && i.customId === "category-select";
+            i.isStringSelectMenu() && i.customId === "category-select";
         const collector = interaction.channel.createMessageComponentCollector({
             filter,
             time
@@ -85,18 +87,11 @@ module.exports = {
         let selectedCategory = 0;
 
         function getEmbed() {
-            const categoryCommands = allCommands[selectedCategory];
-
             return new EmbedBuilder()
                 .setTitle(`${selectedCategory} Commands`)
                 .setDescription("List of available commands in this category:")
                 .setThumbnail(`${client.user.displayAvatarURL()}`)
-                .addFields(
-                    categoryCommands.map(command => ({
-                        name: `- **/${command.name}**`,
-                        value: command.description
-                    }))
-                );
+                .addFields(allCommands[selectedCategory]);
         }
 
         collector.on("collect", async i => {
@@ -105,8 +100,8 @@ module.exports = {
             await i.update({ embeds: [getEmbed()] });
             collector.resetTimer();
         });
-        collector.on("end", async i => {
-            await i.update({
+        collector.on("end", async () => {
+            await msg.edit({
                 embeds: [getEmbed()],
                 components: []
             });

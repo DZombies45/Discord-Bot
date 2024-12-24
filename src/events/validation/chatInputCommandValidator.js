@@ -87,7 +87,11 @@ module.exports = async (client, interaction) => {
             .setDescription(`${mConfig.commandError}`);
         await interaction
             .reply({ embeds: [errorEmbed], ephemeral: true })
-            .catch(() => {});
+            .catch(async () => {
+                await interaction
+                    .editReply({ embeds: [errorEmbed], ephemeral: true })
+                    .catch(() => {});
+            });
 
         const embed = new EmbedBuilder()
             .setTitle("Command Error")
@@ -105,7 +109,7 @@ module.exports = async (client, interaction) => {
         const channel =
             client.channels.cache.get(commandErrorChannel) ||
             client.channels.fetch(commandErrorChannel);
-        await channel.send({ embeds: [errorEmbed] }).catch(() => {});
+        await channel.send({ embeds: [embed] }).catch(() => {});
 
         Logger.error(`from chatInputCommandValidator.js :\n${err.stack}`);
     }

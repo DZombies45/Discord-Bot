@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { Snake } = require("discord-gamecord");
+const { gameChannel } = require("../../config.json");
+const { commandCannelDeny } = require("../../messageConfig.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +13,11 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
+        if (!gameChannel.includes(interaction.channelId))
+            return interaction.reply({
+                content: commandCannelDeny,
+                ephemeral: true
+            });
         const Game = new Snake({
             message: interaction,
             isSlashGame: true,

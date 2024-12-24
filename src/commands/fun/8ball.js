@@ -5,6 +5,8 @@ const {
     ButtonBuilder,
     ButtonStyle
 } = require("discord.js");
+const { gameChannel } = require("../../config.json");
+const { commandCannelDeny } = require("../../messageConfig.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,6 +24,11 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
+        if (!gameChannel.includes(interaction.channelId))
+            return interaction.reply({
+                content: commandCannelDeny,
+                ephemeral: true
+            });
         const { options } = interaction;
 
         const question = options.getString("question");

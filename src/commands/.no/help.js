@@ -1,7 +1,9 @@
 const {
     SlashCommandBuilder,
     PermissionFlagsBits,
-    EmbedBuilder
+    EmbedBuilder,
+    ActionRowBuilder,
+    ActionRow
 } = require("discord.js");
 const buttonPaginator = require("../../utils/buttonPaginator.js");
 const path = require("path");
@@ -10,10 +12,10 @@ const { Logger } = require("../../util.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("help")
+        .setName("help2")
         .setDescription("show all command form this bot")
         .toJSON(),
-    deleted: false,
+    deleted: true,
     devOnly: false,
     modOnly: false,
     userPermissions: [],

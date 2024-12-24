@@ -6,7 +6,7 @@ const {
 } = require("discord.js");
 const { Logger } = require("../util.js");
 
-module.exports = async (interaction, pages, time = 30 * 1000) => {
+module.exports = async (interaction, pages, time = 60 * 1000) => {
     try {
         if (!interaction || !pages || pages.length === 0)
             throw new Error("invalid arguments");

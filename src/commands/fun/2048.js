@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { TwoZeroFourEight } = require("discord-gamecord");
 const { getRandomColor } = require("../../util.js");
+const { gameChannel } = require("../../config.json");
+const { commandCannelDeny } = require("../../messageConfig.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,6 +15,11 @@ module.exports = {
     userPermissions: [],
     botPermissions: [],
     run: async (client, interaction) => {
+        if (!gameChannel.includes(interaction.channelId))
+            return interaction.reply({
+                content: commandCannelDeny,
+                ephemeral: true
+            });
         const Game = new TwoZeroFourEight({
             message: interaction,
             isSlashGame: true,

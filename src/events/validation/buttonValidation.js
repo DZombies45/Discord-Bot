@@ -1,5 +1,10 @@
 const { EmbedBuilder } = require("discord.js");
-const { developerId, testServerId } = require("../../config.json");
+const {
+    developerId,
+    testServerId,
+    moderatorRoleId,
+    commandErrorChannel
+} = require("../../config.json");
 const mConfig = require("../../messageConfig.json");
 const getButtons = require("../../utils/getButtons.js");
 const { Logger } = require("../../util.js");
@@ -75,6 +80,35 @@ module.exports = async (client, interaction) => {
 
         await buttonObject.run(client, interaction);
     } catch (err) {
+        const errorEmbed = new EmbedBuilder()
+            .setColor(`${mConfig.embedColorError}`)
+            .setDescription(`${mConfig.commandError}`);
+        await interaction
+            .reply({ embeds: [errorEmbed], ephemeral: true })
+            .catch(async () => {
+                await interaction
+                    .editReply({ embeds: [errorEmbed], ephemeral: true })
+                    .catch(() => {});
+            });
+
+        const embed = new EmbedBuilder()
+            .setTitle("Button Error")
+            .setColor(`${mConfig.embedColorError}`)
+            .addFields({
+                name: `Button`,
+                value: `${interaction.customId}`
+            })
+            .addFields({
+                name: `Run by user`,
+                value: `${interaction.user.username}`
+            })
+            .setDescription(`**error**\n\`\`\`\n${err.stack}\n\`\`\`\n`)
+            .setTimestamp();
+        const channel =
+            client.channels.cache.get(commandErrorChannel) ||
+            client.channels.fetch(commandErrorChannel);
+        await channel.send({ embeds: [embed] }).catch(() => {});
+
         Logger.error(`from buttonValidator.js :\n${err.stack}`);
     }
 };

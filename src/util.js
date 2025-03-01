@@ -104,14 +104,7 @@ const trimText = (text, maxLength, addedText = "...") => {
     return text;
 };
 
-const chunkSubstr = (str, size) => {
-    const numChunks = Math.ceil(str.length / size);
-    const chunks = new Array(numChunks);
-    for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-        chunks[i] = str.substr(o, size);
-    }
-    return chunks;
-};
+const chunkSubstr = (str, size) => str.match(new RegExp(`.{1,${size}}`, `g`));
 
 const TabbleConsole = {
     _repeatText: (text, length) => text.repeat(length),
@@ -120,13 +113,15 @@ const TabbleConsole = {
             "+----------------------------------------------+\n|                                              |"
         );
         console.log(
+            /*
             `|\x1B[96m${TabbleConsole._repeatText(
                 " ",
                 (46 - text.length) / 2
             )}${text}${TabbleConsole._repeatText(
                 " ",
                 Math.ceil((46 - text.length) / 2)
-            )}\x1B[0m|`
+            )}\x1B[0m|`*/
+            `|\x1B[96m${padString(text, 46, " ")}\x1B[0m|`
         );
         console.log(
             "|                                              |\n+---+------------------------------------------+"
@@ -176,6 +171,41 @@ function getRandomColor() {
     return color;
 }
 
+function padString(str, length, char = " ") {
+    const totalPad = length - str.length;
+    const padStart = Math.floor(totalPad / 2);
+    const padEnd = totalPad - padStart;
+    return char.repeat(padStart) + str + char.repeat(padEnd);
+}
+
+const cooldown = {
+    userCooldown: {},
+    start: (interaction, time) => {
+        const { name, user } = interaction;
+        const cd = cooldown.userCooldown[name] || [];
+        if (cd.includes(user.id)) return true;
+        cd.push(user.id);
+        cooldown.userCooldown[name] = cd;
+        setTimeout(() => {
+            cooldown.userCooldown[name].shift();
+        }, time);
+        return false;
+    },
+    check: interaction => {
+        const { name, user } = interaction;
+        const cd = cooldown.userCooldown[name] || [];
+        if (cd.includes(user.id)) return true;
+        return false;
+    },
+    end: user => {
+        const cd = cooldown.userCooldown[name] || [];
+        cd.filter(a => {
+            a !== user.id;
+        });
+        cd = cooldown.userCooldown[name] = cd;
+    }
+};
+
 module.exports = {
     Logger,
     recentMentions,
@@ -185,5 +215,7 @@ module.exports = {
     TabbleConsole,
     parseDate,
     parseDuration,
-    getRandomColor
+    getRandomColor,
+    cooldown,
+    padString
 };

@@ -2,12 +2,19 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { formatDate, parseDuration, Logger } = require("../util.js");
 const moderationSch = require("../schemas/moderationSch.js");
 const tempBanSch = require("../schemas/tempBanSch.js");
-const { startBanTimer, startTimeout } = require("../utils/banTimmer.js");
+const mConfig = require("../messageConfig.json");
 
 module.exports = {
     customId: "tempMuteMdl",
-    userPermissions: [PermissionFlagsBits.BanMembers],
-    botPermissions: [PermissionFlagsBits.BanMembers],
+    userPermissions: [
+        PermissionFlagsBits.BanMembers,
+        PermissionFlagsBits.ModerateMembers
+    ],
+    botPermissions: [
+        PermissionFlagsBits.BanMembers,
+        PermissionFlagsBits.ManageRoles,
+        PermissionFlagsBits.ModerateMembers
+    ],
     run: async (client, interaction) => {
         const { message, channel, guildId, guild, user, fields } = interaction;
         try {
@@ -44,6 +51,14 @@ module.exports = {
             let dataDB = await moderationSch.findOne({
                 GuildId: guildId
             });
+            if (!dataDB) {
+                embed
+                    .setColor(mConfig.embedColorError)
+                    .setDescription(
+                        "moderation system is not configured for this server."
+                    );
+                return interaction.reply({ embeds: [embed], ephemeral: true });
+            }
             const { LogChannelId, MuteRoleId } = dataDB;
             const logChannel = guild.channels.cache.get(LogChannelId);
 
@@ -73,7 +88,7 @@ module.exports = {
             await tempBanSch.create(obj);
 
             const embedLog = new EmbedBuilder()
-                .setColor("#fcb4fc")
+                .setColor(mConfig.embedColorSuccess)
                 .setTitle("User Temp Muted")
                 .setAuthor({
                     name: `${targetMember.user.username}`
@@ -111,8 +126,6 @@ module.exports = {
                 });
             logChannel.send({ embeds: [embedLog] });
             interaction.editReply({ embeds: [embed], components: [] });
-            if (obj.endTime - Date.now() < 3600000)
-                startTimeout(client, guild, obj);
         } catch (e) {
             Logger.error(`from tempMuteMdl.js :\n${e.stack}`);
         }

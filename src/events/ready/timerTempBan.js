@@ -1,16 +1,43 @@
 const { EmbedBuilder } = require("discord.js");
 const { formatDate, Logger } = require("../../util.js");
 const tempBanSch = require("../../schemas/tempBanSch.js");
-const moderationSch = require("../../schemas/moderationSch.js");
 const { startTimeout } = require("../../utils/banTimmer.js");
 
 module.exports = async client => {
+    async function tempBan(data) {
+        let delay = data.endTime - Date.now();
+        if (delay < 0) delay = 1;
+        setTimeout(async () => {
+            try {
+                const { GuildId, memberId, reason } = data;
+                const guild = client.guilds.fetch(GuildId);
+                if (reason === "ban") {
+                    await guild.bans.remove(memberId);
+                } else if (reason === "mute") {
+                    await guild.members
+                        .fetch(memberId)
+                        .roles.remove(dataDB.MuteRoleId);
+                }
+                await tempBanSch.deleteOne({ _id: data._id });
+            } catch (e) {
+                Logger.error(`from ${__filename} :\n${e.stack}`);
+            }
+        }, delay);
+    }
+    const banData = await tempBanSch.find();
+    banData.forEach(tempBan);
+
+    tempBanSch.watch().on("change", async change => {
+        if (change.operationType == "insert") tempBan(change.fullDocument);
+    });
+};
+
+async function a() {
     async function checkTempBan() {
         try {
             const banDic = await tempBanSch.find();
             if (!banDic) return;
             for (const tb of banDic) {
-                //check guild
                 const targetGuild =
                     client.guilds.cache.get(tb.GuildId) ||
                     (await client.guilds.fetch(tb.GuildId));
@@ -18,38 +45,8 @@ module.exports = async client => {
                     tb.findOneAndDelete({ _id: tb._id }).catch(e => null);
                     continue;
                 }
-                //start timer
-                startTimeout(client, targetGuild, tb);
 
-                //                 let timeout = tb.endTime - Date.now();
-                //                 if (timeout > 353998) continue;
-                //
-                //              timeout = timeout <= 0 ? 5 : timeout;
-                //                 if (tb.reason === "ban") {
-                //                     setTimeout(() => {
-                //                         tb.findOneAndDelete({ _id: tb._id })
-                //                             .then(() => targetGuild.members.unban(tb.memberId))
-                //                             .catch(e => null);
-                //                     }, timeout);
-                //                 } else {
-                //                     setTimeout(() => {
-                //                         tb.findOneAndDelete({ _id: tb._id })
-                //                             .then(async () => {
-                //                                 let dataDB = await moderationSch.findOne({
-                //                                     GuildId: tb.GuildId
-                //                                 });
-                //                                 let member =
-                //                                     targetGuild.members.cache.get(
-                //                                         tb.memberId
-                //                                     ) ||
-                //                                     (await targetGuild.members.fetch(
-                //                                         tb.memberId
-                //                                     ));
-                //                                 member.roles.remove(dataDB.MuteRoleId);
-                //                             })
-                //                             .catch(e => null);
-                //                     }, timeout);
-                //                }
+                startTimeout(client, targetGuild, tb);
             }
         } catch (e) {
             Logger.error(`from ${__filename} :\n${e.stack}`);
@@ -57,5 +54,4 @@ module.exports = async client => {
     }
     checkTempBan();
     setInterval(checkTempBan, 354000);
-    async function timer() {}
-};
+}

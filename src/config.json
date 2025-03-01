@@ -1,4 +1,5 @@
 {
+    "inviteLink": "https://discord.gg/SmzWxC2KUm",
     "testServerId": "1046307329622167662",
     "developerId": ["334299405589151744"],
     "moderatorRoleId": ["1046329665159168111", "1046329621576163348"],
@@ -7,7 +8,7 @@
     "guildId": "1046307329622167662",
     "commandErrorChannel": "1317460870351032382",
     "repeateInterval": 60000,
-    "gameChannel": [],
+    "gameChannel": ["1046688452055408650", "1046688491867750480"],
     "bedrockChannel": "1206461716376985660",
     "bedrockNews": "1176044211259318302",
     "tags": {

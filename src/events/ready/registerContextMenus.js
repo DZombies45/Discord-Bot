@@ -7,11 +7,12 @@ module.exports = async client => {
     try {
         const [localCtms, appCtms] = await Promise.all([
             getLocalContextMenus(),
-            getAppContextMenu(client, testServerId)
+            getAppContextMenu(client)
         ]);
         let count = 0;
 
         TabbleConsole.start("context menus register");
+        let loading = null;
 
         for (const localCtm of localCtms) {
             const { data, deleted, reload } = localCtm;
@@ -26,6 +27,7 @@ module.exports = async client => {
 
             if (existContestMenu) {
                 if (deleted) {
+                    loading = TabbleConsole.showLoading(contextMenuName);
                     await appCtms.delete(existContestMenu.id);
                     count--;
                     if (reload) {
@@ -37,18 +39,20 @@ module.exports = async client => {
                     }
                     TabbleConsole.add(
                         deleted && reload ? "\x1B[32mR" : "\x1B[91mD",
-                        contextMenuName
+                        contextMenuName,
+                        loading
                     );
                     //Logger.log(`(-) aplication contest menu "${contextMenuName}" deleted`);
                 } else {
                     TabbleConsole.add("\x1B[92mY", contextMenuName);
                 }
             } else {
+                loading = TabbleConsole.showLoading(contextMenuName);
                 await appCtms.create({
                     name: contextMenuName,
                     type: contestMenuType
                 });
-                TabbleConsole.add("\x1B[32mC", contextMenuName);
+                TabbleConsole.add("\x1B[32mC", contextMenuName, loading);
                 //Logger.log(`(+) aplication context menu "${contextMenuName}" added`);
             }
         }

@@ -29,16 +29,16 @@ module.exports = {
         const commandFolders = getAllFiles(path.join(__dirname, ".."), true);
         for (const commandFolder of commandFolders) {
             const commandFiles = getAllFiles(commandFolder);
-            const cmds = [];
+            let cmds = "";
             for (const commandFile of commandFiles) {
                 const cmdObject = require(commandFile);
                 if (cmdObject.deleted) continue;
                 cmds.push(cmdObject);
+                cmds += `\n> - /${command.data.name}\n\`\`\`${
+                    command.data.description || "no description provided"
+                }\`\`\``;
             }
-            allCommands[commandFolder.split("/").pop()] = cmds.map(command => ({
-                name: `- **/${command.data.name}**`,
-                value: command.data.description || "no description provided"
-            }));
+            allCommands[commandFolder.split("/").pop()] = cmds;
         }
 
         const embed = new EmbedBuilder()
@@ -89,9 +89,12 @@ module.exports = {
         function getEmbed() {
             return new EmbedBuilder()
                 .setTitle(`${selectedCategory} Commands`)
-                .setDescription("List of available commands in this category:")
-                .setThumbnail(`${client.user.displayAvatarURL()}`)
-                .addFields(allCommands[selectedCategory]);
+                .setDescription(
+                    "List of available commands in this category:\n" +
+                        allCommands[selectedCategory]
+                )
+                .setThumbnail(`${client.user.displayAvatarURL()}`);
+            //.addFields(allCommands[selectedCategory]);
         }
 
         collector.on("collect", async i => {

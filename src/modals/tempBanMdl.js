@@ -2,12 +2,18 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { formatDate, parseDuration, Logger } = require("../util.js");
 const moderationSch = require("../schemas/moderationSch.js");
 const tempBanSch = require("../schemas/tempBanSch.js");
-const { startBanTimer, startTimeout } = require("../utils/banTimmer.js");
+const mConfig = require("../messageConfig.json");
 
 module.exports = {
     customId: "tempBanMdl",
-    userPermissions: [PermissionFlagsBits.BanMembers],
-    botPermissions: [PermissionFlagsBits.BanMembers],
+    userPermissions: [
+        PermissionFlagsBits.BanMembers,
+        PermissionFlagsBits.ModerateMembers
+    ],
+    botPermissions: [
+        PermissionFlagsBits.BanMembers,
+        PermissionFlagsBits.ModerateMembers
+    ],
     run: async (client, interaction) => {
         const { message, channel, guildId, guild, user, fields } = interaction;
         try {
@@ -41,7 +47,17 @@ module.exports = {
                 );
 
             await interaction.deferReply({ ephemeral: true });
-
+            let dataDB = await moderationSch.findOne({
+                GuildId: guildId
+            });
+            if (!dataDB) {
+                embed
+                    .setColor(mConfig.embedColorError)
+                    .setDescription(
+                        "moderation system is not configured for this server."
+                    );
+                return interaction.reply({ embeds: [embed], ephemeral: true });
+            }
             await targetMember
                 .ban({
                     reason: `you has been temporarly banned for ${formatDate(
@@ -64,14 +80,11 @@ module.exports = {
                 endTime: banEndTimeFull
             };
             await tempBanSch.create(obj);
-            let dataDB = await moderationSch.findOne({
-                GuildId: guildId
-            });
-            const { LogChannelId } = dataDB;
-            const logChannel = guild.channels.cache.get(LogChannelId);
+
+            const logChannel = guild.channels.cache.get(dataDB.LogChannelId);
 
             const embedLog = new EmbedBuilder()
-                .setColor("#fcb4fc")
+                .setColor(mConfig.embedColorSuccess)
                 .setTitle("User Temp Banned")
                 .setAuthor({
                     name: `${targetMember.user.username}`
@@ -109,8 +122,6 @@ module.exports = {
                 });
             logChannel.send({ embeds: [embedLog] });
             interaction.editReply({ embeds: [embed], components: [] });
-            if (obj.endTime - Date.now() < 3600000)
-                startTimeout(client, guild, obj);
         } catch (e) {
             Logger.error(`from tempBanMdl.js :\n${e.stack}`);
         }

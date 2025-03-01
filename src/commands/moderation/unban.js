@@ -55,8 +55,7 @@ module.exports = {
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
-        const { LogChannelId } = dataDB;
-        const logChannel = guild.channels.cache.get(LogChannelId);
+        const logChannel = guild.channels.cache.get(dataDB.LogChannelId);
 
         const embedLog = new EmbedBuilder()
             .setColor("#fcb4fc")
@@ -75,8 +74,10 @@ module.exports = {
             });
         logChannel.send({ embeds: [embedLog] });
 
-        guild.members.unban(targetId);
-        await tempBanSchema.deleteOne({ GuildId: guildId, memberId: targetId });
+        await guild.bans.remove(targetId);
+        await tempBanSchema
+            .deleteOne({ GuildId: guildId, memberId: targetId })
+            .catch(() => {});
         embed
             .setColor(mConfig.embedColorSuccess)
             .setDescription(`successfuly unban user with id ${targetId}`);

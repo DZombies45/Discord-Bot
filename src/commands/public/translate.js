@@ -39,7 +39,7 @@ module.exports = {
         const msgid = options.getString("msg_id") || undefined;
         const langTo = options.getString("lang") || "en";
 
-        if (msgid) message = await channel.messages.fetch(msgid);
+        if (msgid) message = await channel.messages.fetch(msgid).content;
         else message = options.getString("msg");
 
         if (!message || message === "")

@@ -55,7 +55,6 @@ This project is a Discord bot built using [discord.js](https://discord.js.org/) 
     TOKEN=YOUR_DISCORD_TOKEN
     MONGOOURL=YOUR_MONGO_API
     VIRUSAPI=YOUR_VIRUSTOTAL_API
-    QRAPI=YOUR_QR_API
     ```
 
 ## Usage

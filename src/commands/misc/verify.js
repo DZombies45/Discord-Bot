@@ -3,76 +3,76 @@ const userCaptha = require("../../schemas/userCapchaSch.js");
 const verifySchema = require("../../schemas/verificationSch.js");
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("verify")
-        .setDescription("verify yourself")
-        .addStringOption(option =>
-            option
-                .setName("captcha")
-                .setDescription("captcha code")
-                .setRequired(true)
-        )
-        .setDMPermission(false)
-        .toJSON(),
-    deleted: true,
-    userPermissions: [],
-    botPermissions: [],
-    devOnly: false,
-    run: async (client, interaction) => {
-        const { options, guildId, guild, user, channelId } = interaction;
+  data: new SlashCommandBuilder()
+    .setName("verify")
+    .setDescription("verify yourself")
+    .addStringOption((option) =>
+      option
+        .setName("captcha")
+        .setDescription("captcha code")
+        .setRequired(true),
+    )
+    .setDMPermission(false)
+    .toJSON(),
+  deleted: true,
+  userPermissions: [],
+  botPermissions: [],
+  devOnly: false,
+  run: async (client, interaction) => {
+    const { options, guildId, guild, user, channelId } = interaction;
 
-        await interaction.deferReply();
-        const data = await verification.findOne({ GuildId: guildId });
-        if (!data)
-            return inteaction.editReply({
-                content: "❗ verification is disable in this server",
-                ephemeral: true
-            });
-        if (user.roles.cache.has(data.role))
-            return inteaction.editReply({
-                content: "❗ you already verified",
-                ephemeral: true
-            });
-        if (channelId !== data.channelId)
-            return inteaction.editReply({
-                content: `❗ can't use this command here, use it <#${data.channelId}>`,
-                ephemeral: true
-            });
+    await interaction.deferReply();
+    const data = await verification.findOne({ GuildId: guildId });
+    if (!data)
+      return inteaction.editReply({
+        content: "❗ verification is disable in this server",
+        ephemeral: true,
+      });
+    if (user.roles.cache.has(data.role))
+      return inteaction.editReply({
+        content: "❗ you already verified",
+        ephemeral: true,
+      });
+    if (channelId !== data.channelId)
+      return inteaction.editReply({
+        content: `❗ can't use this command here, use it <#${data.channelId}>`,
+        ephemeral: true,
+      });
 
-        const userData = await userCaptha.findOne({
-            GuildId: guildId,
-            memberId: user.id
-        });
-        if (!userData)
-            return inteaction.editReply({
-                content: `❗ press \`verify\` here first <#${data.channelId}> to generate your code`,
-                ephemeral: true
-            });
+    const userData = await userCaptha.findOne({
+      GuildId: guildId,
+      memberId: user.id,
+    });
+    if (!userData)
+      return inteaction.editReply({
+        content: `❗ press \`verify\` here first <#${data.channelId}> to generate your code`,
+        ephemeral: true,
+      });
 
-        const code = options.getString("captcha");
+    const code = options.getString("captcha");
 
-        if (userData.capcha !== code) {
-            inteaction.editReply({
-                content: `❗ code don't match, try again or press verify again, you has ${
-                    data.limitKe - userData.ke
-                } try left`,
-                ephemeral: true
-            });
-        }
-        const role = await guild.roles.cache.get(data.role);
-        await user.roles.add(role).catch(err => {
-            Logger.log(
-                `some error at adding role ${roleId} to ${user.user.username}`
-            );
-            return interaction.editReply({
-                content: "error, try again latter",
-                ephemeral: true
-            });
-        });
-        await userData.remove();
-        await interaction.editReply({
-            content: "verification success",
-            ephemeral: true
-        });
+    if (userData.capcha !== code) {
+      inteaction.editReply({
+        content: `❗ code don't match, try again or press verify again, you has ${
+          data.limitKe - userData.ke
+        } try left`,
+        ephemeral: true,
+      });
     }
+    const role = await guild.roles.cache.get(data.role);
+    await user.roles.add(role).catch((err) => {
+      Logger.log(
+        `some error at adding role ${roleId} to ${user.user.username}`,
+      );
+      return interaction.editReply({
+        content: "error, try again latter",
+        ephemeral: true,
+      });
+    });
+    await userData.remove();
+    await interaction.editReply({
+      content: "verification success",
+      ephemeral: true,
+    });
+  },
 };

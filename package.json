@@ -1,25 +1,27 @@
 {
-    "name": "discord_bot2",
-    "version": "1.0.0",
-    "description": "discord bot with ban/kick",
-    "main": "index.js",
-    "scripts": {
-        "bot": "echo \"Starting bot\" && node index.js",
-        "reset": "echo \"reseting command\" && node reset_command.js"
-    },
-    "author": "DZombies45",
-    "license": "ISC",
-    "dependencies": {
-        "@iamtraction/google-translate": "^2.0.1",
-        "@napi-rs/canvas": "^0.1.56",
-        "dayjs": "^1.11.13",
-        "discord-arts": "^0.6.1",
-        "discord-gamecord": "^4.4.2",
-        "discord-html-transcripts": "^3.2.0",
-        "discord.js": "^14.14.1",
-        "dotenv": "^16.4.5",
-        "mongoose": "^8.7.0",
-        "node-html-parser": "^6.1.13",
-        "rss-parser": "^3.13.0"
-    }
+  "name": "discord_bot2",
+  "version": "1.0.0",
+  "description": "discord bot with ban/kick",
+  "main": "index.js",
+  "scripts": {
+    "bot": "echo \"Starting bot\" && node index.js",
+    "reset": "echo \"reseting command\" && node reset_command.js"
+  },
+  "author": "DZombies45",
+  "license": "ISC",
+  "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1",
+    "@napi-rs/canvas": "^0.1.56",
+    "dayjs": "^1.11.13",
+    "discord-arts": "^0.6.1",
+    "discord-gamecord": "^4.4.2",
+    "discord-html-transcripts": "^3.2.0",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.5",
+    "jsqr": "^1.4.0",
+    "mongoose": "^8.7.0",
+    "node-html-parser": "^6.1.13",
+    "qrcode": "^1.5.4",
+    "rss-parser": "^3.13.0"
+  }
 }

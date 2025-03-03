@@ -1,13 +1,13 @@
 const { Logger } = require("../../util.js");
 const { startBanTimer } = require("../../utils/banTimmer.js");
 
-module.exports = async client => {
-    Logger.success(`bot is fully loaded`);
-    /*for (const guilds of await client.guilds.fetch()) {
+module.exports = async (client) => {
+  Logger.success(`bot is fully loaded`);
+  /*for (const guilds of await client.guilds.fetch()) {
         const guild = await guilds[1].fetch();
         startBanTimer(client, guild);
     }*/
-    console.log(`
+  console.log(`
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@(((((((((((((((((((((((((((((((((((((((((((@@
 @@@(((              ((((((                 (((@@

@@ -2,7 +2,7 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle,
+  ButtonStyle
 } = require("discord.js");
 const { formatDate, Logger } = require("../util.js");
 const userCaptha = require("../schemas/userCapchaSch.js");
@@ -21,16 +21,16 @@ module.exports = {
     if (!data)
       return inteaction.editReply({
         content: "❗ verification is disable in this server",
-        ephemeral: true,
+        ephemeral: true
       });
     if (user.roles.cache.has(data.role))
       return inteaction.editReply({
         content: "❗ you already verified",
-        ephemeral: true,
+        ephemeral: true
       });
     const userData = userCaptha.findOne({
       GuildId: guildId,
-      memberId: user.id,
+      memberId: user.id
     });
 
     const exmCaptcha = new canfy_main.NewCaptcha(600, 200, 6);
@@ -45,15 +45,13 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("#d11a58")
       .setTitle("captcha")
-      .setDescription(
-        `type \`/verify <captcha code>\` with the code to verify`,
-      );
+      .setDescription(`type \`/verify <captcha code>\` with the code to verify`)
+      .setImage(captchaImg);
     const button = new ActionRowBuilder().setComponents(
       new ButtonBuilder()
         .setCustomId("submitCaptchaBtn")
         .setLabel("submit")
-        .setImage(captchaImg)
-        .setStyle(ButtonStyle.Success),
+        .setStyle(ButtonStyle.Success)
     );
     if (userData) {
       userData.capcha = exmCaptcha.text;
@@ -63,14 +61,14 @@ module.exports = {
         GuildId: guildId,
         memberId: user.id,
         capcha: exmCaptcha.text,
-        ke: 0,
+        ke: 0
       });
     }
 
     await interaction.editReplay({
       embeds: [embed],
       components: [button],
-      ephemeral: true,
+      ephemeral: true
     });
-  },
+  }
 };

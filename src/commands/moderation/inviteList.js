@@ -26,7 +26,7 @@ module.exports = {
         .setColor("fa00b7");
     }
     await interaction.reply("log");
-    //await interaction.deferReply({ ephemeral: true });
+    //await interaction.deferReply({ flags: 64 });
 
     const invit = await guild.invites.fetch();
     Logger.log(invit);

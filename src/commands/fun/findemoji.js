@@ -16,7 +16,7 @@ module.exports = {
     if (!gameChannel.includes(interaction.channelId))
       return interaction.reply({
         content: commandCannelDeny,
-        ephemeral: true,
+        flags: 64,
       });
     const Game = new FindEmoji({
       message: interaction,

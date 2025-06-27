@@ -64,7 +64,7 @@ module.exports = {
           await interaction.reply({
             embeds: [embed],
             fetchReply: true,
-            ephemeral: true,
+            flags: 64,
           });
 
           dataDB = new moderationSchema({
@@ -90,7 +90,7 @@ module.exports = {
           setTimeout(() => {
             interaction.editReply({
               embeds: [embed],
-              ephemeral: true,
+              flags: 64,
             });
           }, 2000);
         } else {
@@ -111,7 +111,7 @@ module.exports = {
               value: `${muteRole}`,
               inline: true,
             });
-          interaction.reply({ embeds: [embed], ephemeral: true });
+          interaction.reply({ embeds: [embed], flags: 64 });
         }
         break;
       case "remove":
@@ -132,13 +132,13 @@ module.exports = {
               "moderation system is not configured for this server.",
             );
         }
-        interaction.reply({ embeds: [embed], ephemeral: true });
+        interaction.reply({ embeds: [embed], flags: 64 });
         break;
 
       default:
         interaction.reply({
           content: "unkown command",
-          ephemeral: true,
+          flags: 64,
         });
     }
   },

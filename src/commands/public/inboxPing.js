@@ -40,7 +40,7 @@ module.exports = {
       let embed = new EmbedBuilder().setColor("#3671e7").setDescription(msg);
       return await interaction.reply({
         embeds: [embed],
-        ephemeral: true,
+        flags: 64,
       });
     }
 
@@ -81,7 +81,7 @@ module.exports = {
       default:
         interaction.reply({
           content: "unkown command",
-          ephemeral: true,
+          flags: 64,
         });
     }
   },

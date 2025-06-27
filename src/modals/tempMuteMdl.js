@@ -45,7 +45,7 @@ module.exports = {
           `**${targetMember} successfully muted for ${banTime} and will end at <t:${banEndTime}:F>**`,
         );
 
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
 
       let dataDB = await moderationSch.findOne({
         GuildId: guildId,
@@ -56,7 +56,7 @@ module.exports = {
           .setDescription(
             "moderation system is not configured for this server.",
           );
-        return interaction.reply({ embeds: [embed], ephemeral: true });
+        return interaction.reply({ embeds: [embed], flags: 64 });
       }
       const { LogChannelId, MuteRoleId } = dataDB;
       const logChannel = guild.channels.cache.get(LogChannelId);

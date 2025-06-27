@@ -93,7 +93,7 @@ module.exports = {
           await interaction.reply({
             embeds: [embed],
             fetchReply: true,
-            ephemeral: true,
+            flags: 64,
           });
 
           dataDB = new verifySchema({
@@ -125,7 +125,7 @@ module.exports = {
           setTimeout(async () => {
             await interaction.editReply({
               embeds: [embed],
-              ephemeral: true,
+              flags: 64,
             });
           }, 1000);
         } else {
@@ -157,7 +157,7 @@ module.exports = {
             });
           await interaction.reply({
             embeds: [embed],
-            ephemeral: true,
+            flags: 64,
           });
         }
         await verifyChannel.send({
@@ -183,13 +183,13 @@ module.exports = {
               "verification system is not configured for this server.",
             );
         }
-        await interaction.reply({ embeds: [embed], ephemeral: true });
+        await interaction.reply({ embeds: [embed], flags: 64 });
         break;
 
       default:
         await interaction.reply({
           content: "unkown command",
-          ephemeral: true,
+          flags: 64,
         });
     }
   },

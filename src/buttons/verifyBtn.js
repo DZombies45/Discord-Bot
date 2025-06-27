@@ -2,12 +2,12 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
 } = require("discord.js");
 const { formatDate, Logger } = require("../util.js");
 const userCaptha = require("../schemas/userCapchaSch.js");
 const verification = reuire("../schemas/verificationSch.js");
-const canfy_main = require("../../canvafy-main/index.js");
+const generateCaptcha = require("../utils/getCaptcha.js");
 
 module.exports = {
   customId: "verifyBtn",
@@ -19,28 +19,23 @@ module.exports = {
 
     const data = await verification.findOne({ GuildId: guildId });
     if (!data)
-      return inteaction.editReply({
+      return interaction.editReply({
         content: "❗ verification is disable in this server",
-        ephemeral: true
+        flags: 64,
       });
     if (user.roles.cache.has(data.role))
-      return inteaction.editReply({
+      return interaction.editReply({
         content: "❗ you already verified",
-        ephemeral: true
+        flags: 64,
       });
     const userData = userCaptha.findOne({
       GuildId: guildId,
-      memberId: user.id
+      memberId: user.id,
     });
 
-    const exmCaptcha = new canfy_main.NewCaptcha(600, 200, 6);
-    exmCaptcha.addDecoy({ total: 20, size: 40 });
-    exmCaptcha.drawCaptcha({ size: 40 });
-    exmCaptcha.addDecoy();
-    exmCaptcha.drawTrace();
-    exmCaptcha.async = true;
+    const exmCaptcha = new generateCaptcha(600, 200, 6);
 
-    const captchaImg = await exmCaptcha.png;
+    const captchaImg = exmCaptcha.buffer;
 
     const embed = new EmbedBuilder()
       .setColor("#d11a58")
@@ -51,7 +46,7 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId("submitCaptchaBtn")
         .setLabel("submit")
-        .setStyle(ButtonStyle.Success)
+        .setStyle(ButtonStyle.Success),
     );
     if (userData) {
       userData.capcha = exmCaptcha.text;
@@ -61,14 +56,14 @@ module.exports = {
         GuildId: guildId,
         memberId: user.id,
         capcha: exmCaptcha.text,
-        ke: 0
+        ke: 0,
       });
     }
 
     await interaction.editReplay({
       embeds: [embed],
       components: [button],
-      ephemeral: true
+      flags: 64,
     });
-  }
+  },
 };

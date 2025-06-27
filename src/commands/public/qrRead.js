@@ -34,7 +34,7 @@ module.exports = {
             .setColor("#bf2c04")
             .setDescription("need an option to work read")
         ],
-        ephemeral: true
+        flags: 64
       });
     if (
       optImg &&
@@ -47,7 +47,7 @@ module.exports = {
             .setColor("#bf2c04")
             .setDescription("qr can only read png or gif")
         ],
-        ephemeral: true
+        flags: 64
       });
     const imageUrl = optUrl || optImg.url;
 

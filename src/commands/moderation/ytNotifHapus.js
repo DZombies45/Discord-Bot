@@ -41,7 +41,7 @@ module.exports = {
 
       if (!channel || !ytId)
         return interaction.reply("error, try filling all requared data first");
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
       const notifSetup = await ytNotifSch.findOne({
         channelId: channel.id,
         ytId: ytId,

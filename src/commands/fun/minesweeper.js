@@ -26,7 +26,7 @@ module.exports = {
     if (!gameChannel.includes(interaction.channelId))
       return interaction.reply({
         content: commandCannelDeny,
-        ephemeral: true,
+        flags: 64,
       });
     const bomb = interaction?.options?.getInteger("amount") || 5;
     const Game = new Minesweeper({

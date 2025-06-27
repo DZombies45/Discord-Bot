@@ -27,7 +27,7 @@ module.exports = {
         );
       return await interaction.showModal(addRoleModal);
     } catch (e) {
-      Logger.error(`from addRoleBtn.js :\n${e.stack}`);
+      Logger.error(`from submitCaptchaBtn.js :\n${e.stack}`);
     }
   },
 };

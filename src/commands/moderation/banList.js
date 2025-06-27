@@ -22,7 +22,7 @@ module.exports = {
     if (banObj.length === 0) {
       return interaction.reply({
         content: "no banned user to list",
-        ephemeral: true,
+        flags: 64,
       });
     }
 

@@ -22,26 +22,26 @@ module.exports = {
       if (!targetMember)
         return inteaction.reply({
           content: "❗ an error occurred, try again latter",
-          ephemeral: true,
+          flags: 64,
         });
 
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
 
       const data = await verification.findOne({ GuildId: guildId });
       if (!data)
         return inteaction.editReply({
           content: "❗ verification is disable in this server",
-          ephemeral: true,
+          flags: 64,
         });
       if (targetMember.roles.cache.has(data.role))
         return inteaction.editReply({
           content: "❗ you already verified",
-          ephemeral: true,
+          flags: 64,
         });
       if (channelId !== data.channelId)
         return inteaction.editReply({
           content: `❗ can't use this command here, use it <#${data.channelId}>`,
-          ephemeral: true,
+          flags: 64,
         });
 
       const userData = await userCodeSch.findOne({
@@ -51,14 +51,14 @@ module.exports = {
       if (!userData)
         return inteaction.editReply({
           content: `❗ press \`verify\` here first <#${data.channelId}> to generate your code`,
-          ephemeral: true,
+          flags: 64,
         });
       if (userData.capcha !== code) {
         inteaction.editReply({
           content: `❗ code don't match, try again or press verify again, you has ${
             data.limitKe - userData.ke
           } try left`,
-          ephemeral: true,
+          flags: 64,
         });
       }
       const role = await guild.roles.cache.get(data.role);

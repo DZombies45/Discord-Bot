@@ -22,7 +22,7 @@ module.exports = {
     if (!gameChannel.includes(interaction.channelId))
       return interaction.reply({
         content: commandCannelDeny,
-        ephemeral: true,
+        flags: 64,
       });
     const { options } = interaction;
     const opponent = options.getUser("opponent");

@@ -26,17 +26,17 @@ module.exports = {
     if (!data)
       return inteaction.editReply({
         content: "❗ verification is disable in this server",
-        ephemeral: true,
+        flags: 64,
       });
     if (user.roles.cache.has(data.role))
       return inteaction.editReply({
         content: "❗ you already verified",
-        ephemeral: true,
+        flags: 64,
       });
     if (channelId !== data.channelId)
       return inteaction.editReply({
         content: `❗ can't use this command here, use it <#${data.channelId}>`,
-        ephemeral: true,
+        flags: 64,
       });
 
     const userData = await userCaptha.findOne({
@@ -46,7 +46,7 @@ module.exports = {
     if (!userData)
       return inteaction.editReply({
         content: `❗ press \`verify\` here first <#${data.channelId}> to generate your code`,
-        ephemeral: true,
+        flags: 64,
       });
 
     const code = options.getString("captcha");
@@ -56,7 +56,7 @@ module.exports = {
         content: `❗ code don't match, try again or press verify again, you has ${
           data.limitKe - userData.ke
         } try left`,
-        ephemeral: true,
+        flags: 64,
       });
     }
     const role = await guild.roles.cache.get(data.role);
@@ -66,13 +66,13 @@ module.exports = {
       );
       return interaction.editReply({
         content: "error, try again latter",
-        ephemeral: true,
+        flags: 64,
       });
     });
     await userData.remove();
     await interaction.editReply({
       content: "verification success",
-      ephemeral: true,
+      flags: 64,
     });
   },
 };

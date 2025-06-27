@@ -18,7 +18,7 @@ module.exports = {
       const roleId = fields.getTextInputValue("role_id_add");
       const role = await guild.roles.cache.get(roleId);
 
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
 
       const embed = new EmbedBuilder()
         .setAuthor({

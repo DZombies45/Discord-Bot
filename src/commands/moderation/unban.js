@@ -44,13 +44,13 @@ module.exports = {
       embed
         .setColor(mConfig.embedColorError)
         .setDescription("moderation system is not configured for this server.");
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
     if (targetId === member.id) {
       embed
         .setColor(mConfig.embedColorError)
         .setDescription(mConfig.unableToInteractWithSelf);
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
 
     const logChannel = guild.channels.cache.get(dataDB.LogChannelId);
@@ -79,6 +79,6 @@ module.exports = {
     embed
       .setColor(mConfig.embedColorSuccess)
       .setDescription(`successfuly unban user with id ${targetId}`);
-    interaction.reply({ embeds: [embed], ephemeral: true });
+    interaction.reply({ embeds: [embed], flags: 64 });
   },
 };

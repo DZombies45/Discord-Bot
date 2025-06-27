@@ -45,10 +45,10 @@ module.exports = {
     if (!message || message === "")
       return interaction.reply({
         content: "no message provided",
-        ephemeral: true,
+        flags: 64,
       });
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: 64 });
 
     const tertranslate = await translate(message, { to: langTo });
 
@@ -73,7 +73,7 @@ module.exports = {
       });
     await interaction.editReply({
       embeds: [embed],
-      ephemeral: true,
+      flags: 64,
     });
   },
 };

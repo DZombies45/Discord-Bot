@@ -34,21 +34,21 @@ module.exports = {
       embed
         .setColor(mConfig.embedColorError)
         .setDescription("moderation system is not configured for this server.");
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
     //with self
     if (targetMember.id === member.id) {
       embed
         .setColor(mConfig.embedColorError)
         .setDescription(mConfig.unableToInteractWithSelf);
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
     //role hight
     if (targetMember.roles.highest.position >= member.roles.highest.position) {
       embed
         .setColor(mConfig.embedColorError)
         .setDescription(mConfig.hasHigherRolePosition);
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      return interaction.reply({ embeds: [embed], flags: 64 });
     }
     //buat button
     const modetationButtons = new ActionRowBuilder().setComponents(

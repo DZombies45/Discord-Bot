@@ -33,7 +33,7 @@ module.exports = {
     if (!amount || amount < 1 || amount > 100)
       return await interaction.reply({
         content: "need amount to be between 1 and 100 message",
-        ephemeral: true,
+        flags: 64,
       });
 
     try {
@@ -41,7 +41,7 @@ module.exports = {
       if (channelMessage.size <= 0) {
         _m = await interaction.reply({
           content: "no message on this channel",
-          ephemeral: true,
+          flags: 64,
         });
         setTimeout(function () {
           _m.delete();
@@ -51,7 +51,7 @@ module.exports = {
       if (amount > channelMessage.size) amount = channelMessage.size;
 
       const clearEmbed = new EmbedBuilder().setColor(mConfig.embedColorSuccess);
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
 
       let msgToDelete = [];
 
@@ -85,7 +85,7 @@ module.exports = {
       Logger.error(`from cmd > clear.js :\n${e.stack}`);
       await interaction.editReply({
         content: "an error occured while clearing message",
-        ephemeral: true,
+        flags: 64,
       });
     }
   },

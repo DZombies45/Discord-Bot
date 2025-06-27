@@ -33,7 +33,7 @@ module.exports = {
     }
     const { options, guildId, guild, user } = interaction;
     const opt = options.getString("url");
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: 64 });
 
     async function sendMsg(msg, color) {
       const embed = new EmbedBuilder().setColor(color).setDescription(msg);

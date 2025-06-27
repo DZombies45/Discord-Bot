@@ -24,7 +24,7 @@ module.exports = async (client, interaction) => {
         const rEmbed = new EmbedBuilder()
           .setColor(`${mConfig.embedColorError}`)
           .setDescription(`${mConfig.commandDevOnly}`);
-        interaction.reply({ embeds: [rEmbed], ephemeral: true });
+        interaction.reply({ embeds: [rEmbed], flags: 64 });
         return;
       }
     }
@@ -34,7 +34,7 @@ module.exports = async (client, interaction) => {
         const rEmbed = new EmbedBuilder()
           .setColor(`${mConfig.embedColorError}`)
           .setDescription(`${mConfig.commandTestMode}`);
-        interaction.reply({ embeds: [rEmbed], ephemeral: true });
+        interaction.reply({ embeds: [rEmbed], flags: 64 });
         return;
       }
     }
@@ -47,7 +47,7 @@ module.exports = async (client, interaction) => {
         const rEmbed = new EmbedBuilder()
           .setColor(`${mConfig.embedColorError}`)
           .setDescription(`${mConfig.userNoPermissions}`);
-        interaction.reply({ embeds: [rEmbed], ephemeral: true });
+        interaction.reply({ embeds: [rEmbed], flags: 64 });
         return;
       }
     }
@@ -61,7 +61,7 @@ module.exports = async (client, interaction) => {
         const rEmbed = new EmbedBuilder()
           .setColor(`${mConfig.embedColorError}`)
           .setDescription(`${mConfig.botNoPermissions}`);
-        interaction.reply({ embeds: [rEmbed], ephemeral: true });
+        interaction.reply({ embeds: [rEmbed], flags: 64 });
         return;
       }
     }
@@ -71,7 +71,7 @@ module.exports = async (client, interaction) => {
         const rEmbed = new EmbedBuilder()
           .setColor(`${mConfig.embedColorError}`)
           .setDescription(`${mConfig.cannottUseButton}`);
-        interaction.reply({ embeds: [rEmbed], ephemeral: true });
+        interaction.reply({ embeds: [rEmbed], flags: 64 });
         return;
       }
     }
@@ -82,10 +82,10 @@ module.exports = async (client, interaction) => {
       .setColor(`${mConfig.embedColorError}`)
       .setDescription(`${mConfig.commandError}`);
     await interaction
-      .reply({ embeds: [errorEmbed], ephemeral: true })
+      .reply({ embeds: [errorEmbed], flags: 64 })
       .catch(async () => {
         await interaction
-          .editReply({ embeds: [errorEmbed], ephemeral: true })
+          .editReply({ embeds: [errorEmbed], flags: 64 })
           .catch(() => {});
       });
 

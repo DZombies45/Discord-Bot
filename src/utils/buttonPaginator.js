@@ -68,7 +68,7 @@ module.exports = async (interaction, pages, time = 60 * 1000) => {
     mc.on("collect", async (i) => {
       if (i.user.id !== interaction.user.id)
         return await i.reply({
-          ephemeral: true,
+          flags: 64,
           content: "you are not the one that run the command",
         });
 

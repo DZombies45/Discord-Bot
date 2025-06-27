@@ -16,15 +16,15 @@ module.exports = {
       if (!message || message === "")
         return interaction.reply({
           content: "no message provided",
-          ephemeral: true,
+          flags: 64,
         });
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply({ flags: 64 });
       const langTo = parseBahasa(lang);
 
       if (langTo.length === 0)
         return interaction.editReply({
           content: "no lang code provided",
-          ephemeral: true,
+          flags: 64,
         });
 
       const tertranslate = await translate(message, {
@@ -53,7 +53,6 @@ module.exports = {
       await interaction.editReply({
         content: "",
         embeds: [embed],
-        ephemeral: false,
       });
     } catch (e) {
       Logger.error(`from translateMdl.js :\n${e.stack}`);

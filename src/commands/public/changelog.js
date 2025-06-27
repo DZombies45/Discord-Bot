@@ -96,7 +96,7 @@ async function bedrockChangelog(client, interaction) {
         version,
     );
 
-    const _m = await interaction.deferReply({ ephemeral: false });
+    const _m = await interaction.deferReply({ });
 
     const article = await mcChangelogSch.findOne({
       type: isBeta ? "preview-articles" : "stable-articles",
@@ -114,7 +114,6 @@ async function bedrockChangelog(client, interaction) {
     }
 
     const message = await interaction.editReply({
-      ephemeral: false,
       embeds: [
         {
           title: article.article.title,
@@ -197,7 +196,7 @@ async function javaChangelog(client, interaction) {
         version,
     );
 
-    const _m = await interaction.deferReply({ ephemeral: false });
+    const _m = await interaction.deferReply({  });
 
     const article = await mcChangelogSch.findOne({
       type: isBeta ? "java-snapshot-articles" : "java-stable-articles",
@@ -215,7 +214,6 @@ async function javaChangelog(client, interaction) {
     }
 
     const message = await interaction.editReply({
-      ephemeral: false,
       embeds: [
         {
           title: article.article.title,

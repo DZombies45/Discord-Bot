@@ -125,7 +125,7 @@ module.exports = {
       default:
         interaction.reply({
           content: "unkown command",
-          ephemeral: true,
+          flags: 64,
         });
     }
   },
@@ -137,11 +137,10 @@ let javaStableArticles = [];
 let javaSnapshotArticles = [];
 
 const makeChangelog = async (interaction) => {
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: 64 });
   console.log("making changelog");
   await interaction.editReply({
     content: "changelog >> searching...",
-    ephemeral: false,
   });
   await fetch(
     "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json?per_page=100",
@@ -154,7 +153,6 @@ const makeChangelog = async (interaction) => {
     .then(async (dataw) => {
       await interaction.editReply({
         content: "changelog >> formatting...",
-        ephemeral: false,
       });
       for (let i = 1; i <= dataw.page_count; i++) {
         await fetch(
@@ -196,7 +194,6 @@ const makeChangelog = async (interaction) => {
       }
       await interaction.editReply({
         content: "changelog >> updating...",
-        ephemeral: false,
       });
       //delete all data
       await mcChangelogSch.deleteMany({});
@@ -222,12 +219,11 @@ const makeChangelog = async (interaction) => {
   console.log("changelog created");
   await interaction.editReply({
     content: "changelog initiated",
-    ephemeral: false,
   });
 };
 
 const postChangelog = async (client, interaction, bedrock) => {
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: 64 });
   try {
     const thumbnail = interaction.options.getString("thumbnail") || null;
     const title = interaction.options.getString("title");
@@ -315,7 +311,6 @@ const postChangelog = async (client, interaction, bedrock) => {
     }
 
     await interaction.editReply({
-      ephemeral: false,
       embeds: [
         {
           title: article.article.title,
@@ -345,7 +340,6 @@ const postChangelog = async (client, interaction, bedrock) => {
     });
   } catch (e) {
     await interaction.editReply({
-      ephemeral: false,
       embeds: [
         {
           title: "Failed to create changelog",

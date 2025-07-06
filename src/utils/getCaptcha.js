@@ -1,8 +1,8 @@
-import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
+const { createCanvas, GlobalFonts } = require("@napi-rs/canvas");
 
 //GlobalFonts.registerFromPath('/system/fonts/Roboto-Regular.ttf', 'Roboto'); // Atur sesuai sistemmu
 
-const generateCaptcha = (width = 450, height = 150, length = 5) => {
+module.exports = (width = 450, height = 150, length = 5) => {
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext("2d");
 
@@ -75,5 +75,6 @@ const generateCaptcha = (width = 450, height = 150, length = 5) => {
   return { buffer, text };
 };
 
-module.exports = generateCaptcha;
-
+function randomRange(from, to) {
+  return from + Math.random() * to;
+}

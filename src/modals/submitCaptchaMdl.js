@@ -1,94 +1,123 @@
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
+
+const { Logger } = require("../util.js");
 const verifySchema = require("../schemas/verificationSch.js");
 const userCodeSch = require("../schemas/userCapchaSch.js");
 
 module.exports = {
   customId: "submitCaptchaMdl",
   userPermissions: [],
-  botPermissions: [PermissionFlagsBits.ManageRoles],
+  botPermissions: [],
   run: async (client, interaction) => {
-    const { message, channel, guildId, guild, user, fields } = interaction;
+    const { guild, guildId, user, fields, channel } = interaction;
+
+    console.log(interaction);
 
     try {
       const code = fields.getTextInputValue("captcha_code");
 
-      const targetMember = await guild.members
-        .fetch({
-          query: user.id,
-          limit: 1,
-        })
-        .first();
-      if (!targetMember)
-        return inteaction.reply({
-          content: "❗ an error occurred, try again latter",
-          flags: 64,
+      // Fetch guild member
+      const targetMember = await guild.members.fetch(user.id).catch(() => null);
+      if (!targetMember) {
+        return interaction.reply({
+          content: "❗ An error occurred. Please try again later.",
+          ephemeral: true,
         });
+      }
 
-      await interaction.deferReply({ flags: 64 });
+      await interaction.deferReply({ ephemeral: true });
 
-      const data = await verification.findOne({ GuildId: guildId });
-      if (!data)
-        return inteaction.editReply({
-          content: "❗ verification is disable in this server",
-          flags: 64,
+      // Fetch server verification config
+      const data = await verifySchema.findOne({ GuildId: guildId });
+      if (!data) {
+        return interaction.editReply({
+          content: "❗ Verification is not enabled in this server.",
         });
-      if (targetMember.roles.cache.has(data.role))
-        return inteaction.editReply({
-          content: "❗ you already verified",
-          flags: 64,
-        });
-      if (channelId !== data.channelId)
-        return inteaction.editReply({
-          content: `❗ can't use this command here, use it <#${data.channelId}>`,
-          flags: 64,
-        });
+      }
 
+      // Check if member already verified
+      if (targetMember.roles.cache.has(data.role)) {
+        return interaction.editReply({
+          content: "❗ You are already verified.",
+        });
+      }
+
+      // Ensure they're using the correct channel
+      if (channel.id !== data.channelId) {
+        return interaction.editReply({
+          content: `❗ This is not the correct channel. Please go to <#${data.channelId}>.`,
+        });
+      }
+
+      // Fetch user captcha record
       const userData = await userCodeSch.findOne({
         GuildId: guildId,
         memberId: user.id,
       });
-      if (!userData)
-        return inteaction.editReply({
-          content: `❗ press \`verify\` here first <#${data.channelId}> to generate your code`,
-          flags: 64,
-        });
-      if (userData.capcha !== code) {
-        inteaction.editReply({
-          content: `❗ code don't match, try again or press verify again, you has ${
-            data.limitKe - userData.ke
-          } try left`,
-          flags: 64,
+
+      if (!userData) {
+        return interaction.editReply({
+          content: `❗ You haven't generated a verification code yet. Press the verify button first in <#${data.channelId}>.`,
         });
       }
-      const role = await guild.roles.cache.get(data.role);
 
-      const embed = new EmbedBuilder()
-        .setAuthor({
-          iconURL: `${targetMember.user.displayAvatarURL({
-            dynamic: true,
-          })}`,
-          name: `${targetMember.user.username}`,
-        })
-        .setColor("00fa30")
-        .setDescription(`**successfully gettimg ${role}**`);
-      await targetMember.roles.add(role).catch((err) => {
-        Logger.log(
-          `some error at adding role ${roleId} to ${targetMember.user.username}`,
-        );
+      // Check if captcha code matches
+      if (userData.capcha !== code) {
+        // Optional: Increment failed attempt (if needed)
+        userData.ke += 1;
+        await userData.save();
+
+        const triesLeft = data.limitKe - userData.ke;
+        if (triesLeft <= 0) {
+          await userCodeSch.deleteOne({ GuildId: guildId, memberId: user.id });
+          await targetMember.kick("Exceeded max captcha attempts.");
+          return interaction.editReply({
+            content: `❌ Incorrect code too many times. You have been kicked.`,
+          });
+        }
+
         return interaction.editReply({
-          embeds: "error, try again latter",
-          components: [],
+          content: `❗ Incorrect code. You have ${triesLeft} tries left.`,
+        });
+      }
+
+      // Give role
+      const role = guild.roles.cache.get(data.role);
+      if (!role) {
+        return interaction.editReply({
+          content: "❗ Verification role not found. Contact server admin.",
+        });
+      }
+
+      await targetMember.roles.add(role).catch((err) => {
+        Logger.error(`Error adding role: ${err.stack}`);
+        return interaction.editReply({
+          content: "❗ Couldn't assign role. Check bot permissions.",
         });
       });
-      await userData.remove().catch((err) => {
-        Logger.log(
-          `some error at removing user captcha ${targetMember.user.username}, id ${targetMember.user.id}`,
+
+      // Clean up
+      await userData.deleteOne();
+
+      // Respond with success
+      const embed = new EmbedBuilder()
+        .setColor("Green")
+        .setAuthor({
+          name: targetMember.user.tag,
+          iconURL: targetMember.user.displayAvatarURL({ dynamic: true }),
+        })
+        .setDescription(
+          `✅ Successfully verified and received the <@&${role.id}> role.`,
         );
+
+      return interaction.editReply({
+        embeds: [embed],
       });
-      return interaction.editReply({ embeds: [embed], components: [] });
-    } catch (e) {
-      Logger.error(`from addRoleBtn.js :\n${e.stack}`);
+    } catch (err) {
+      Logger.error(`Error in submitCaptchaMdl:\n${err.stack}`);
+      return interaction.editReply({
+        content: "❗ Unexpected error occurred. Try again later.",
+      });
     }
   },
 };

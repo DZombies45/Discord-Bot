@@ -72,7 +72,7 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId("verifyBtn")
         .setLabel("Verify")
-        .setStyle(ButtonStyle.Premium),
+        .setStyle(ButtonStyle.Danger),
     );
 
     switch (subCmd) {
@@ -109,12 +109,12 @@ module.exports = {
             .setDescription("verification system successfuly created.")
             .addFields({
               name: "verify channel",
-              value: verifyChannel,
+              value: `<#${verifyChannel.id}>`,
               inline: true,
             })
             .addFields({
               name: "verify role",
-              value: verifyRole,
+              value: `${verifyRole.id}`,
               inline: true,
             })
             .addFields({
@@ -142,12 +142,12 @@ module.exports = {
             .setDescription("verification system successfuly edited.")
             .addFields({
               name: "verify channel",
-              value: verifyChannel,
+              value: `<#${verifyChannel.id}>`,
               inline: true,
             })
             .addFields({
               name: "verify role",
-              value: verifyRole,
+              value: `${verifyRole}`,
               inline: true,
             })
             .addFields({
@@ -161,7 +161,7 @@ module.exports = {
           });
         }
         await verifyChannel.send({
-          embeds: [embed],
+          embeds: [verifyEmbed],
           components: [button],
         });
         break;

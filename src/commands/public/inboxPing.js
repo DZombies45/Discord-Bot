@@ -63,7 +63,7 @@ module.exports = {
         if (data.length === 0)
           sendMsg("inbox is already empty, no need to clear it");
 
-        if (id === "ALL") {
+        if (["ALL", "all"].includes(id)) {
           await inboxPing.deleteMany({ User: user.id });
           return await sendMsg(`cleared ${data.length} inbox`);
         } else {

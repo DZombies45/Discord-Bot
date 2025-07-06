@@ -3,10 +3,11 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  AttachmentBuilder,
 } = require("discord.js");
 const { formatDate, Logger } = require("../util.js");
 const userCaptha = require("../schemas/userCapchaSch.js");
-const verification = reuire("../schemas/verificationSch.js");
+const verification = require("../schemas/verificationSch.js");
 const generateCaptcha = require("../utils/getCaptcha.js");
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
   userPermissions: [],
   botPermissions: [],
   run: async (client, interaction) => {
-    const { message, channel, guildId, guild, user } = interaction;
+    const { message, channel, guildId, guild, member } = interaction;
     await interaction.deferReply();
 
     const data = await verification.findOne({ GuildId: guildId });
@@ -23,25 +24,27 @@ module.exports = {
         content: "❗ verification is disable in this server",
         flags: 64,
       });
-    if (user.roles.cache.has(data.role))
+    if (member.roles.cache.has(data.role))
       return interaction.editReply({
         content: "❗ you already verified",
         flags: 64,
       });
-    const userData = userCaptha.findOne({
+    const userData = await userCaptha.findOne({
       GuildId: guildId,
-      memberId: user.id,
+      memberId: member.id,
     });
 
-    const exmCaptcha = new generateCaptcha(600, 200, 6);
-
+    const exmCaptcha = generateCaptcha(600, 200, 6);
     const captchaImg = exmCaptcha.buffer;
+    const attachment = new AttachmentBuilder(captchaImg, {
+      name: "captcha.png",
+    });
 
     const embed = new EmbedBuilder()
       .setColor("#d11a58")
       .setTitle("captcha")
       .setDescription(`type \`/verify <captcha code>\` with the code to verify`)
-      .setImage(captchaImg);
+      .setImage("attachment://captcha.png");
     const button = new ActionRowBuilder().setComponents(
       new ButtonBuilder()
         .setCustomId("submitCaptchaBtn")
@@ -54,16 +57,23 @@ module.exports = {
     } else {
       await userCaptha.create({
         GuildId: guildId,
-        memberId: user.id,
+        memberId: member.id,
         capcha: exmCaptcha.text,
         ke: 0,
       });
     }
 
-    await interaction.editReplay({
+    // await interaction.editReply({
+    //   embeds: [embed],
+    //   components: [button],
+    //   flags: 64,
+    //   files: [attachment],
+    // });
+    await interaction.editReply({
       embeds: [embed],
       components: [button],
-      flags: 64,
+      files: [attachment],
+      ephemeral: true,
     });
   },
 };

@@ -14,7 +14,7 @@ module.exports = {
     )
     .setDMPermission(false)
     .toJSON(),
-  deleted: true,
+  deleted: false,
   userPermissions: [],
   botPermissions: [],
   devOnly: false,

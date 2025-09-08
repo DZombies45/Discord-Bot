@@ -1,0 +1,35 @@
+{
+  "embedColorSuccess": "#00D26A",
+
+  "embedColorWarning": "FFCC4D",
+  "embedColorError": "FB2F61",
+
+  "embedErrorMessage": "An error occurred!",
+
+  "commandDevOnly": "This command can only be executed by developers.",
+  "commandModOnly": "This command can only be executed by moderators.",
+  "commandTestMode": "This is in development and cannot be executed in this server.",
+  "commandPremiumOnly": "This command can only be executed by premium users.",
+  "commandError": "Thare is an error with this command, please wait a bit.",
+  "commandCannelDeny": "This command is blocked on this channel",
+
+  "userNoPermissions": "You do not have enough permissions to execute this command.",
+  "botNoPermissions": "I do not have enough permissions to execute this command.",
+  "hasHigherRolePosition": "This user has higher or same position as you.",
+  "unableToInteractWithSelf": "You can't do that to yourself.",
+  "cannottUseButton": "You can't use this button.",
+
+  "welcomeMessage": [
+    "on bridge",
+    "welcome traveler",
+    "has enter the cave",
+    "just enter the dream land"
+  ],
+  "goodbyeMessage": [
+    "got stuck on bedrock",
+    "is touching grass",
+    "blown up by creeper",
+    "exploring the sea of quanta",
+    "fall to the imaginary space"
+  ]
+}

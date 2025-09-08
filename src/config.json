@@ -1,0 +1,26 @@
+{
+  "inviteLink": "https://discord.gg/SmzWxC2KUm",
+  "testServerId": "1046307329622167662",
+  "developerId": ["334299405589151744"],
+  "moderatorRoleId": ["1046329665159168111", "1046329621576163348"],
+  "ghostPingLogChannel": "1174933005823901746",
+  "clientId": "1046745737481953300",
+  "guildId": "1046307329622167662",
+  "commandErrorChannel": "1317460870351032382",
+  "repeateInterval": 60000,
+  "gameChannel": ["1046688452055408650", "1046688491867750480"],
+  "bedrockChannel": "1206461716376985660",
+  "bedrockNews": "1176044211259318302",
+  "tags": {
+    "Stable": "1206462189477568533",
+    "Preview": "1206462285057626123"
+  },
+  "javaChannel": "1207354483894521947",
+  "javaNews": "1176044264266928159",
+  "javaTags": {
+    "Stable": "1207354596293607524",
+    "Snapshot": "1207354694175952977"
+  },
+  "welcome": { "ch": "1241813021446377513", "color": "#322265" },
+  "goodbye": { "ch": "1241813021446377513", "color": "#0c3994" }
+}

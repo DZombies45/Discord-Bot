@@ -1,0 +1,46 @@
+{
+  "types": [
+    {
+      "name": "Command",
+      "value": "command",
+      "template": "./templates/command.js",
+      "target": "./src/commands",
+      "scanSubfolders": true
+    },
+    {
+      "name": "Schema",
+      "value": "schema",
+      "template": "./templates/schema.js",
+      "target": "./src/schemas/",
+      "scanSubfolders": false
+    },
+    {
+      "name": "Modal",
+      "value": "modal",
+      "template": "./templates/modal.js",
+      "target": "./src/modals",
+      "scanSubfolders": false
+    },
+    {
+      "name": "Context Menu",
+      "value": "contextMenu",
+      "template": "./templates/contextMenus.js",
+      "target": "./src/contextMenus",
+      "scanSubfolders": false
+    },
+    {
+      "name": "Button",
+      "value": "button",
+      "template": "./templates/button.js",
+      "target": "./src/buttons",
+      "scanSubfolders": false
+    },
+    {
+      "name": "Auto Complite",
+      "value": "autocomplite",
+      "template": "./templates/autocomplite.js",
+      "target": "./src/autocompletes",
+      "scanSubfolders": false
+    }
+  ]
+}

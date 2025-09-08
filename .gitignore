@@ -1,0 +1,5 @@
+node_modules/
+.env
+canvafy-main/
+.nomedia
+package-lock.json

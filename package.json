@@ -3,7 +3,6 @@
   "version": "1.0.1",
   "description": "discord bot with ban/kick",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "bot": "echo \"Starting bot\" && node index.js",
     "reset": "echo \"reseting command\" && node reset_command.js && echo 'commands reset finish'",
@@ -15,7 +14,7 @@
     "@clack/prompts": "^0.11.0",
     "@iamtraction/google-translate": "^2.0.1",
     "@napi-rs/canvas": "^0.1.70",
-    "chalk": "^5.6.0",
+    "chalk": "^4.1.2",
     "dayjs": "^1.11.13",
     "discord-arts": "^0.7.1",
     "discord-gamecord": "^4.4.2",

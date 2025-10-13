@@ -1,5 +1,4 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
-const { loadError } = require("./log.js")
 const eventHandler = require("./src/handlers/eventHandlers.js");
 require("dotenv/config");
 const { GlobalFonts } = require("@napi-rs/canvas");
@@ -53,4 +52,3 @@ const client = new Client({
 eventHandler(client);
 
 client.login(process.env.TOKEN);
-loadError(client)

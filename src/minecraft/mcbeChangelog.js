@@ -1,15 +1,15 @@
-const { Logger } = require("../util.js");
-const htmlParser = require("node-html-parser");
-const Config = require("../config.json");
-const Utils = require("../mc.js");
+import { Logger } from "../util.js";
+import { htmlParser  } from "node-html-parser";
+import { Config  } from "../config.json.js";
+import { Utils  } from "../mc.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-const mcChangelogSch = require("../schemas/mcChangelogSch.js");
+import { mcChangelogSch  } from "../schemas/mcChangelogSch.js";
 
-module.exports = async (client) => {
+export default async (client) => {
   fetch(
     "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json",
     {

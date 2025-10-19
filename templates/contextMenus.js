@@ -1,9 +1,9 @@
-const {
+import {
   ContextMenuCommandBuilder,
   ApplicationCommandType,
-} = require("discord.js");
+} from "discord.js";
 
-module.exports = {
+export {
   data: new ContextMenuCommandBuilder()
     .setName("$NAME")
     .setType(ApplicationCommandType.Message),

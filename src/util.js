@@ -72,9 +72,9 @@ function parseDuration(time) {
   return duration;
 }
 
-const { startDate } = require("../index.js");
+import { startDate } from "../index.js";
 const recentMentions = new Map();
-const fs = require("fs");
+import fs from "fs";
 
 const Logger = {
   _log: (name, date, color, ...data) => {
@@ -204,7 +204,7 @@ const cooldown = {
   },
 };
 
-module.exports = {
+export {
   Logger,
   recentMentions,
   chunkSubstr,

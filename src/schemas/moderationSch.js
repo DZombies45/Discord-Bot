@@ -1,8 +1,8 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let moderationSchema = new Schema(
   { GuildId: String, LogChannelId: String, MuteRoleId: String },
   { strict: false },
 );
 
-module.exports = model("moderation", moderationSchema);
+export default model("moderation", moderationSchema);

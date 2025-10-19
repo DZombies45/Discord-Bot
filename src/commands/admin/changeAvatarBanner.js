@@ -1,17 +1,17 @@
-const {
+import {
   SlashCommandBuilder,
   Routes,
   resolveImage,
   EmbedBuilder,
   PermissionFlagsBits,
-} = require("discord.js");
-const { Logger } = require("../../util.js");
-const {
+} from "discord.js";
+import { Logger } from "../../util.js";
+import {
   embedColorSuccess,
   embedColorError,
-} = require("../../messageConfig.json");
+} from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("changeprofile")
     .setDescription("[admin] change bot avatar or banner")

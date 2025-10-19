@@ -1,12 +1,12 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const inboxPing = require("../../schemas/inboxSch.js");
-const { chunkSubstr } = require("../../util.js");
+} from "discord.js";
+import { inboxPing  } from "../../schemas/inboxSch.js";
+import { chunkSubstr } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("inbox")
     .setDescription("open/clear mentioned inbox")

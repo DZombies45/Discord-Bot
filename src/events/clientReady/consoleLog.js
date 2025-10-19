@@ -1,9 +1,9 @@
-const { Logger } = require("../../util.js");
-const { ActivityType } = require("discord.js");
-const mongoose = require("mongoose");
+import { Logger } from "../../util.js";
+import { ActivityType } from "discord.js";
+import { mongoose  } from "mongoose";
 const mongooURL = process.env.MONGOOURL;
 
-module.exports = async (client) => {
+export default async (client) => {
   Logger.success(`bot login as ${client.user.username}`);
 
   client.user.setPresence({

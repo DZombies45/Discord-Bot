@@ -1,14 +1,14 @@
-const { EmbedBuilder } = require("discord.js");
-const {
+import { EmbedBuilder } from "discord.js";
+import {
   developerId,
   testServerId,
   moderatorRoleId,
-} = require("../../config.json");
-const mConfig = require("../../messageConfig.json");
-const getAutocomplete = require("../../utils/getAutocomplete.js");
-const { Logger } = require("../../util.js");
+} from "../../config.json.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { getAutocomplete  } from "../../utils/getAutocomplete.js";
+import { Logger } from "../../util.js";
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
   if (!interaction.isAutocomplete()) return;
   const localAutocomplete = getAutocomplete();
 

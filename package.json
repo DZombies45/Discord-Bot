@@ -8,6 +8,7 @@
     "reset": "echo \"reseting command\" && node reset_command.js && echo 'commands reset finish'",
     "gen": "node gen.cli.js"
   },
+  "type": "module",
   "author": "DZombies45",
   "license": "ISC",
   "dependencies": {

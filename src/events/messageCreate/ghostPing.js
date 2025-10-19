@@ -1,6 +1,6 @@
-const { recentMentions } = require("../../util.js");
+import { recentMentions } from "../../util.js";
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
   if (message.mentions.users.size > 0) {
     recentMentions.set(message.id, {
       content: message.content,

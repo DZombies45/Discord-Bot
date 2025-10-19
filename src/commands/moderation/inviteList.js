@@ -1,13 +1,13 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const config = require("../../config.json");
-const mConfig = require("../../messageConfig.json");
-const { Logger } = require("../../util.js");
+} from "discord.js";
+import { config  } from "../../config.json.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { Logger } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("list_invites")
     .setDescription("list all server invites")

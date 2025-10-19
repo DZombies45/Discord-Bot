@@ -1,4 +1,4 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   ButtonBuilder,
@@ -6,11 +6,11 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   StringSelectMenuBuilder,
-} = require("discord.js");
-const moderationSchema = require("../../schemas/moderationSch.js");
-const mConfig = require("../../messageConfig.json");
+} from "discord.js";
+import { moderationSchema  } from "../../schemas/moderationSch.js";
+import { mConfig  } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("moderate")
     .setDescription("moderate server member")

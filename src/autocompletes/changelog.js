@@ -1,13 +1,13 @@
-const { PermissionFlagsBits } = require("discord.js");
-const { Logger } = require("../util.js");
+import { PermissionFlagsBits } from "discord.js";
+import { Logger } from "../util.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-const mcChangelogSch = require("../schemas/mcChangelogSch.js");
+import { mcChangelogSch  } from "../schemas/mcChangelogSch.js";
 
-module.exports = {
+export {
   commandName: "changelog",
   userPermissions: [],
   run: async (client, interaction) => {

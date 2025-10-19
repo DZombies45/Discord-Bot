@@ -1,8 +1,8 @@
-const { PermissionFlagsBits } = require("discord.js");
-const { Logger, parseDate } = require("../util.js");
-const tempBanSch = require("../schemas/tempBanSch.js");
+import { PermissionFlagsBits } from "discord.js";
+import { Logger, parseDate } from "../util.js";
+import { tempBanSch  } from "../schemas/tempBanSch.js";
 
-module.exports = {
+export {
   commandName: "unban",
   userPermissions: [],
   run: async (client, interaction) => {

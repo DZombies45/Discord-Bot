@@ -1,16 +1,16 @@
-const {
+import {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   AttachmentBuilder,
-} = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
-const userCaptha = require("../schemas/userCapchaSch.js");
-const verification = require("../schemas/verificationSch.js");
-const generateCaptcha = require("../utils/getCaptcha.js");
+} from "discord.js";
+import { formatDate, Logger } from "../util.js";
+import { userCaptha  } from "../schemas/userCapchaSch.js";
+import { verification  } from "../schemas/verificationSch.js";
+import { generateCaptcha  } from "../utils/getCaptcha.js";
 
-module.exports = {
+export {
   customId: "verifyBtn",
   userPermissions: [],
   botPermissions: [],

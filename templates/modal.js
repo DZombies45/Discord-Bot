@@ -1,7 +1,7 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { Logger } = require("../util.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "$NAME",
   userPermissions: [],
   botPermissions: [],

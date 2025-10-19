@@ -1,4 +1,4 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   ChannelType,
@@ -6,11 +6,11 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const verifySchema = require("../../schemas/verificationSch.js");
-const mConfig = require("../../messageConfig.json");
+} from "discord.js";
+import { verifySchema  } from "../../schemas/verificationSch.js";
+import { mConfig  } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("verification_setup")
     .setDescription("[admin] setup the verification")

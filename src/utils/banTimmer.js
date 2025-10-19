@@ -1,7 +1,7 @@
-const { EmbedBuilder } = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
-const tempBanSch = require("../schemas/tempBanSch.js");
-const moderationSch = require("../schemas/moderationSch.js");
+import { EmbedBuilder } from "discord.js";
+import { formatDate, Logger } from "../util.js";
+import { tempBanSch  } from "../schemas/tempBanSch.js";
+import { moderationSch  } from "../schemas/moderationSch.js";
 
 let started = false;
 
@@ -53,4 +53,4 @@ function startTimeout(client, guild, obj) {
       } catch (e) {}
     }, time);
 }
-module.exports = { startBanTimer, startTimeout };
+export { startBanTimer, startTimeout };

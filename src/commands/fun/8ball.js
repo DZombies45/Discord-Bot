@@ -1,14 +1,14 @@
-const {
+import {
   SlashCommandBuilder,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { gameChannel } = require("../../config.json");
-const { commandCannelDeny } = require("../../messageConfig.json");
+} from "discord.js";
+import { gameChannel } from "../../config.json.js";
+import { commandCannelDeny } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("8ball")
     .setDescription(`Classic 8ball game`)

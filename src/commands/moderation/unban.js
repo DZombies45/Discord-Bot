@@ -1,14 +1,14 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const moderationSchema = require("../../schemas/moderationSch.js");
-const tempBanSchema = require("../../schemas/tempBanSch.js");
-const mConfig = require("../../messageConfig.json");
-const { formatDate } = require("../../util.js");
+} from "discord.js";
+import { moderationSchema  } from "../../schemas/moderationSch.js";
+import { tempBanSchema  } from "../../schemas/tempBanSch.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { formatDate } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("unban")
     .setDescription("unban banned user on the server")

@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("test bot ping")

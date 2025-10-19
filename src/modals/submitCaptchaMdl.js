@@ -1,10 +1,10 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 
-const { Logger } = require("../util.js");
-const verifySchema = require("../schemas/verificationSch.js");
-const userCodeSch = require("../schemas/userCapchaSch.js");
+import { Logger } from "../util.js";
+import { verifySchema  } from "../schemas/verificationSch.js";
+import { userCodeSch  } from "../schemas/userCapchaSch.js";
 
-module.exports = {
+export {
   customId: "submitCaptchaMdl",
   userPermissions: [],
   botPermissions: [],

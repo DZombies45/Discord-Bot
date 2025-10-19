@@ -1,12 +1,12 @@
-const {
+import {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
+} from "discord.js";
+import { formatDate, Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "otherBtn",
   userPermissions: [],
   botPermissions: [],

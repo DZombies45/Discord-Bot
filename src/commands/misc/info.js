@@ -1,4 +1,4 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   time,
@@ -9,12 +9,12 @@ const {
   ChannelType,
   UserFlags,
   version,
-} = require("discord.js");
-const { Profile } = require("discord-arts");
-const { connection } = require("mongoose");
-const os = require("os");
+} from "discord.js";
+import { Profile } from "discord-arts";
+import { connection } from "mongoose";
+import { os  } from "os";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("get info about some stuff")

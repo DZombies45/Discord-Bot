@@ -1,10 +1,10 @@
-const { testServerId } = require("../../config.json");
-const compareCommands = require("../../utils/compareCommands.js");
-const getAppCommand = require("../../utils/getAppCommands.js");
-const getLocalCommands = require("../../utils/getLocalCommands.js");
-const { Logger, TabbleConsole } = require("../../util.js");
+import { testServerId } from "../../config.json.js";
+import { compareCommands  } from "../../utils/compareCommands.js";
+import { getAppCommand  } from "../../utils/getAppCommands.js";
+import { getLocalCommands  } from "../../utils/getLocalCommands.js";
+import { Logger, TabbleConsole } from "../../util.js";
 
-module.exports = async (client) => {
+export default async (client) => {
   try {
     const [localCmds, appCmds] = await Promise.all([
       getLocalCommands(),

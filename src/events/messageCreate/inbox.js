@@ -1,8 +1,8 @@
-const { PermissionFlagsBits } = require("discord.js");
-const inboxSchema = require("../../schemas/inboxSch.js");
-const { trimText } = require("../../util.js");
+import { PermissionFlagsBits } from "discord.js";
+import { inboxSchema  } from "../../schemas/inboxSch.js";
+import { trimText } from "../../util.js";
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
   if (!message.guild || message.author.bot) return;
 
   let members = await message.guild.members.fetch();

@@ -1,9 +1,9 @@
-const { EmbedBuilder } = require("discord.js");
-const { formatDate, Logger } = require("../../util.js");
-const tempBanSch = require("../../schemas/tempBanSch.js");
-const { startTimeout } = require("../../utils/banTimmer.js");
+import { EmbedBuilder } from "discord.js";
+import { formatDate, Logger } from "../../util.js";
+import { tempBanSch  } from "../../schemas/tempBanSch.js";
+import { startTimeout } from "../../utils/banTimmer.js";
 
-module.exports = async (client) => {
+export default async (client) => {
   async function tempBan(data) {
     let delay = data.endTime - Date.now();
     if (delay < 0) delay = 1;

@@ -1,8 +1,8 @@
 // Load environment variables
-require("dotenv").config();
+import "dotenv/config";
 
-const chalk = require("chalk");
-const { EmbedBuilder, WebhookClient } = require("discord.js");
+import { chalk } from "chalk";
+import { EmbedBuilder, WebhookClient } from "discord.js";
 
 function loadError(client) {
   const wbc = new WebhookClient({
@@ -74,4 +74,4 @@ function loadError(client) {
   });
 }
 
-module.exports = { loadError };
+export { loadError };

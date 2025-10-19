@@ -1,9 +1,9 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const moderationSchema = require("../schemas/moderationSch.js");
-const mConfig = require("../messageConfig.json");
-const { formatDate, Logger } = require("../util.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { moderationSchema  } from "../schemas/moderationSch.js";
+import { mConfig  } from "../messageConfig.json.js";
+import { formatDate, Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "nickBtn",
   userPermissions: [PermissionFlagsBits.ManageUsernames],
   botPermissions: [PermissionFlagsBits.ManageUsernames],

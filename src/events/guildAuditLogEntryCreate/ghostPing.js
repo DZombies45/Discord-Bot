@@ -1,8 +1,8 @@
-const { EmbedBuilder, AuditLogEvent } = require("discord.js");
-const { recentMentions, Logger } = require("../../util.js");
-const { ghostPingLogChannel } = require("../../config.json");
+import { EmbedBuilder, AuditLogEvent } from "discord.js";
+import { recentMentions, Logger } from "../../util.js";
+import { ghostPingLogChannel } from "../../config.json.js";
 
-module.exports = async (client, auditLog) => {
+export default async (client, auditLog) => {
   if (auditLog.action !== AuditLogEvent.MessageDelete) return;
   const { extra: channel, executorId, targetId } = auditLog;
 

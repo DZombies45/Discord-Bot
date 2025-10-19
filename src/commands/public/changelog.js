@@ -1,18 +1,18 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const Utils = require("../../mc.js");
-const Config = require("../../config.json");
+} from "discord.js";
+import { Utils  } from "../../mc.js";
+import { Config  } from "../../config.json.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-const mcChangelogSch = require("../../schemas/mcChangelogSch.js");
+import { mcChangelogSch  } from "../../schemas/mcChangelogSch.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("changelog")
     .setDescription("get minecraft version changelog url")

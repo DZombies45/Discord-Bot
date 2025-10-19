@@ -1,9 +1,9 @@
-const { EmbedBuilder, AuditLogEvent } = require("discord.js");
-const { welcome } = require("../../config.json");
-const { welcomeMessage } = require("../../messageConfig.json");
-const WelcomeLeave = require("../../utils/welcomeBye.js");
+import { EmbedBuilder, AuditLogEvent } from "discord.js";
+import { welcome } from "../../config.json.js";
+import { welcomeMessage } from "../../messageConfig.json.js";
+import { WelcomeLeave  } from "../../utils/welcomeBye.js";
 
-module.exports = async (client, member) => {
+export default async (client, member) => {
   try {
     const channel = await member.guild.channels.cache.get(welcome.ch);
     if (!channel) return;

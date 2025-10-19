@@ -1,9 +1,9 @@
-const { Logger } = require("../../util.js");
-const ytNotifSch = require("../../schemas/ytNotifSch.js");
-const rssParserObj = require("rss-parser");
+import { Logger } from "../../util.js";
+import { ytNotifSch  } from "../../schemas/ytNotifSch.js";
+import { rssParserObj  } from "rss-parser";
 const rssParser = new rssParserObj();
 
-module.exports = async (client) => {
+export default async (client) => {
   async function checkYt() {
     try {
       const ytConfigs = await ytNotifSch.find();

@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let mailSchema = new Schema(
   {
@@ -11,4 +11,4 @@ let mailSchema = new Schema(
   { strict: false },
 );
 
-module.exports = model("inboxPing", mailSchema);
+export default model("inboxPing", mailSchema);

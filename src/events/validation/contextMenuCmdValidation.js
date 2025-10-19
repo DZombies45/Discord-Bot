@@ -1,15 +1,15 @@
-const { EmbedBuilder } = require("discord.js");
-const {
+import { EmbedBuilder } from "discord.js";
+import {
   developerId,
   testServerId,
   moderatorRoleId,
   commandErrorChannel,
-} = require("../../config.json");
-const mConfig = require("../../messageConfig.json");
-const getLocalContextMenus = require("../../utils/getLocalContextMenus.js");
-const { Logger } = require("../../util.js");
+} from "../../config.json.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { getLocalContextMenus  } from "../../utils/getLocalContextMenus.js";
+import { Logger } from "../../util.js";
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
   if (!interaction.isContextMenuCommand()) return;
   const localContextMenus = getLocalContextMenus();
 

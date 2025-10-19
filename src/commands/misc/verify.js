@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const userCaptha = require("../../schemas/userCapchaSch.js");
-const verifySchema = require("../../schemas/verificationSch.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { userCaptha } from "../../schemas/userCapchaSch.js";
+import { verifySchema } from "../../schemas/verificationSch.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("verify")
     .setDescription("verify yourself")

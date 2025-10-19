@@ -1,7 +1,7 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { formatDate, Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "addRoleMdl",
   userPermissions: [PermissionFlagsBits.ManageRoles],
   botPermissions: [PermissionFlagsBits.ManageRoles],

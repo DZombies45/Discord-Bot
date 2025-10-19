@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { Logger } = require("../../util.js");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { Logger } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("$NAME")
     .setDescription("ini $NAME command descripsi")

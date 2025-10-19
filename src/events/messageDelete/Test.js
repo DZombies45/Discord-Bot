@@ -1,6 +1,6 @@
-const { EmbedBuilder, AuditLogEvent } = require("discord.js");
+import { EmbedBuilder, AuditLogEvent } from "discord.js";
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
   const fetchedLogs = await message.guild.fetchAuditLogs({
     type: AuditLogEvent.MessageDelete,
     limit: 1,

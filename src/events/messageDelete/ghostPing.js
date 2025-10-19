@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const { recentMentions, Logger } = require("../../util.js");
-const { ghostPingLogChannel } = require("../../config.json");
+import { EmbedBuilder } from "discord.js";
+import { recentMentions, Logger } from "../../util.js";
+import { ghostPingLogChannel } from "../../config.json.js";
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
   return;
   if (!recentMentions.has(message.id)) return;
   const ghostPing = recentMentions.get(message.id);

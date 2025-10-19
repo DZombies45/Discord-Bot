@@ -1,7 +1,7 @@
-const { Logger } = require("../../util.js");
-const { startBanTimer } = require("../../utils/banTimmer.js");
+import { Logger } from "../../util.js";
+import { startBanTimer } from "../../utils/banTimmer.js";
 
-module.exports = async (client) => {
+export default async (client) => {
   Logger.success(`bot is fully loaded`);
   /*for (const guilds of await client.guilds.fetch()) {
         const guild = await guilds[1].fetch();

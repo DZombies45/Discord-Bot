@@ -1,4 +1,4 @@
-const {
+import {
   ContextMenuCommandBuilder,
   ApplicationCommandType,
   EmbedBuilder,
@@ -6,9 +6,9 @@ const {
   ModalBuilder,
   ActionRowBuilder,
   TextInputStyle,
-} = require("discord.js");
+} from "discord.js";
 
-module.exports = {
+export {
   data: new ContextMenuCommandBuilder()
     .setName("Translate")
     .setType(ApplicationCommandType.Message),

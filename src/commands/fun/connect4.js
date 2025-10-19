@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { Connect4 } = require("discord-gamecord");
-const { getRandomColor } = require("../../util.js");
-const { gameChannel } = require("../../config.json");
-const { commandCannelDeny } = require("../../messageConfig.json");
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
+import { Connect4 } from "discord-gamecord";
+import { getRandomColor } from "../../util.js";
+import { gameChannel } from "../../config.json.js";
+import { commandCannelDeny } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("connect4")
     .setDescription("[game] Connect4")

@@ -1,13 +1,13 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder
-} = require("discord.js");
-const { Logger } = require("../../util.js");
-const { createCanvas, loadImage } = require("@napi-rs/canvas");
-const jsQR = require("jsqr");
+} from "discord.js";
+import { Logger } from "../../util.js";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { jsQR  } from "jsqr";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("qrr")
     .setDescription("read qr code")

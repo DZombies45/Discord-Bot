@@ -1,13 +1,13 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   ChannelType,
   EmbedBuilder,
-} = require("discord.js");
-const moderationSchema = require("../../schemas/moderationSch.js");
-const mConfig = require("../../messageConfig.json");
+} from "discord.js";
+import { moderationSchema  } from "../../schemas/moderationSch.js";
+import { mConfig  } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("moderate_setup")
     .setDescription("[admin] setup the moderation")

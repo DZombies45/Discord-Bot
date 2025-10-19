@@ -1,12 +1,12 @@
-const {
+import {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
   ActionRowBuilder,
-} = require("discord.js");
-const { Logger } = require("../util.js");
+} from "discord.js";
+import { Logger } from "../util.js";
 
-module.exports = async (interaction, pages, time = 60 * 1000) => {
+export default async (interaction, pages, time = 60 * 1000) => {
   try {
     if (!interaction || !pages || pages.length === 0)
       throw new Error("invalid arguments");

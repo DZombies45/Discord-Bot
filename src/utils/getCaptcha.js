@@ -1,8 +1,8 @@
-const { createCanvas, GlobalFonts } = require("@napi-rs/canvas");
+import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 
 //GlobalFonts.registerFromPath('/system/fonts/Roboto-Regular.ttf', 'Roboto'); // Atur sesuai sistemmu
 
-module.exports = (width = 450, height = 150, length = 5) => {
+export default (width = 450, height = 150, length = 5) => {
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext("2d");
 

@@ -1,4 +1,4 @@
-module.exports = async (client, message) => {
+export default async (client, message) => {
   if (!message.guild || message.author.bot) return;
   if (message.content.length <= 5) return;
   if (message.content.match(/[A-Z]/g).length / message.content.length < 0.8)

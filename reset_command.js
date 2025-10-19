@@ -1,6 +1,6 @@
-const { REST, Routes } = require("discord.js");
-const { clientId, guildId } = require("./src/config.json");
-require("dotenv/config");
+import { REST, Routes } from "discord.js";
+import { clientId, guildId } from "./src/config.json.js";
+import "dotenv/config";
 
 const rest = new REST().setToken(process.env.TOKEN);
 

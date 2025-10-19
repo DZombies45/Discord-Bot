@@ -1,9 +1,9 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { Logger } = require("../util.js");
-const translate = require("@iamtraction/google-translate");
-const parseBahasa = require("../utils/getBahasa.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { Logger } from "../util.js";
+import { translate  } from "@iamtraction/google-translate";
+import { parseBahasa  } from "../utils/getBahasa.js";
 
-module.exports = {
+export {
   customId: "translateMdl",
   userPermissions: [],
   botPermissions: [],

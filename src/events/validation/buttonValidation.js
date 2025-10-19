@@ -1,15 +1,15 @@
-const { EmbedBuilder } = require("discord.js");
-const {
+import { EmbedBuilder } from "discord.js";
+import {
   developerId,
   testServerId,
   moderatorRoleId,
   commandErrorChannel,
-} = require("../../config.json");
-const mConfig = require("../../messageConfig.json");
-const getButtons = require("../../utils/getButtons.js");
-const { Logger } = require("../../util.js");
+} from "../../config.json.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { getButtons  } from "../../utils/getButtons.js";
+import { Logger } from "../../util.js";
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
   if (!interaction.isButton()) return;
   const buttons = getButtons();
 

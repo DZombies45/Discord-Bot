@@ -1,12 +1,12 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const { Logger } = require("../../util.js");
+} from "discord.js";
+import { Logger } from "../../util.js";
 const warna = { error: "#f13131", aman: "#31f158", notaman: "#b221f1" };
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("check")
     .setDescription("check virus on a url")

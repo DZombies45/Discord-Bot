@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let mcChangelogSchema = new Schema(
   {
@@ -17,4 +17,4 @@ let mcChangelogSchema = new Schema(
   { strict: false },
 );
 
-module.exports = model("mcChangelog", mcChangelogSchema);
+export default model("mcChangelog", mcChangelogSchema);

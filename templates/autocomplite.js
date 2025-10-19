@@ -1,6 +1,6 @@
-const { PermissionFlagsBits } = require("discord.js");
+import { PermissionFlagsBits } from "discord.js";
 
-module.exports = {
+export {
   commandName: "$NAME",
   userPermissions: [],
   run: async (client, interaction) => {

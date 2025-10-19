@@ -1,15 +1,15 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
   ChannelType,
-} = require("discord.js");
-const rssParserObj = require("rss-parser");
-const ytNotifSch = require("../../schemas/ytNotifSch.js");
+} from "discord.js";
+import { rssParserObj  } from "rss-parser";
+import { ytNotifSch  } from "../../schemas/ytNotifSch.js";
 const rssParser = new rssParserObj();
-const { Logger } = require("../../util.js");
+import { Logger } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("yt-setup")
     .setDescription("setup notif for a yt channel upload")

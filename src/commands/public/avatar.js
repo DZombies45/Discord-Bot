@@ -1,13 +1,13 @@
-const {
+import {
   SlashCommandBuilder,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
-} = require("discord.js");
+} from "discord.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("Get the avatar or banner of a user")

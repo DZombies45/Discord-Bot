@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
   if (message.mentions.users.size === 0) return;
   if (!message.guild || message.author.bot) return;
   if (

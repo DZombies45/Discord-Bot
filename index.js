@@ -1,7 +1,8 @@
-const { Client, Events, GatewayIntentBits } = require("discord.js");
-const eventHandler = require("./src/handlers/eventHandlers.js");
-require("dotenv/config");
-const { GlobalFonts } = require("@napi-rs/canvas");
+import { Client, Events, GatewayIntentBits } from "discord.js";
+import { eventHandler } from "./src/handlers/eventHandlers.js";
+import "dotenv/config";
+import { GlobalFonts } from "@napi-rs/canvas";
+import { loadError } from "./log.js";
 GlobalFonts.registerFromPath(
   `${__dirname}/src/fonts/Poppins/Poppins-Regular.ttf`,
   "Poppins",
@@ -36,7 +37,7 @@ const formatDate = (d = Date.now()) => {
 
 const startDate = formatDate();
 
-module.exports = { startDate };
+export { startDate };
 
 const client = new Client({
   intents: [
@@ -52,3 +53,4 @@ const client = new Client({
 eventHandler(client);
 
 client.login(process.env.TOKEN);
+loadError(client);

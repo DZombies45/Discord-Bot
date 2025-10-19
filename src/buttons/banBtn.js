@@ -1,10 +1,10 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const moderationSchema = require("../schemas/moderationSch.js");
-const mConfig = require("../messageConfig.json");
-const { formatDate, testServerId } = require("../util.js");
-const getAppCommand = require("../utils/getAppCommands.js");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { moderationSchema  } from "../schemas/moderationSch.js";
+import { mConfig  } from "../messageConfig.json.js";
+import { formatDate, testServerId } from "../util.js";
+import { getAppCommand  } from "../utils/getAppCommands.js";
 
-module.exports = {
+export {
   customId: "banBtn",
   userPermissions: [PermissionFlagsBits.BanMembers],
   botPermissions: [PermissionFlagsBits.BanMembers],

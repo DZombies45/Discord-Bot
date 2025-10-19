@@ -1,13 +1,13 @@
-const {
+import {
   PermissionFlagsBits,
   ModalBuilder,
   ActionRowBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
-const { Logger } = require("../util.js");
+} from "discord.js";
+import { Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "tempMuteBtn",
   userPermissions: [PermissionFlagsBits.KickMembers],
   botPermissions: [PermissionFlagsBits.KickMembers],

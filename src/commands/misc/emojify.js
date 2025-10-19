@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require("discord.js");
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("emojify")
     .setDescription("Send a message in emojis")

@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let notifSchema = new Schema({
   GuildId: { type: String, require: true },
@@ -7,4 +7,4 @@ let notifSchema = new Schema({
   ke: { type: Number, require: true },
 });
 
-module.exports = model("user_capcha", notifSchema);
+export default model("user_capcha", notifSchema);

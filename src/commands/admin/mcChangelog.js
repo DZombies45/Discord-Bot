@@ -1,19 +1,19 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const Utils = require("../../mc.js");
-const Config = require("../../config.json");
+} from "discord.js";
+import { Utils  } from "../../mc.js";
+import { Config  } from "../../config.json.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-const mcChangelogSch = require("../../schemas/mcChangelogSch.js");
-const htmlParser = require("node-html-parser");
+import { mcChangelogSch  } from "../../schemas/mcChangelogSch.js";
+import { htmlParser  } from "node-html-parser";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("mc_changelog")
     .setDescription("[admin] run minecraft changelog command")

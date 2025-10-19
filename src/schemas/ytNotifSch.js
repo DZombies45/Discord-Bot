@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let notifSchema = new Schema(
   {
@@ -18,4 +18,4 @@ let notifSchema = new Schema(
   { timetamps: true },
 );
 
-module.exports = model("yt_notification", notifSchema);
+export default model("yt_notification", notifSchema);

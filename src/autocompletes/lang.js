@@ -1,7 +1,7 @@
-const { PermissionFlagsBits } = require("discord.js");
-const parseBahasa = require("../utils/getBahasa.js");
+import { PermissionFlagsBits } from "discord.js";
+import { parseBahasa  } from "../utils/getBahasa.js";
 
-module.exports = {
+export {
   commandName: "translate",
   userPermissions: [],
   run: async (client, interaction) => {

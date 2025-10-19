@@ -1,4 +1,4 @@
-const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
+import { createCanvas, loadImage, GlobalFonts } from "@napi-rs/canvas";
 
 /**
  * @typedef {object} WelcomeLeave
@@ -7,7 +7,7 @@ const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
  * @example const leaveCard = await new canvafy.WelcomeLeave()
  * @type {Class}
  */
-module.exports = class WelcomeLeave {
+export default class WelcomeLeave {
   constructor(options) {
     this.font = {
       name: options?.font?.name ?? "Poppins",

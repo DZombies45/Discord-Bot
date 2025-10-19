@@ -1,4 +1,4 @@
-module.exports = (existCmd, localCmd) => {
+export default (existCmd, localCmd) => {
   const adaBeda = (a, b) => JSON.stringify(a) !== JSON.stringify(b);
 
   if (

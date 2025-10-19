@@ -1,14 +1,14 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const paginator = require("../../utils/buttonPaginator.js");
-const mConfig = require("../../messageConfig.json");
-const { formatDate, parseDate } = require("../../util.js");
-const tempBanSch = require("../../schemas/tempBanSch.js");
+} from "discord.js";
+import { paginator  } from "../../utils/buttonPaginator.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { formatDate, parseDate } from "../../util.js";
+import { tempBanSch  } from "../../schemas/tempBanSch.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("banlist")
     .setDescription("[mod] get list of banned user on the server")

@@ -1,12 +1,12 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const mConfig = require("../../messageConfig.json");
-const { Logger } = require("../../util.js");
+} from "discord.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { Logger } from "../../util.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("getmsg")
     .setDescription("[admin] get a message in a channel")

@@ -1,9 +1,9 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { Hangman } = require("discord-gamecord");
-const { gameChannel } = require("../../config.json");
-const { commandCannelDeny } = require("../../messageConfig.json");
+import { SlashCommandBuilder } from "discord.js";
+import { Hangman } from "discord-gamecord";
+import { gameChannel } from "../../config.json.js";
+import { commandCannelDeny } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName(`hangman`)
     .setDescription(`Play a game of hangman`),

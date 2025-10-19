@@ -1,9 +1,9 @@
-const { testServerId } = require("../../config.json");
-const getAppContextMenu = require("../../utils/getAppCommands.js");
-const getLocalContextMenus = require("../../utils/getLocalContextMenus.js");
-const { Logger, TabbleConsole } = require("../../util.js");
+import { testServerId } from "../../config.json.js";
+import { getAppContextMenu  } from "../../utils/getAppCommands.js";
+import { getLocalContextMenus  } from "../../utils/getLocalContextMenus.js";
+import { Logger, TabbleConsole } from "../../util.js";
 
-module.exports = async (client) => {
+export default async (client) => {
   try {
     const [localCtms, appCtms] = await Promise.all([
       getLocalContextMenus(),

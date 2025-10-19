@@ -1,11 +1,13 @@
-const htmlParser = require("node-html-parser");
-const fs = require("fs");
-const changelogSch = require("./schemas/mcChangelogSch.js");
+import { htmlParser } from "node-html-parser";
+import fs from "fs";
+import { changelogSch } from "./schemas/mcChangelogSch.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const formatDate = (d = Date.now()) => {
   const date = new Date(d);
@@ -14,7 +16,7 @@ const formatDate = (d = Date.now()) => {
   return `${year}-${month}-${day} ${time}`;
 };
 
-const { startDate } = require("../index.js");
+import { startDate } from "../index.js";
 
 const Logger = {
   _log: (name, date, color, ...data) => {
@@ -237,4 +239,4 @@ const Utils = {
   },
 };
 
-module.exports = Utils;
+export default Utils;

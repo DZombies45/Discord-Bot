@@ -1,5 +1,5 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 let Schema = new Schema({});
 
-module.exports = model("$NAME", Schema);
+export default model("$NAME", Schema);

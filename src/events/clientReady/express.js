@@ -1,7 +1,7 @@
-const { Logger } = require("../../util.js");
-const express = require("express");
+import { Logger } from "../../util.js";
+import { express  } from "express";
 
-module.exports = async (client) => {
+export default async (client) => {
   // Konfigurasi Web Server
   const app = express();
   const port = process.env.PORT || 3000; // Gunakan port dari environment (untuk hosting) atau default 3000

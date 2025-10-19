@@ -1,16 +1,20 @@
-const path = require("path");
-const getAllFiles = require("./getAllFiles.js");
+import path from "path";
+import { fileURLToPath } from "url";
+import { getAllFiles } from "./getAllFiles.js";
 
-module.exports = (exeption = []) => {
-  let localContestMenus = [];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default async function getLocalCTMenu(exeption = []) {
+  const localContextMenus = [];
   const contextMenuFiles = getAllFiles(
     path.join(__dirname, "..", "contextMenus"),
   );
 
   for (const contextMenuFile of contextMenuFiles) {
-    const ctmObject = require(contextMenuFile);
+    const { default: ctmObject } = await import(contextMenuFile);
     if (exeption.includes(ctmObject.name)) continue;
-    localContestMenus.push(ctmObject);
+    localContextMenus.push(ctmObject);
   }
-  return localContestMenus;
-};
+
+  return localContextMenus;
+}

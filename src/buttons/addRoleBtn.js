@@ -1,13 +1,13 @@
-const {
+import {
   PermissionFlagsBits,
   ModalBuilder,
   ActionRowBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
-const { formatDate, Logger } = require("../util.js");
+} from "discord.js";
+import { formatDate, Logger } from "../util.js";
 
-module.exports = {
+export {
   customId: "addRoleBtn",
   userPermissions: [PermissionFlagsBits.ManageRoles],
   botPermissions: [PermissionFlagsBits.ManageRoles],

@@ -1,15 +1,15 @@
-const { EmbedBuilder } = require("discord.js");
-const {
+import { EmbedBuilder } from "discord.js";
+import {
   developerId,
   testServerId,
   moderatorRoleId,
   commandErrorChannel,
-} = require("../../config.json");
-const mConfig = require("../../messageConfig.json");
-const getLocalCommands = require("../../utils/getLocalCommands.js");
-const { Logger } = require("../../util.js");
+} from "../../config.json.js";
+import { mConfig  } from "../../messageConfig.json.js";
+import { getLocalCommands  } from "../../utils/getLocalCommands.js";
+import { Logger } from "../../util.js";
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
   const localCommands = getLocalCommands();
 

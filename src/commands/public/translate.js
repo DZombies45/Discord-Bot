@@ -1,10 +1,10 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-} = require("discord.js");
-const translate = require("@iamtraction/google-translate");
-module.exports = {
+} from "discord.js";
+import { translate  } from "@iamtraction/google-translate";
+export {
   data: new SlashCommandBuilder()
     .setName("translate")
     .setDescription("translate new message or message id to other language")

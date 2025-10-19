@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, ButtonStyle } = require("discord.js");
-const { RockPaperScissors } = require("discord-gamecord");
-const { gameChannel } = require("../../config.json");
-const { commandCannelDeny } = require("../../messageConfig.json");
+import { SlashCommandBuilder, ButtonStyle } from "discord.js";
+import { RockPaperScissors } from "discord-gamecord";
+import { gameChannel } from "../../config.json.js";
+import { commandCannelDeny } from "../../messageConfig.json.js";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("rock-paper-scissors")
     .setDescription("Play a game of rock paper scissors")

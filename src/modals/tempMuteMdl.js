@@ -1,10 +1,10 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { formatDate, parseDuration, Logger } = require("../util.js");
-const moderationSch = require("../schemas/moderationSch.js");
-const tempBanSch = require("../schemas/tempBanSch.js");
-const mConfig = require("../messageConfig.json");
+import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
+import { formatDate, parseDuration, Logger } from "../util.js";
+import { moderationSch  } from "../schemas/moderationSch.js";
+import { tempBanSch  } from "../schemas/tempBanSch.js";
+import { mConfig  } from "../messageConfig.json.js";
 
-module.exports = {
+export {
   customId: "tempMuteMdl",
   userPermissions: [
     PermissionFlagsBits.BanMembers,

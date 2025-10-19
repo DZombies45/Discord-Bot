@@ -1,12 +1,12 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder
-} = require("discord.js");
-const { Logger } = require("../../util.js");
-const QRCode = require("qrcode");
+} from "discord.js";
+import { Logger } from "../../util.js";
+import { QRCode  } from "qrcode";
 
-module.exports = {
+export {
   data: new SlashCommandBuilder()
     .setName("qrc")
     .setDescription("create qr code")

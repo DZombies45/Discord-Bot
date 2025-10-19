@@ -3,12 +3,12 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { moderationSchema  } from "../../schemas/moderationSch.js";
-import { tempBanSchema  } from "../../schemas/tempBanSch.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { moderationSchema } from "../../schemas/moderationSch.js";
+import { tempBanSchema } from "../../schemas/tempBanSch.js";
+import { mConfig } from "../../messageConfig.json.js";
 import { formatDate } from "../../util.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("unban")
     .setDescription("unban banned user on the server")

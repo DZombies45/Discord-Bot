@@ -3,16 +3,16 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { Utils  } from "../../mc.js";
-import { Config  } from "../../config.json.js";
+import { Utils } from "../../mc.js";
+import { Config } from "../../config.json.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-import { mcChangelogSch  } from "../../schemas/mcChangelogSch.js";
+import { mcChangelogSch } from "../../schemas/mcChangelogSch.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("changelog")
     .setDescription("get minecraft version changelog url")
@@ -96,7 +96,7 @@ async function bedrockChangelog(client, interaction) {
         version,
     );
 
-    const _m = await interaction.deferReply({ });
+    const _m = await interaction.deferReply({});
 
     const article = await mcChangelogSch.findOne({
       type: isBeta ? "preview-articles" : "stable-articles",
@@ -196,7 +196,7 @@ async function javaChangelog(client, interaction) {
         version,
     );
 
-    const _m = await interaction.deferReply({  });
+    const _m = await interaction.deferReply({});
 
     const article = await mcChangelogSch.findOne({
       type: isBeta ? "java-snapshot-articles" : "java-stable-articles",

@@ -1,7 +1,7 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import { formatDate, Logger } from "../util.js";
 
-export {
+export default {
   customId: "addRoleMdl",
   userPermissions: [PermissionFlagsBits.ManageRoles],
   botPermissions: [PermissionFlagsBits.ManageRoles],

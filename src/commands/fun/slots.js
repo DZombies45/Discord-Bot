@@ -3,7 +3,7 @@ import { Slots } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName(`slots`)
     .setDescription(`Play some slots`),

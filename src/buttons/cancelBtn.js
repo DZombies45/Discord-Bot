@@ -1,6 +1,6 @@
 import { PermissionFlagsBits } from "discord.js";
 
-export {
+export default {
   customId: "cancelBtn",
   userPermissions: [],
   botPermissions: [],

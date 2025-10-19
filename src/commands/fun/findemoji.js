@@ -3,7 +3,7 @@ import { FindEmoji } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName(`find-emoji`)
     .setDescription(`Play a game of find the emoji`),

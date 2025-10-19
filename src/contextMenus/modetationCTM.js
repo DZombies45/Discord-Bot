@@ -7,10 +7,10 @@ import {
   EmbedBuilder,
   ActionRowBuilder,
 } from "discord.js";
-import { moderationSchema  } from "../schemas/moderationSch.js";
-import { mConfig  } from "../messageConfig.json.js";
+import { moderationSchema } from "../schemas/moderationSch.js";
+import { mConfig } from "../messageConfig.json.js";
 
-export {
+export default {
   data: new ContextMenuCommandBuilder()
     .setName("Moderate User")
     .setType(ApplicationCommandType.User),

@@ -8,7 +8,7 @@ import {
   TextInputStyle,
 } from "discord.js";
 
-export {
+export default {
   data: new ContextMenuCommandBuilder()
     .setName("Translate")
     .setType(ApplicationCommandType.Message),

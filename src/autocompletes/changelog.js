@@ -5,9 +5,9 @@ const articleSections = {
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-import { mcChangelogSch  } from "../schemas/mcChangelogSch.js";
+import { mcChangelogSch } from "../schemas/mcChangelogSch.js";
 
-export {
+export default {
   commandName: "changelog",
   userPermissions: [],
   run: async (client, interaction) => {

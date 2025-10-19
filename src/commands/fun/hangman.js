@@ -3,7 +3,7 @@ import { Hangman } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName(`hangman`)
     .setDescription(`Play a game of hangman`),

@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 import { formatDate, Logger } from "../util.js";
 
-export {
+export default{
   customId: "punishmentBtn",
   userPermissions: [],
   botPermissions: [],

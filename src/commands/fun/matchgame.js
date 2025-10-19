@@ -3,7 +3,7 @@ import { MatchPairs } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName(`match-pair`)
     .setDescription(`A memory game`),

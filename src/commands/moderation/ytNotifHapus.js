@@ -4,12 +4,12 @@ import {
   EmbedBuilder,
   ChannelType,
 } from "discord.js";
-import { rssParserObj  } from "rss-parser";
-import { ytNotifSch  } from "../../schemas/ytNotifSch.js";
+import { rssParserObj } from "rss-parser";
+import { ytNotifSch } from "../../schemas/ytNotifSch.js";
 const rssParser = new rssParserObj();
 import { Logger } from "../../util.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("yt-remove")
     .setDescription("remove notif for a yt channel upload")

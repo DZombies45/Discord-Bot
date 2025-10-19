@@ -3,10 +3,10 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { mConfig } from "../../messageConfig.json.js";
 import { Logger } from "../../util.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("clear")
     .setDescription("[mod] clear a number of message")

@@ -1,9 +1,9 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
-import { moderationSchema  } from "../schemas/moderationSch.js";
-import { mConfig  } from "../messageConfig.json.js";
+import { moderationSchema } from "../schemas/moderationSch.js";
+import { mConfig } from "../messageConfig.json.js";
 import { formatDate } from "../util.js";
 
-export {
+export default {
   customId: "kickBtn",
   userPermissions: [PermissionFlagsBits.KickMembers],
   botPermissions: [PermissionFlagsBits.KickMembers],

@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 import { formatDate, Logger } from "../util.js";
 
-export {
+export default {
   customId: "addRoleBtn",
   userPermissions: [PermissionFlagsBits.ManageRoles],
   botPermissions: [PermissionFlagsBits.ManageRoles],

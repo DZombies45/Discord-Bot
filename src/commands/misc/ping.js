@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("test bot ping")

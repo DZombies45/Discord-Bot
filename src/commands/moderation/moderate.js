@@ -7,10 +7,10 @@ import {
   ActionRowBuilder,
   StringSelectMenuBuilder,
 } from "discord.js";
-import { moderationSchema  } from "../../schemas/moderationSch.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { moderationSchema } from "../../schemas/moderationSch.js";
+import { mConfig } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("moderate")
     .setDescription("moderate server member")

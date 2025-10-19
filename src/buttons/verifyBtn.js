@@ -10,7 +10,7 @@ import { userCaptha  } from "../schemas/userCapchaSch.js";
 import { verification  } from "../schemas/verificationSch.js";
 import { generateCaptcha  } from "../utils/getCaptcha.js";
 
-export {
+export default{
   customId: "verifyBtn",
   userPermissions: [],
   botPermissions: [],

@@ -11,7 +11,7 @@ import {
   embedColorError,
 } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("changeprofile")
     .setDescription("[admin] change bot avatar or banner")
@@ -88,4 +88,3 @@ export {
     }
   },
 };
-

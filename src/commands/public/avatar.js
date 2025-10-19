@@ -7,7 +7,7 @@ import {
   ComponentType,
 } from "discord.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("Get the avatar or banner of a user")
@@ -94,4 +94,3 @@ export {
     });
   },
 };
-

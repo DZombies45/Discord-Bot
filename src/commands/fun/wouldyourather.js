@@ -3,7 +3,7 @@ import { WouldYouRather } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName(`would-you-rather`)
     .setDescription(`Play a game of would you rather`),

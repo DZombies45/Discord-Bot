@@ -6,7 +6,7 @@ import {
 import { Logger } from "../../util.js";
 const warna = { error: "#f13131", aman: "#31f158", notaman: "#b221f1" };
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("check")
     .setDescription("check virus on a url")

@@ -1,10 +1,10 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import { formatDate, parseDuration, Logger } from "../util.js";
-import { moderationSch  } from "../schemas/moderationSch.js";
-import { tempBanSch  } from "../schemas/tempBanSch.js";
-import { mConfig  } from "../messageConfig.json.js";
+import { moderationSch } from "../schemas/moderationSch.js";
+import { tempBanSch } from "../schemas/tempBanSch.js";
+import { mConfig } from "../messageConfig.json.js";
 
-export {
+export default {
   customId: "tempBanMdl",
   userPermissions: [
     PermissionFlagsBits.BanMembers,

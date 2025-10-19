@@ -3,8 +3,9 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { translate  } from "@iamtraction/google-translate";
-export {
+import { translate } from "@iamtraction/google-translate";
+
+export default {
   data: new SlashCommandBuilder()
     .setName("translate")
     .setDescription("translate new message or message id to other language")

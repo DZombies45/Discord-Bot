@@ -3,11 +3,11 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { config  } from "../../config.json.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { config } from "../../config.json.js";
+import { mConfig } from "../../messageConfig.json.js";
 import { Logger } from "../../util.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("list_invites")
     .setDescription("list all server invites")

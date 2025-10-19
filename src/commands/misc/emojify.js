@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("emojify")
     .setDescription("Send a message in emojis")

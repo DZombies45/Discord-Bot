@@ -4,7 +4,7 @@ import { mConfig  } from "../messageConfig.json.js";
 import { formatDate, testServerId } from "../util.js";
 import { getAppCommand  } from "../utils/getAppCommands.js";
 
-export {
+export default{
   customId: "banBtn",
   userPermissions: [PermissionFlagsBits.BanMembers],
   botPermissions: [PermissionFlagsBits.BanMembers],

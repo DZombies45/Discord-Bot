@@ -1,9 +1,9 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
-import { moderationSchema  } from "../schemas/moderationSch.js";
-import { mConfig  } from "../messageConfig.json.js";
+import { moderationSchema } from "../schemas/moderationSch.js";
+import { mConfig } from "../messageConfig.json.js";
 import { formatDate, Logger } from "../util.js";
 
-export {
+export default {
   customId: "nickBtn",
   userPermissions: [PermissionFlagsBits.ManageUsernames],
   botPermissions: [PermissionFlagsBits.ManageUsernames],

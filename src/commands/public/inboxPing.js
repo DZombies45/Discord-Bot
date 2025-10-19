@@ -3,10 +3,10 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { inboxPing  } from "../../schemas/inboxSch.js";
+import { inboxPing } from "../../schemas/inboxSch.js";
 import { chunkSubstr } from "../../util.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("inbox")
     .setDescription("open/clear mentioned inbox")

@@ -12,9 +12,9 @@ import {
 } from "discord.js";
 import { Profile } from "discord-arts";
 import { connection } from "mongoose";
-import { os  } from "os";
+import { os } from "os";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("get info about some stuff")
@@ -39,43 +39,41 @@ export {
   userPermissions: [],
   botPermissions: [],
   run: async (client, interaction) => {
+    const embed = new EmbedBuilder().setColor("#acf7f2");
+    const subCmd = interaction.options.getSubcommand();
 
-  const embed = new EmbedBuilder().setColor("#acf7f2");
-  const subCmd = interaction.options.getSubcommand();
+    await interaction.deferReply();
 
-  await interaction.deferReply();
+    let replyPayload;
 
-  let replyPayload;
+    try {
+      switch (subCmd) {
+        case "user":
+          replyPayload = await handleUser(interaction, embed);
+          break;
+        case "server":
+          replyPayload = await handleServer(interaction, embed);
+          break;
+        case "bot":
+          replyPayload = await handleBot(interaction, embed, client);
+          break;
+      }
 
-  try {
-    switch (subCmd) {
-      case "user":
-        replyPayload = await handleUser(interaction, embed);
-        break;
-      case "server":
-        replyPayload = await handleServer(interaction, embed);
-        break;
-      case "bot":
-        replyPayload = await handleBot(interaction, embed, client);
-        break;
+      await interaction.editReply(replyPayload);
+    } catch (err) {
+      console.error("❌ Gagal proses command:", err);
+
+      if (!interaction.replied) {
+        await interaction.reply({
+          content: "Terjadi error saat memproses perintah.",
+          ephemeral: true,
+        });
+      }
     }
-
-    await interaction.editReply(replyPayload);
-  } catch (err) {
-    console.error("❌ Gagal proses command:", err);
-
-    if (!interaction.replied) {
-      await interaction.reply({
-        content: "Terjadi error saat memproses perintah.",
-        ephemeral: true,
-      });
-    }
-  }
-  
   },
 };
 function getStatus(member) {
-  console.log(member.presence)
+  console.log(member.presence);
   switch (member.presence ? member.presence.status : "offline") {
     case "online":
       return "🟢 Online";
@@ -147,10 +145,9 @@ async function handleUser(interaction, embed) {
     },
     {
       name: "**Highest Tag**",
-      value:
-        discordSort(member.roles.cache).last().toString() || "no role",
+      value: discordSort(member.roles.cache).last().toString() || "no role",
       inline: true,
-    }
+    },
   );
   embed.setThumbnail(target.displayAvatarURL({ dynamic: true }));
 
@@ -189,7 +186,7 @@ async function handleServer(interaction, embed) {
       name: "**Created At**",
       value: `${time(guild.createdAt, "R")}`,
       inline: true,
-    }
+    },
   );
   embed.setThumbnail(guild.iconURL({ dynamic: true }));
 
@@ -291,7 +288,7 @@ async function handleBot(interaction, embed, client) {
       name: "⚖️ Users",
       value: `${client.guilds.cache.reduce(
         (acc, g) => acc + g.memberCount,
-        0
+        0,
       )}`,
       inline: true,
     },
@@ -319,8 +316,9 @@ async function handleBot(interaction, embed, client) {
         ChannelType.GuildNewsThread,
       ])}`,
       inline: true,
-    }
+    },
   );
 
   return createReply(embed, image);
 }
+

@@ -8,7 +8,7 @@ import {
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("8ball")
     .setDescription(`Classic 8ball game`)

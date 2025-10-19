@@ -7,10 +7,10 @@ import {
   ButtonBuilder,
   ButtonStyle,
 } from "discord.js";
-import { verifySchema  } from "../../schemas/verificationSch.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { verifySchema } from "../../schemas/verificationSch.js";
+import { mConfig } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("verification_setup")
     .setDescription("[admin] setup the verification")

@@ -3,12 +3,12 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { paginator  } from "../../utils/buttonPaginator.js";
-import { mConfig  } from "../../messageConfig.json.js";
+import { paginator } from "../../utils/buttonPaginator.js";
+import { mConfig } from "../../messageConfig.json.js";
 import { formatDate, parseDate } from "../../util.js";
-import { tempBanSch  } from "../../schemas/tempBanSch.js";
+import { tempBanSch } from "../../schemas/tempBanSch.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("banlist")
     .setDescription("[mod] get list of banned user on the server")

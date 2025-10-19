@@ -3,7 +3,7 @@ import { RockPaperScissors } from "discord-gamecord";
 import { gameChannel } from "../../config.json.js";
 import { commandCannelDeny } from "../../messageConfig.json.js";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("rock-paper-scissors")
     .setDescription("Play a game of rock paper scissors")

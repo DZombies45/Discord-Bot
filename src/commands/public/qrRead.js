@@ -1,21 +1,21 @@
 import {
   SlashCommandBuilder,
   PermissionFlagsBits,
-  EmbedBuilder
+  EmbedBuilder,
 } from "discord.js";
 import { Logger } from "../../util.js";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { jsQR  } from "jsqr";
+import { jsQR } from "jsqr";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("qrr")
     .setDescription("read qr code")
-    .addStringOption(opt =>
-      opt.setName("url").setDescription("url to the qr code to read")
+    .addStringOption((opt) =>
+      opt.setName("url").setDescription("url to the qr code to read"),
     )
-    .addAttachmentOption(opt =>
-      opt.setName("qr-code").setDescription("uploaded qr image to read")
+    .addAttachmentOption((opt) =>
+      opt.setName("qr-code").setDescription("uploaded qr image to read"),
     )
     .toJSON(),
   deleted: false,
@@ -32,9 +32,9 @@ export {
         embeds: [
           new EmbedBuilder()
             .setColor("#bf2c04")
-            .setDescription("need an option to work read")
+            .setDescription("need an option to work read"),
         ],
-        flags: 64
+        flags: 64,
       });
     if (
       optImg &&
@@ -45,9 +45,9 @@ export {
         embeds: [
           new EmbedBuilder()
             .setColor("#bf2c04")
-            .setDescription("qr can only read png or gif")
+            .setDescription("qr can only read png or gif"),
         ],
-        flags: 64
+        flags: 64,
       });
     const imageUrl = optUrl || optImg.url;
 
@@ -69,5 +69,5 @@ export {
       interaction.editReply({ embeds: [embed] });
       Logger.error(`from ${__filename} :\n${e.stack}`);
     }
-  }
+  },
 };

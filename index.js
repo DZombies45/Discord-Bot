@@ -1,8 +1,12 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
-import { eventHandler } from "./src/handlers/eventHandlers.js";
+import eventHandler from "./src/handlers/eventHandlers.js";
 import "dotenv/config";
 import { GlobalFonts } from "@napi-rs/canvas";
 import { loadError } from "./log.js";
+import path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 GlobalFonts.registerFromPath(
   `${__dirname}/src/fonts/Poppins/Poppins-Regular.ttf`,
   "Poppins",

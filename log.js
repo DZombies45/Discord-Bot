@@ -1,7 +1,7 @@
 // Load environment variables
 import "dotenv/config";
 
-import { chalk } from "chalk";
+import chalk from "chalk";
 import { EmbedBuilder, WebhookClient } from "discord.js";
 
 function loadError(client) {

@@ -1,20 +1,20 @@
 import {
   SlashCommandBuilder,
   PermissionFlagsBits,
-  EmbedBuilder
+  EmbedBuilder,
 } from "discord.js";
 import { Logger } from "../../util.js";
-import { QRCode  } from "qrcode";
+import { QRCode } from "qrcode";
 
-export {
+export default {
   data: new SlashCommandBuilder()
     .setName("qrc")
     .setDescription("create qr code")
-    .addStringOption(opt =>
+    .addStringOption((opt) =>
       opt
         .setName("text")
         .setDescription("the text or link to convert")
-        .setRequired(true)
+        .setRequired(true),
     )
     .toJSON(),
   deleted: false,
@@ -46,5 +46,5 @@ export {
       interaction.editReply({ embeds: [embed] });
       Logger.error(`from ${__filename} :\n${e.stack}`);
     }
-  }
+  },
 };

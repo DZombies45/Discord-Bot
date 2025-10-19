@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 import { Logger } from "../util.js";
 
-export {
+export default {
   customId: "tempMuteBtn",
   userPermissions: [PermissionFlagsBits.KickMembers],
   botPermissions: [PermissionFlagsBits.KickMembers],

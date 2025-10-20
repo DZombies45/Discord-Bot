@@ -1,13 +1,14 @@
 import { Logger } from "../util.js";
-import { htmlParser  } from "node-html-parser";
-import { Config  } from "../config.json.js";
-import { Utils  } from "../mc.js";
+import htmlParser from "node-html-parser";
+import jsonConfig from "../config.json" with { type: "json" };
+const { Config } = jsonConfig;
+import { Utils } from "../mc.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-import { mcChangelogSch  } from "../schemas/mcChangelogSch.js";
+import mcChangelogSch from "../schemas/mcChangelogSch.js";
 
 export default async (client) => {
   fetch(

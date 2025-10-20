@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
-import { userCaptha } from "../../schemas/userCapchaSch.js";
-import { verifySchema } from "../../schemas/verificationSch.js";
+import userCaptha from "../../schemas/userCapchaSch.js";
+import verifySchema from "../../schemas/verificationSch.js";
 
 export default {
   data: new SlashCommandBuilder()

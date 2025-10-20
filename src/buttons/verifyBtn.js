@@ -6,11 +6,11 @@ import {
   AttachmentBuilder,
 } from "discord.js";
 import { formatDate, Logger } from "../util.js";
-import { userCaptha  } from "../schemas/userCapchaSch.js";
-import { verification  } from "../schemas/verificationSch.js";
-import { generateCaptcha  } from "../utils/getCaptcha.js";
+import userCaptha from "../schemas/userCapchaSch.js";
+import verification from "../schemas/verificationSch.js";
+import generateCaptcha from "../utils/getCaptcha.js";
 
-export default{
+export default {
   customId: "verifyBtn",
   userPermissions: [],
   botPermissions: [],

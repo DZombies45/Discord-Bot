@@ -1,7 +1,7 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import { Logger } from "../util.js";
-import { translate } from "@iamtraction/google-translate";
-import { parseBahasa } from "../utils/getBahasa.js";
+import translate from "@iamtraction/google-translate";
+import parseBahasa from "../utils/getBahasa.js";
 
 export default {
   customId: "translateMdl",

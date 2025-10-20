@@ -5,8 +5,8 @@ import {
   ButtonBuilder,
   ButtonStyle,
 } from "discord.js";
-import { gameChannel } from "../../config.json.js";
-import { commandCannelDeny } from "../../messageConfig.json.js";
+import jsonConfig from "../../config.json" with { type: "json" };const { gameChannel } = jsonConfig;
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { commandCannelDeny } = jsonMessageConfig;
 
 export default {
   data: new SlashCommandBuilder()

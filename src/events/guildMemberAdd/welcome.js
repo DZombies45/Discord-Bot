@@ -1,7 +1,9 @@
 import { EmbedBuilder, AuditLogEvent } from "discord.js";
-import { welcome } from "../../config.json.js";
-import { welcomeMessage } from "../../messageConfig.json.js";
-import { WelcomeLeave  } from "../../utils/welcomeBye.js";
+import jsonConfig from "../../config.json" with { type: "json" };
+const { welcome } = jsonConfig;
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
+const { welcomeMessage } = jsonMessageConfig;
+import WelcomeLeave from "../../utils/welcomeBye.js";
 
 export default async (client, member) => {
   try {

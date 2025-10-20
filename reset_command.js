@@ -1,5 +1,6 @@
 import { REST, Routes } from "discord.js";
-import { clientId, guildId } from "./src/config.json.js";
+import jsonConfig from "./src/config.json";
+const { clientId, guildId } = jsonConfig;
 import "dotenv/config";
 
 const rest = new REST().setToken(process.env.TOKEN);

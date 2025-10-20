@@ -1,7 +1,8 @@
-import { testServerId } from "../../config.json.js";
-import { compareCommands  } from "../../utils/compareCommands.js";
-import { getAppCommand  } from "../../utils/getAppCommands.js";
-import { getLocalCommands  } from "../../utils/getLocalCommands.js";
+import jsonConfig from "../../config.json" with { type: "json" };
+const { testServerId } = jsonConfig;
+import compareCommands from "../../utils/compareCommands.js";
+import getAppCommand from "../../utils/getAppCommands.js";
+import getLocalCommands from "../../utils/getLocalCommands.js";
 import { Logger, TabbleConsole } from "../../util.js";
 
 export default async (client) => {

@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 import { Connect4 } from "discord-gamecord";
 import { getRandomColor } from "../../util.js";
-import { gameChannel } from "../../config.json.js";
-import { commandCannelDeny } from "../../messageConfig.json.js";
+import jsonConfig from "../../config.json" with { type: "json" };const { gameChannel } = jsonConfig;
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { commandCannelDeny } = jsonMessageConfig;
 
 export default {
   data: new SlashCommandBuilder()

@@ -1,6 +1,7 @@
-import { testServerId } from "../../config.json.js";
-import { getAppContextMenu  } from "../../utils/getAppCommands.js";
-import { getLocalContextMenus  } from "../../utils/getLocalContextMenus.js";
+import jsonConfig from "../../config.json" with { type: "json" };
+const { testServerId } = jsonConfig;
+import getAppContextMenu from "../../utils/getAppCommands.js";
+import getLocalContextMenus from "../../utils/getLocalContextMenus.js";
 import { Logger, TabbleConsole } from "../../util.js";
 
 export default async (client) => {

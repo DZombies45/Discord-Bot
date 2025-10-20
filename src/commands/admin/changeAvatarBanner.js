@@ -6,10 +6,8 @@ import {
   PermissionFlagsBits,
 } from "discord.js";
 import { Logger } from "../../util.js";
-import {
-  embedColorSuccess,
-  embedColorError,
-} from "../../messageConfig.json.js";
+import jsonMsgConf from "../../messageConfig.json" with { type: "json" };
+const { embedColorSuccess, embedColorError } = jsonMsgConf;
 
 export default {
   data: new SlashCommandBuilder()

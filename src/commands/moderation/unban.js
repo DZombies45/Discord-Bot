@@ -3,9 +3,9 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { moderationSchema } from "../../schemas/moderationSch.js";
-import { tempBanSchema } from "../../schemas/tempBanSch.js";
-import { mConfig } from "../../messageConfig.json.js";
+import moderationSchema from "../../schemas/moderationSch.js";
+import tempBanSchema from "../../schemas/tempBanSch.js";
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
 import { formatDate } from "../../util.js";
 
 export default {

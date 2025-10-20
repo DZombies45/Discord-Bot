@@ -1,5 +1,5 @@
 import { Logger } from "../../util.js";
-import { express  } from "express";
+import express from "express";
 
 export default async (client) => {
   // Konfigurasi Web Server

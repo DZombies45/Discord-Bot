@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 import { recentMentions, Logger } from "../../util.js";
-import { ghostPingLogChannel } from "../../config.json.js";
+import jsonConfig from "../../config.json" with { type: "json" };const { ghostPingLogChannel } = jsonConfig;
 
 export default async (client, message) => {
   return;

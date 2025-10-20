@@ -1,8 +1,8 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 
 import { Logger } from "../util.js";
-import { verifySchema } from "../schemas/verificationSch.js";
-import { userCodeSch } from "../schemas/userCapchaSch.js";
+import verifySchema from "../schemas/verificationSch.js";
+import userCodeSch from "../schemas/userCapchaSch.js";
 
 export default {
   customId: "submitCaptchaMdl",

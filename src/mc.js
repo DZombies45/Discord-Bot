@@ -1,6 +1,6 @@
-import { htmlParser } from "node-html-parser";
+import htmlParser from "node-html-parser";
 import fs from "fs";
-import { changelogSch } from "./schemas/mcChangelogSch.js";
+import changelogSch from "./schemas/mcChangelogSch.js";
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
@@ -239,4 +239,4 @@ const Utils = {
   },
 };
 
-export default Utils;
+export { Utils };

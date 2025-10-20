@@ -1,12 +1,10 @@
 import { EmbedBuilder } from "discord.js";
-import {
-  developerId,
-  testServerId,
-  moderatorRoleId,
-  commandErrorChannel,
-} from "../../config.json.js";
-import { mConfig  } from "../../messageConfig.json.js";
-import { getLocalCommands  } from "../../utils/getLocalCommands.js";
+import jsonConfig from "../../config.json" with { type: "json" };
+const { developerId, testServerId, moderatorRoleId, commandErrorChannel } =
+  jsonConfig;
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
+const { mConfig } = jsonMessageConfig;
+import getLocalCommands from "../../utils/getLocalCommands.js";
 import { Logger } from "../../util.js";
 
 export default async (client, interaction) => {

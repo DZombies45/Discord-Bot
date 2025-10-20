@@ -1,10 +1,11 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
-import { moderationSchema  } from "../schemas/moderationSch.js";
-import { mConfig  } from "../messageConfig.json.js";
+import moderationSchema from "../schemas/moderationSch.js";
+import jsonMessageConfig from "../messageConfig.json" with { type: "json" };
+const { mConfig } = jsonMessageConfig;
 import { formatDate, testServerId } from "../util.js";
-import { getAppCommand  } from "../utils/getAppCommands.js";
+import getAppCommand from "../utils/getAppCommands.js";
 
-export default{
+export default {
   customId: "banBtn",
   userPermissions: [PermissionFlagsBits.BanMembers],
   botPermissions: [PermissionFlagsBits.BanMembers],

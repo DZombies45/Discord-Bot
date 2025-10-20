@@ -1,5 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
-import { parseBahasa } from "../utils/getBahasa.js";
+import parseBahasa from "../utils/getBahasa.js";
 
 export default {
   commandName: "translate",

@@ -1,11 +1,9 @@
 import { EmbedBuilder } from "discord.js";
-import {
-  developerId,
-  testServerId,
-  moderatorRoleId,
-} from "../../config.json.js";
-import { mConfig  } from "../../messageConfig.json.js";
-import { getAutocomplete  } from "../../utils/getAutocomplete.js";
+import jsonConfig from "../../config.json" with { type: "json" };
+const { developerId, testServerId, moderatorRoleId } = jsonConfig;
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
+const { mConfig } = jsonMessageConfig;
+import getAutocomplete from "../../utils/getAutocomplete.js";
 import { Logger } from "../../util.js";
 
 export default async (client, interaction) => {

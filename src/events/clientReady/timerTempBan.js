@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 import { formatDate, Logger } from "../../util.js";
-import { tempBanSch  } from "../../schemas/tempBanSch.js";
+import tempBanSch from "../../schemas/tempBanSch.js";
 import { startTimeout } from "../../utils/banTimmer.js";
 
 export default async (client) => {

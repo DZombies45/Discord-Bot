@@ -1,6 +1,6 @@
 import { PermissionFlagsBits } from "discord.js";
 import { Logger, parseDate } from "../util.js";
-import { tempBanSch } from "../schemas/tempBanSch.js";
+import tempBanSch from "../schemas/tempBanSch.js";
 
 export default {
   commandName: "unban",

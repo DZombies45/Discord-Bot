@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import { formatDate, Logger } from "../util.js";
-import { tempBanSch  } from "../schemas/tempBanSch.js";
-import { moderationSch  } from "../schemas/moderationSch.js";
+import tempBanSch from "../schemas/tempBanSch.js";
+import moderationSch from "../schemas/moderationSch.js";
 
 let started = false;
 

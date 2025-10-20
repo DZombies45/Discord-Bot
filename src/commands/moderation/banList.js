@@ -3,10 +3,11 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { paginator } from "../../utils/buttonPaginator.js";
-import { mConfig } from "../../messageConfig.json.js";
+import paginator from "../../utils/buttonPaginator.js";
+import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
+const { mConfig } = jsonMessageConfig;
 import { formatDate, parseDate } from "../../util.js";
-import { tempBanSch } from "../../schemas/tempBanSch.js";
+import tempBanSch from "../../schemas/tempBanSch.js";
 
 export default {
   data: new SlashCommandBuilder()

@@ -3,14 +3,13 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { Utils } from "../../mc.js";
-import { Config } from "../../config.json.js";
-const articleSections = {
+import Utils from "../../mc.js";
+import Config from "../../config.json" with { type: "json" };const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,
   JavaSnapshot: 360002267532,
 };
-import { mcChangelogSch } from "../../schemas/mcChangelogSch.js";
+import mcChangelogSch from "../../schemas/mcChangelogSch.js";
 
 export default {
   data: new SlashCommandBuilder()

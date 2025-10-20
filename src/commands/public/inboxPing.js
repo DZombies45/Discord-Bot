@@ -3,7 +3,7 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { inboxPing } from "../../schemas/inboxSch.js";
+import inboxPing from "../../schemas/inboxSch.js";
 import { chunkSubstr } from "../../util.js";
 
 export default {

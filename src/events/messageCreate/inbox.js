@@ -1,5 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
-import { inboxSchema  } from "../../schemas/inboxSch.js";
+import inboxSchema from "../../schemas/inboxSch.js";
 import { trimText } from "../../util.js";
 
 export default async (client, message) => {

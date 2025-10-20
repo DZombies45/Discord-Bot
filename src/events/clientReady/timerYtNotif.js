@@ -1,6 +1,6 @@
 import { Logger } from "../../util.js";
 import ytNotifSch from "../../schemas/ytNotifSch.js";
-import { rssParserObj } from "rss-parser";
+import rssParserObj from "rss-parser";
 const rssParser = new rssParserObj();
 
 export default async (client) => {

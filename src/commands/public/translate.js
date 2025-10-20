@@ -3,7 +3,7 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import { translate } from "@iamtraction/google-translate";
+import translate from "@iamtraction/google-translate";
 
 export default {
   data: new SlashCommandBuilder()

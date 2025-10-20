@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { Logger } from "../../util.js";
-import { QRCode } from "qrcode";
+import QRCode from "qrcode";
 
 export default {
   data: new SlashCommandBuilder()

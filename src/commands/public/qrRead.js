@@ -5,7 +5,7 @@ import {
 } from "discord.js";
 import { Logger } from "../../util.js";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { jsQR } from "jsqr";
+import jsQR from "jsqr";
 
 export default {
   data: new SlashCommandBuilder()

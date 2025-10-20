@@ -8,7 +8,7 @@ import {
   ButtonStyle,
 } from "discord.js";
 import verifySchema from "../../schemas/verificationSch.js";
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
+import mConfig from "../../messageConfig.json" with { type: "json" };
 
 export default {
   data: new SlashCommandBuilder()

@@ -1,7 +1,6 @@
 import { Logger } from "../util.js";
 import htmlParser from "node-html-parser";
-import jsonConfig from "../config.json" with { type: "json" };
-const { Config } = jsonConfig;
+import Config from "../config.json" with { type: "json" };
 import { Utils } from "../mc.js";
 const articleSections = {
   BedrockPreview: 360001185332,

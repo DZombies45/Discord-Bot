@@ -11,8 +11,9 @@ import {
   version,
 } from "discord.js";
 import { Profile } from "discord-arts";
-import { connection } from "mongoose";
-import { os } from "os";
+import mongoosePkg from "mongoose";
+const { connection } = mongoosePkg;
+import os from "os";
 
 export default {
   data: new SlashCommandBuilder()
@@ -321,4 +322,3 @@ async function handleBot(interaction, embed, client) {
 
   return createReply(embed, image);
 }
-

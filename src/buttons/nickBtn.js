@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import moderationSchema from "../schemas/moderationSch.js";
-import jsonMessageConfig from "../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
+import mConfig from "../messageConfig.json" with { type: "json" };
 import { formatDate, Logger } from "../util.js";
 
 export default {

@@ -3,8 +3,6 @@ import {
   PermissionFlagsBits,
   EmbedBuilder,
 } from "discord.js";
-import jsonConfig from "../../config.json" with { type: "json" };const { config } = jsonConfig;
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
 import { Logger } from "../../util.js";
 
 export default {

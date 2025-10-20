@@ -2,14 +2,13 @@ import { EmbedBuilder } from "discord.js";
 import jsonConfig from "../../config.json" with { type: "json" };
 const { developerId, testServerId, moderatorRoleId, commandErrorChannel } =
   jsonConfig;
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
-const { mConfig } = jsonMessageConfig;
+import mConfig from "../../messageConfig.json" with { type: "json" };
 import getButtons from "../../utils/getButtons.js";
 import { Logger } from "../../util.js";
 
 export default async (client, interaction) => {
   if (!interaction.isButton()) return;
-  const buttons = getButtons();
+  const buttons = await getButtons();
 
   try {
     const buttonObject = buttons.find(

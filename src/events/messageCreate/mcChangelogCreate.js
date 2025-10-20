@@ -2,8 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import bedrockCreate from "../../minecraft/mcbeChangelog.js";
 import javaCreate from "../../minecraft/mcjavaChangelog.js";
 import { Utils } from "../../mc.js";
-import jsonConfig from "../../config.json" with { type: "json" };
-const { Config } = jsonConfig;
+import Config from "../../config.json" with { type: "json" };
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,

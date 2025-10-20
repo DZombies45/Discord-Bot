@@ -1,14 +1,12 @@
 import { EmbedBuilder } from "discord.js";
 import jsonConfig from "../../config.json" with { type: "json" };
 const { developerId, testServerId, moderatorRoleId } = jsonConfig;
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
-const { mConfig } = jsonMessageConfig;
 import getAutocomplete from "../../utils/getAutocomplete.js";
 import { Logger } from "../../util.js";
 
 export default async (client, interaction) => {
   if (!interaction.isAutocomplete()) return;
-  const localAutocomplete = getAutocomplete();
+  const localAutocomplete = await getAutocomplete();
 
   try {
     const autocompleteObject = localAutocomplete.find(

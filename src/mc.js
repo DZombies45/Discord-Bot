@@ -1,5 +1,7 @@
 import htmlParser from "node-html-parser";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import changelogSch from "./schemas/mcChangelogSch.js";
 const articleSections = {
   BedrockPreview: 360001185332,

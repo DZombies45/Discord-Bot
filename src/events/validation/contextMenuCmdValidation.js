@@ -2,14 +2,13 @@ import { EmbedBuilder } from "discord.js";
 import jsonConfig from "../../config.json" with { type: "json" };
 const { developerId, testServerId, moderatorRoleId, commandErrorChannel } =
   jsonConfig;
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
-const { mConfig } = jsonMessageConfig;
+import mConfig from "../../messageConfig.json" with { type: "json" };
 import getLocalContextMenus from "../../utils/getLocalContextMenus.js";
 import { Logger } from "../../util.js";
 
 export default async (client, interaction) => {
   if (!interaction.isContextMenuCommand()) return;
-  const localContextMenus = getLocalContextMenus();
+  const localContextMenus = await getLocalContextMenus();
 
   try {
     const contextMenuObject = localContextMenus.find(

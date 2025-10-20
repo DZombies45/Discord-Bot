@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
   ChannelType,
 } from "discord.js";
-import { rssParserObj } from "rss-parser";
+import rssParserObj from "rss-parser";
 import ytNotifSch from "../../schemas/ytNotifSch.js";
 const rssParser = new rssParserObj();
 import { Logger } from "../../util.js";

@@ -4,8 +4,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import paginator from "../../utils/buttonPaginator.js";
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };
-const { mConfig } = jsonMessageConfig;
+import mConfig from "../../messageConfig.json" with { type: "json" };
 import { formatDate, parseDate } from "../../util.js";
 import tempBanSch from "../../schemas/tempBanSch.js";
 

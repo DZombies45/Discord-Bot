@@ -4,8 +4,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { Utils } from "../../mc.js";
-import jsonConfig from "../../config.json" with { type: "json" };
-const { Config } = jsonConfig;
+import Config from "../../config.json" with { type: "json" };
 const articleSections = {
   BedrockPreview: 360001185332,
   BedrockRelease: 360001186971,

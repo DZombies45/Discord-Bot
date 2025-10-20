@@ -8,7 +8,7 @@ import {
   ActionRowBuilder,
 } from "discord.js";
 import moderationSchema from "../schemas/moderationSch.js";
-import jsonMessageConfig from "../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
+import mConfig from "../messageConfig.json" with { type: "json" };
 
 export default {
   data: new ContextMenuCommandBuilder()

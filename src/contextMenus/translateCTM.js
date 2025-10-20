@@ -12,7 +12,7 @@ export default {
   data: new ContextMenuCommandBuilder()
     .setName("Translate")
     .setType(ApplicationCommandType.Message),
-  deleted: true,
+  deleted: false,
   reload: true,
   userPermissions: [],
   botPermissions: [],

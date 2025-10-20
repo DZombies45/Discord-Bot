@@ -5,7 +5,7 @@ import {
 } from "discord.js";
 import moderationSchema from "../../schemas/moderationSch.js";
 import tempBanSchema from "../../schemas/tempBanSch.js";
-import jsonMessageConfig from "../../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
+import mConfig from "../../messageConfig.json" with { type: "json" };
 import { formatDate } from "../../util.js";
 
 export default {

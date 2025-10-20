@@ -2,7 +2,7 @@ import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import { formatDate, parseDuration, Logger } from "../util.js";
 import moderationSch from "../schemas/moderationSch.js";
 import tempBanSch from "../schemas/tempBanSch.js";
-import jsonMessageConfig from "../messageConfig.json" with { type: "json" };const { mConfig } = jsonMessageConfig;
+import mConfig from "../messageConfig.json" with { type: "json" };
 
 export default {
   customId: "tempMuteMdl",

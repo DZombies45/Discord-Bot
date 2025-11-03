@@ -1,9 +1,68 @@
-const formatDate = (d = Date.now()) => {
-  const date = new Date(d);
-  const [month, day, year] = date.toLocaleDateString().split("/");
-  const time = date.toLocaleTimeString();
-  return `${year}-${month}-${day} ${time}`;
+import fs from "fs";
+import pino from "pino";
+import chalk from "chalk";
+import { format } from "date-fns";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// === Buat folder logs ===
+const logDir = path.join(__dirname, "../logs");
+if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
+
+// === Nama file log berdasarkan tanggal ===
+const logFile = path.join(
+  logDir,
+  `bot-${format(new Date(), "yyyy-MM-dd")}.log`,
+);
+
+// === Pino setup ===
+const fileStream = pino.destination({
+  dest: logFile,
+  sync: false, // async write = lebih ringan
+});
+
+const fileLogger = pino(
+  {
+    level: "info",
+    base: null, // biar log ringkas
+    timestamp: pino.stdTimeFunctions.isoTime,
+  },
+  fileStream,
+);
+
+// === Warna CLI helper ===
+const COLORS = {
+  info: 33,
+  debug: 36,
+  warning: 33,
+  success: 32,
+  error: 31,
 };
+
+function formatDate(date = Date.now()) {
+  return format(date, "yyyy-MM-dd HH:mm:ss");
+}
+
+// === Logger utama ===
+const Logger = {
+  _log(name, color, ...data) {
+    const line = `[${formatDate(new Date())}] [${name.toUpperCase()}] - ${data.join(" ")}`;
+    console.log(`\x1b[${color}m${line}\x1b[0m`);
+    fileLogger.info({ name, message: data.join(" ") });
+  },
+  log: (...data) => Logger.info(...data),
+  info: (...data) => Logger._log("INFO", COLORS.info, ...data),
+  debug: (...data) => Logger._log("DEBUG", COLORS.debug, ...data),
+  warn: (...data) => Logger._log("WARN", COLORS.warning, ...data),
+  success: (...data) => Logger._log("SUCCESS", COLORS.success, ...data),
+  error: (...data) => Logger._log("ERROR", COLORS.error, ...data),
+  release: (releaseDate, ...data) =>
+    Logger._log("RELEASE", COLORS.debug, releaseDate, ...data),
+};
+
 function parseDate(time) {
   let duration = "";
   let Y, M, D, h, m, s;
@@ -40,6 +99,7 @@ function parseDate(time) {
   }
   return duration;
 }
+
 function parseDuration(time) {
   const regex = /(\d+)([smhDMY])/g;
   let duration = 0;
@@ -72,31 +132,7 @@ function parseDuration(time) {
   return duration;
 }
 
-import { startDate } from "../index.js";
 const recentMentions = new Map();
-import fs from "fs";
-
-const Logger = {
-  _log: (name, date, color, ...data) => {
-    console.log(
-      "\x1B[0m[" +
-        formatDate(date) +
-        "] \x1B[" +
-        color +
-        "m\x1B[1m[" +
-        name.toUpperCase() +
-        "] \x1B[0m-",
-      ...data,
-    );
-  },
-  log: (...data) => Logger._log("info", Date.now(), 33, ...data),
-  debug: (...data) => Logger._log("debug", Date.now(), 33, ...data),
-  warn: (...data) => Logger._log("warning", Date.now(), 33, ...data),
-  success: (...data) => Logger._log("success", Date.now(), 32, ...data),
-  release: (releaseDate, ...data) =>
-    Logger._log("release", releaseDate, 32, ...data),
-  error: (...data) => Logger._log("errror", Date.now(), 31, ...data),
-};
 
 const trimText = (text, maxLength, addedText = "...") => {
   if (text.length > maxLength)

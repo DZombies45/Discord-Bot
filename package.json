@@ -16,6 +16,7 @@
     "@iamtraction/google-translate": "^2.0.1",
     "@napi-rs/canvas": "^0.1.70",
     "chalk": "^5.6.2",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "discord-arts": "^0.7.1",
     "discord-gamecord": "^4.4.2",
@@ -26,6 +27,7 @@
     "jsqr": "^1.4.0",
     "mongoose": "^8.14.1",
     "node-html-parser": "^7.0.1",
+    "pino": "^10.1.0",
     "qrcode": "^1.5.4",
     "rss-parser": "^3.13.0"
   }

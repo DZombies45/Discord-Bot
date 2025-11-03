@@ -21,7 +21,7 @@ export default {
       opt.setName("qr-code").setDescription("uploaded qr image to read"),
     )
     .toJSON(),
-  deleted: false,
+  deleted: true,
   devOnly: false,
   modOnly: false,
   userPermissions: [],

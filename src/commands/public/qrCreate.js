@@ -20,7 +20,7 @@ export default {
         .setRequired(true),
     )
     .toJSON(),
-  deleted: false,
+  deleted: true,
   devOnly: false,
   modOnly: false,
   userPermissions: [],

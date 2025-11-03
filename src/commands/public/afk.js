@@ -31,7 +31,7 @@ export default {
   userPermissions: [],
   botPermissions: [],
   run: async (client, interaction) => {
-    const { options, user, client, guild } = interaction;
+    const { options, user, guild } = interaction;
 
     const sub = options.getSubcommand();
     const reason = options.getString("reason") || "No reason provided.";

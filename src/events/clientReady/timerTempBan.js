@@ -3,6 +3,9 @@ import { formatDate, Logger } from "../../util.js";
 import tempBanSch from "../../schemas/tempBanSch.js";
 import { startTimeout } from "../../utils/banTimmer.js";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default async (client) => {
   async function tempBan(data) {
     let delay = data.endTime - Date.now();

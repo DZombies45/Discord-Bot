@@ -9,6 +9,9 @@ import ytNotifSch from "../../schemas/ytNotifSch.js";
 const rssParser = new rssParserObj();
 import { Logger } from "../../util.js";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default {
   data: new SlashCommandBuilder()
     .setName("yt-remove")

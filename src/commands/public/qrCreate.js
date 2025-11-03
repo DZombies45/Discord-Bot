@@ -6,6 +6,9 @@ import {
 import { Logger } from "../../util.js";
 import QRCode from "qrcode";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default {
   data: new SlashCommandBuilder()
     .setName("qrc")
@@ -23,14 +26,6 @@ export default {
   userPermissions: [],
   botPermissions: [],
   run: async (client, interaction) => {
-    if (!process.env.QRAPI) {
-      const embed = new EmbedBuilder()
-        .setColor("#bf2c04")
-        .setDescription("there is an error, try again later");
-      await interaction.editReply({ embeds: [embed] });
-      Logger.error(`from ${__filename} :\nno qr api found`);
-      return;
-    }
     const { options, guildId, guild, member } = interaction;
     const text = encodeURIComponent(options.getString("text"));
 

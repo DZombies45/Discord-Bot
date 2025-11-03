@@ -6,6 +6,9 @@ import {
 import { Logger } from "../../util.js";
 const warna = { error: "#f13131", aman: "#31f158", notaman: "#b221f1" };
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default {
   data: new SlashCommandBuilder()
     .setName("check")

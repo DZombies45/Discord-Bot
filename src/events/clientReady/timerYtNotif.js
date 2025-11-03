@@ -3,6 +3,9 @@ import ytNotifSch from "../../schemas/ytNotifSch.js";
 import rssParserObj from "rss-parser";
 const rssParser = new rssParserObj();
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default async (client) => {
   async function checkYt() {
     try {

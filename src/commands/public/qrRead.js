@@ -7,6 +7,9 @@ import { Logger } from "../../util.js";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import jsQR from "jsqr";
 
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
 export default {
   data: new SlashCommandBuilder()
     .setName("qrr")

@@ -11,14 +11,14 @@ export default {
   botPermissions: [],
   devOnly: true,
   run: async (client, interaction) => {
-    const sent = await interaction.reply({
-      content: "Pinging...",
-      fetchReply: true,
-    });
+    await interaction.reply("Pinging...");
+
+    const sent = await interaction.fetchReply();
+
     await interaction.editReply(
-      `Roundtrip latency: ${
+      `> Roundtrip latency: ${
         sent.createdTimestamp - interaction.createdTimestamp
-      }ms\nWebsocket heartbeat: ${client.ws.ping}ms`,
+      }ms\n> Websocket heartbeat: ${client.ws.ping}ms`,
     );
   },
 };

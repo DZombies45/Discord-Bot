@@ -1,0 +1,723 @@
+{
+  "generatedAt": "2025-12-05T17:42:51.469Z",
+  "dependencies": {
+    "@clack/prompts": [
+      {
+        "file": "gen.cli.js",
+        "line": 5,
+        "code": "import { select, text, confirm, intro, outro, isCancel } from \"@clack/prompts\";"
+      }
+    ],
+    "@iamtraction/google-translate": [
+      {
+        "file": "src/commands/public/translate.js",
+        "line": 6,
+        "code": "import translate from \"@iamtraction/google-translate\";"
+      },
+      {
+        "file": "src/modals/translateMdl.js",
+        "line": 3,
+        "code": "import translate from \"@iamtraction/google-translate\";"
+      }
+    ],
+    "@napi-rs/canvas": [
+      {
+        "file": "src/commands/public/qr.js",
+        "line": 8,
+        "code": "import { createCanvas, loadImage } from \"@napi-rs/canvas\";"
+      },
+      {
+        "file": "src/commands/public/qrRead.js",
+        "line": 7,
+        "code": "import { createCanvas, loadImage } from \"@napi-rs/canvas\";"
+      },
+      {
+        "file": "src/utils/getCaptcha.js",
+        "line": 1,
+        "code": "import { createCanvas, GlobalFonts } from \"@napi-rs/canvas\";"
+      },
+      {
+        "file": "src/utils/welcomeBye.js",
+        "line": 1,
+        "code": "import { createCanvas, loadImage, GlobalFonts } from \"@napi-rs/canvas\";"
+      },
+      {
+        "file": "index.js",
+        "line": 4,
+        "code": "import { GlobalFonts } from \"@napi-rs/canvas\";"
+      }
+    ],
+    "chalk": [
+      {
+        "file": "src/util.js",
+        "line": 3,
+        "code": "import chalk from \"chalk\";"
+      },
+      {
+        "file": "gen.cli.js",
+        "line": 4,
+        "code": "import chalk from \"chalk\";"
+      },
+      {
+        "file": "log.js",
+        "line": 4,
+        "code": "import chalk from \"chalk\";"
+      }
+    ],
+    "date-fns": [
+      {
+        "file": "src/util.js",
+        "line": 4,
+        "code": "import { format } from \"date-fns\";"
+      }
+    ],
+    "dayjs": [],
+    "discord-arts": [
+      {
+        "file": "src/commands/.no/Test2.js",
+        "line": 2,
+        "code": "const { profileImage } = require(\"discord-arts\");"
+      },
+      {
+        "file": "src/commands/.no/testCmd.js",
+        "line": 2,
+        "code": "const { profileImage } = require(\"discord-arts\");"
+      },
+      {
+        "file": "src/commands/misc/info.js",
+        "line": 13,
+        "code": "import { Profile } from \"discord-arts\";"
+      }
+    ],
+    "discord-gamecord": [
+      {
+        "file": "src/commands/fun/2048.js",
+        "line": 2,
+        "code": "import { TwoZeroFourEight } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/3jadi.js",
+        "line": 2,
+        "code": "import { Connect4 } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/connect4.js",
+        "line": 2,
+        "code": "import { Connect4 } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/findemoji.js",
+        "line": 2,
+        "code": "import { FindEmoji } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/hangman.js",
+        "line": 2,
+        "code": "import { Hangman } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/matchgame.js",
+        "line": 2,
+        "code": "import { MatchPairs } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/minesweeper.js",
+        "line": 2,
+        "code": "import { Minesweeper } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/rps.js",
+        "line": 2,
+        "code": "import { RockPaperScissors } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/slots.js",
+        "line": 2,
+        "code": "import { Slots } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/snake.js",
+        "line": 2,
+        "code": "import { Snake } from \"discord-gamecord\";"
+      },
+      {
+        "file": "src/commands/fun/wouldyourather.js",
+        "line": 2,
+        "code": "import { WouldYouRather } from \"discord-gamecord\";"
+      }
+    ],
+    "discord-html-transcripts": [],
+    "discord.js": [
+      {
+        "file": "src/autocompletes/changelog.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/autocompletes/lang.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/autocompletes/unban.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/addRoleBtn.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/banBtn.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/cancelBtn.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/kickBtn.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/nickBtn.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/otherBtn.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/punishmentBtn.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/submitCaptchaBtn.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/tempBanBtn.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/tempMuteBtn.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/buttons/verifyBtn.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/.no/Test2.js",
+        "line": 1,
+        "code": "const { SlashCommandBuilder, PermissionFlagsBits } = require(\"discord.js\");"
+      },
+      {
+        "file": "src/commands/.no/help.js",
+        "line": 7,
+        "code": "} = require(\"discord.js\");"
+      },
+      {
+        "file": "src/commands/.no/testCmd.js",
+        "line": 1,
+        "code": "const { SlashCommandBuilder, PermissionFlagsBits } = require(\"discord.js\");"
+      },
+      {
+        "file": "src/commands/admin/getMsg.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/admin/mcChangelog.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/admin/moderateSystem.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/admin/verification.js",
+        "line": 9,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/2048.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/3jadi.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/8ball.js",
+        "line": 7,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/connect4.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/findemoji.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/hangman.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/matchgame.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/minesweeper.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/rps.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, ButtonStyle } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/slots.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/snake.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/fun/wouldyourather.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/misc/emojify.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/misc/help.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/misc/info.js",
+        "line": 12,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/misc/ping.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/misc/verify.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/banList.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/clear.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/inviteList.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/moderate.js",
+        "line": 9,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/unban.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/ytNotif.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/moderation/ytNotifHapus.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/afk.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/avatar.js",
+        "line": 8,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/changelog.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/checkLinkVirus.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/inboxPing.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/qr.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/qrCreate.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/qrRead.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/commands/public/translate.js",
+        "line": 5,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/contextMenus/modetationCTM.js",
+        "line": 9,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/contextMenus/translateCTM.js",
+        "line": 9,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "src/events/clientReady/consoleLog.js",
+        "line": 2,
+        "code": "import { ActivityType } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/clientReady/timerTempBan.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/guildAuditLogEntryCreate/ghostPing.js",
+        "line": 1,
+        "code": "import { EmbedBuilder, AuditLogEvent } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/guildMemberAdd/welcome.js",
+        "line": 1,
+        "code": "import { EmbedBuilder, AuditLogEvent } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/guildMemberRemove/goodbye.js",
+        "line": 1,
+        "code": "import { EmbedBuilder, AuditLogEvent } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/messageCreate/inbox.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/messageCreate/mcChangelogCreate.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/messageCreate/pingHelp.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/messageDelete/Test.js",
+        "line": 1,
+        "code": "import { EmbedBuilder, AuditLogEvent } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/messageDelete/ghostPing.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/validation/autoCompleteCommandValidation.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/validation/buttonValidation.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/validation/chatInputCommandValidator.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/events/validation/contextMenuCmdValidation.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/modals/addRoleMdl.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/modals/submitCaptchaMdl.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/modals/tempBanMdl.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/modals/tempMuteMdl.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/modals/translateMdl.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/utils/banTimmer.js",
+        "line": 1,
+        "code": "import { EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "src/utils/buttonPaginator.js",
+        "line": 6,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "templates/autocomplite.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "templates/button.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "templates/command.js",
+        "line": 1,
+        "code": "import { SlashCommandBuilder, PermissionFlagsBits } from \"discord.js\";"
+      },
+      {
+        "file": "templates/contextMenus.js",
+        "line": 4,
+        "code": "} from \"discord.js\";"
+      },
+      {
+        "file": "templates/modal.js",
+        "line": 1,
+        "code": "import { PermissionFlagsBits, EmbedBuilder } from \"discord.js\";"
+      },
+      {
+        "file": "index.js",
+        "line": 1,
+        "code": "import { Client, Events, GatewayIntentBits } from \"discord.js\";"
+      },
+      {
+        "file": "log.js",
+        "line": 3,
+        "code": "import { EmbedBuilder, WebhookClient } from \"discord.js\";"
+      },
+      {
+        "file": "reset_command.js",
+        "line": 1,
+        "code": "import { REST, Routes } from \"discord.js\";"
+      }
+    ],
+    "dotenv": [],
+    "express": [
+      {
+        "file": "src/events/clientReady/express.js",
+        "line": 2,
+        "code": "import express from \"express\";"
+      }
+    ],
+    "jsqr": [
+      {
+        "file": "src/commands/public/qr.js",
+        "line": 9,
+        "code": "import jsQR from \"jsqr\";"
+      },
+      {
+        "file": "src/commands/public/qrRead.js",
+        "line": 8,
+        "code": "import jsQR from \"jsqr\";"
+      }
+    ],
+    "mongoose": [
+      {
+        "file": "src/commands/misc/info.js",
+        "line": 14,
+        "code": "import mongoosePkg from \"mongoose\";"
+      },
+      {
+        "file": "src/events/clientReady/consoleLog.js",
+        "line": 3,
+        "code": "import { mongoose  } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/afkSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/ghostPingSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/inboxSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/mcChangelogSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/moderationSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/tempBanSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/userCapchaSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/verificationSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "src/schemas/ytNotifSch.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      },
+      {
+        "file": "templates/schema.js",
+        "line": 1,
+        "code": "import { model, Schema } from \"mongoose\";"
+      }
+    ],
+    "node-html-parser": [
+      {
+        "file": "src/commands/admin/mcChangelog.js",
+        "line": 14,
+        "code": "import htmlParser from \"node-html-parser\";"
+      },
+      {
+        "file": "src/events/messageCreate/mcChangelogCreate.js",
+        "line": 12,
+        "code": "import htmlParser from \"node-html-parser\";"
+      },
+      {
+        "file": "src/mc.js",
+        "line": 1,
+        "code": "import htmlParser from \"node-html-parser\";"
+      },
+      {
+        "file": "src/minecraft/mcbeChangelog.js",
+        "line": 2,
+        "code": "import htmlParser from \"node-html-parser\";"
+      },
+      {
+        "file": "src/minecraft/mcjavaChangelog.js",
+        "line": 2,
+        "code": "import htmlParser from \"node-html-parser\";"
+      }
+    ],
+    "pino": [
+      {
+        "file": "src/util.js",
+        "line": 2,
+        "code": "import pino from \"pino\";"
+      }
+    ],
+    "qrcode": [
+      {
+        "file": "src/commands/public/qr.js",
+        "line": 7,
+        "code": "import QRCode from \"qrcode\";"
+      },
+      {
+        "file": "src/commands/public/qrCreate.js",
+        "line": 7,
+        "code": "import QRCode from \"qrcode\";"
+      }
+    ],
+    "rss-parser": [
+      {
+        "file": "src/commands/moderation/ytNotif.js",
+        "line": 7,
+        "code": "import rssParserObj from \"rss-parser\";"
+      },
+      {
+        "file": "src/commands/moderation/ytNotifHapus.js",
+        "line": 7,
+        "code": "import rssParserObj from \"rss-parser\";"
+      },
+      {
+        "file": "src/events/clientReady/timerYtNotif.js",
+        "line": 3,
+        "code": "import rssParserObj from \"rss-parser\";"
+      }
+    ]
+  }
+}

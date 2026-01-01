@@ -63,7 +63,6 @@ export default {
             );
           await interaction.reply({
             embeds: [embed],
-            fetchReply: true,
             flags: 64,
           });
 

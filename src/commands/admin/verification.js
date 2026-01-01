@@ -49,7 +49,7 @@ export default {
   userPermissions: [PermissionFlagsBits.Administrator],
   botPermissions: [PermissionFlagsBits.ManageRoles],
   devOnly: true,
-  deleted: false,
+  deleted: true,
   run: async (client, interaction) => {
     const { options, guildId, guild } = interaction;
     const subCmd = options.getSubcommand();

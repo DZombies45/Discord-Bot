@@ -9,7 +9,7 @@ const articleSections = {
 };
 import mcChangelogSch from "../schemas/mcChangelogSch.js";
 
-export default async (client) => {
+export default async (client, messageArr) => {
   fetch(
     "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json",
     {
@@ -34,12 +34,11 @@ export default async (client) => {
           const version = Utils.getMCVersion(latestBedrockPreview.name);
           const thumbnail = Utils.extractImage(latestBedrockPreview.body);
 
-          Utils.Logger.release(
-            latestBedrockPreview.updated_at,
-            latestBedrockPreview.name,
-          );
+          // Utils.Logger.release(
+          //   latestBedrockPreview.updated_at,
+          //   latestBedrockPreview.name,
+          // );
           article.type = "preview-articles";
-          Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -82,12 +81,11 @@ export default async (client) => {
             ) &&
               latestBedrockStable.body.includes("only to address a top crash"));
 
-          Utils.Logger.release(
-            latestBedrockStable.updated_at,
-            latestBedrockStable.name,
-          );
+          // Utils.Logger.release(
+          //   latestBedrockStable.updated_at,
+          //   latestBedrockStable.name,
+          // );
           article.type = "stable-articles";
-          Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -95,21 +93,122 @@ export default async (client) => {
             name,
             version,
             thumbnail,
-            Config.tags.Stable,
+            data.type === "stable" ? Config.tags.Stable : Config.tags.Preview,
             articleSections.BedrockRelease,
             isHotfix,
           );
 
-          article.type = "stable-articles";
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
         }
+
+        const data = parseVersionInfo(messageArr[0]);
+        const msg = messageArr.join("\n");
+        const article = {
+          version: Utils.getMCVersion(messageArr[0]),
+          thumbnail: Utils.extractImage(msg),
+          article: {
+            id:
+              data.type === "stable"
+                ? latestBedrockStable.id + 1
+                : latestBedrockPreview.id + 1,
+            url: messageArr[1],
+            title: messageArr[0].replace("#", "").trim(),
+            created_at: Date.now(),
+            updated_at: Date.now(),
+            edited_at: Date.now(),
+          },
+        };
+
+        const name = Utils.getVersion(messageArr[0]);
+        const version = article.version;
+        const thumbnail = article.thumbnail;
+        const isHotfix =
+          msg.includes(
+            "A new update has been released to address some issues that were introduced",
+          ) ||
+          msg.includes("A new update has been released for") ||
+          (msg.includes("A new update has been released for") &&
+            msg.includes("only to address a top crash"));
+
+        article.type = "stable-articles";
+        // Logger.debug(article);
+        if (!article.version) return;
+        createPost(
+          client,
+          article,
+          name,
+          version,
+          thumbnail,
+          (dats.type = "stable" ? Config.tags.Stable : Config.tags.Preview),
+          data.type === "stable"
+            ? articleSections.BedrockRelease
+            : articleSections.BedrockPreview,
+          isHotfix,
+        );
+
+        await mcChangelogSch.create(article);
+        await new Promise((res) => setTimeout(() => res(), 1500));
       } catch (e) {
         Utils.Logger.error(e);
       }
     })
     .catch(() => {});
 };
+
+function parseVersionInfo(text) {
+  // Regex yang lebih komprehensif untuk menangani berbagai format
+  const versionRegex =
+    /\b(?:beta|snapshot|rc)?\s*(\d+(?:\.\d+)*(?:\.\d+[a-z]?)?)\s*(beta|snapshot|rc)?(?:\s*(\d+))?\b/gi;
+
+  const results = [];
+  let match;
+
+  while ((match = versionRegex.exec(text)) !== null) {
+    const fullMatch = match[0];
+    const version = match[1]; // Versi numerik
+    let type = match[2] || "stable"; // Tipe atau 'stable'
+    const subVersion = match[3]; // Angka tambahan (1, 2, 3, dll)
+
+    // Cek tipe yang muncul sebelum versi
+    if (!match[2]) {
+      if (fullMatch.toLowerCase().includes("beta")) {
+        type = "beta";
+      } else if (fullMatch.toLowerCase().includes("snapshot")) {
+        type = "snapshot";
+      } else if (fullMatch.toLowerCase().includes("rc")) {
+        type = "rc";
+      }
+    }
+
+    // Clean up type
+    type = type.toLowerCase().trim();
+
+    // Format version dengan subVersion jika ada
+    let formattedVersion = version;
+    let formattedType = type;
+
+    if (subVersion) {
+      if (type === "rc") {
+        formattedType = `rc${subVersion}`;
+      } else if (type === "snapshot") {
+        formattedType = `snapshot${subVersion}`;
+      } else if (type === "beta") {
+        formattedType = `beta${subVersion}`;
+      }
+    }
+
+    results.push({
+      original: fullMatch.trim(),
+      version: version,
+      type: type,
+      subVersion: subVersion || null,
+      formatted: `${formattedVersion}-${formattedType}`,
+    });
+  }
+
+  return results;
+}
 
 const createPost = (
   client,

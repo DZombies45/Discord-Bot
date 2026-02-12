@@ -9,7 +9,7 @@ const articleSections = {
 };
 import mcChangelogSch from "../schemas/mcChangelogSch.js";
 
-export default async (client) => {
+export default async (client, messageArr) => {
   fetch(
     "https://feedback.minecraft.net/api/v2/help_center/en-us/articles.json",
     {
@@ -95,6 +95,52 @@ export default async (client) => {
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
         }
+
+        const data = parseVersionInfo(messageArr[0]);
+        const msg = messageArr.join("\n");
+        const article = {
+          version: Utils.getMCVersion(messageArr[0]),
+          thumbnail: Utils.extractImage(msg),
+          article: {
+            id:
+              data.type === "stable"
+                ? latestBedrockStable.id + 1
+                : latestJavaSnapshot.id + 1,
+            url: messageArr[1],
+            title: messageArr[0].replace("#", "").trim(),
+            created_at: Date.now(),
+            updated_at: Date.now(),
+            edited_at: Date.now(),
+          },
+        };
+
+        article.type =
+          data.type === "stable"
+            ? "java-stable-articles"
+            : "java-snapshot-articles";
+        const name = Utils.getVersion(messageArr[0]);
+        const version = article.version;
+        const thumbnail = article.thumbnail;
+        // Logger.debug(article);
+        if (!article.version) return;
+        createPost(
+          client,
+          article,
+          name,
+          version,
+          thumbnail,
+          data.type === "stable"
+            ? Config.javaTags.Stable
+            : Config.javaTags.Snapshot,
+          data.type === "stable"
+            ? articleSections.BedrockRelease
+            : articleSections.JavaSnapshot,
+          messageArr[0]?.match(/(Release Candidate|Pre-Release) \d*/gi)?.[0] ||
+            false,
+        );
+
+        await mcChangelogSch.create(article);
+        await new Promise((res) => setTimeout(() => res(), 1500));
       } catch (e) {
         Utils.Logger.error(e.stack);
       }

@@ -28,6 +28,16 @@ export default async (client, messageArr) => {
           "article.id": latestBedrockPreview?.id || 10000000,
         });
 
+        const latestBedrockStable = data.articles.find(
+          (a) =>
+            a.section_id == articleSections.BedrockRelease &&
+            !a.title.includes("Java Edition"),
+        );
+        const bedrockReleases = await mcChangelogSch.findOne({
+          type: "stable-articles",
+          "article.id": latestBedrockStable?.id || 10000000,
+        });
+
         if (latestBedrockPreview && !bedrockPreviews) {
           const article = Utils.formatArticle(latestBedrockPreview);
           const name = Utils.getVersion(latestBedrockPreview.name);
@@ -52,19 +62,7 @@ export default async (client, messageArr) => {
 
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
-        }
-
-        const latestBedrockStable = data.articles.find(
-          (a) =>
-            a.section_id == articleSections.BedrockRelease &&
-            !a.title.includes("Java Edition"),
-        );
-        const bedrockReleases = await mcChangelogSch.findOne({
-          type: "stable-articles",
-          "article.id": latestBedrockStable?.id || 10000000,
-        });
-
-        if (latestBedrockStable && !bedrockReleases) {
+        } else if (latestBedrockStable && !bedrockReleases) {
           const article = Utils.formatArticle(latestBedrockStable);
           const name = Utils.getVersion(latestBedrockStable.name);
           const version = Utils.getMCVersion(latestBedrockStable.name);
@@ -100,55 +98,55 @@ export default async (client, messageArr) => {
 
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+        } else {
+          const data = parseVersionInfo(messageArr[0]);
+          const msg = messageArr.join("\n");
+          const article = {
+            version: Utils.getMCVersion(messageArr[0]),
+            thumbnail: Utils.extractImage(msg),
+            article: {
+              id:
+                data.type === "stable"
+                  ? latestBedrockStable.id + 1
+                  : latestBedrockPreview.id + 1,
+              url: messageArr[1],
+              title: messageArr[0].replace("#", "").trim(),
+              created_at: Date.now(),
+              updated_at: Date.now(),
+              edited_at: Date.now(),
+            },
+          };
+
+          const name = Utils.getVersion(messageArr[0]);
+          const version = article.version;
+          const thumbnail = article.thumbnail;
+          const isHotfix =
+            msg.includes(
+              "A new update has been released to address some issues that were introduced",
+            ) ||
+            msg.includes("A new update has been released for") ||
+            (msg.includes("A new update has been released for") &&
+              msg.includes("only to address a top crash"));
+
+          article.type = "stable-articles";
+          // Logger.debug(article);
+          if (!article.version) return;
+          createPost(
+            client,
+            article,
+            name,
+            version,
+            thumbnail,
+            (dats.type = "stable" ? Config.tags.Stable : Config.tags.Preview),
+            data.type === "stable"
+              ? articleSections.BedrockRelease
+              : articleSections.BedrockPreview,
+            isHotfix,
+          );
+
+          await mcChangelogSch.create(article);
+          await new Promise((res) => setTimeout(() => res(), 1500));
         }
-
-        const data = parseVersionInfo(messageArr[0]);
-        const msg = messageArr.join("\n");
-        const article = {
-          version: Utils.getMCVersion(messageArr[0]),
-          thumbnail: Utils.extractImage(msg),
-          article: {
-            id:
-              data.type === "stable"
-                ? latestBedrockStable.id + 1
-                : latestBedrockPreview.id + 1,
-            url: messageArr[1],
-            title: messageArr[0].replace("#", "").trim(),
-            created_at: Date.now(),
-            updated_at: Date.now(),
-            edited_at: Date.now(),
-          },
-        };
-
-        const name = Utils.getVersion(messageArr[0]);
-        const version = article.version;
-        const thumbnail = article.thumbnail;
-        const isHotfix =
-          msg.includes(
-            "A new update has been released to address some issues that were introduced",
-          ) ||
-          msg.includes("A new update has been released for") ||
-          (msg.includes("A new update has been released for") &&
-            msg.includes("only to address a top crash"));
-
-        article.type = "stable-articles";
-        // Logger.debug(article);
-        if (!article.version) return;
-        createPost(
-          client,
-          article,
-          name,
-          version,
-          thumbnail,
-          (dats.type = "stable" ? Config.tags.Stable : Config.tags.Preview),
-          data.type === "stable"
-            ? articleSections.BedrockRelease
-            : articleSections.BedrockPreview,
-          isHotfix,
-        );
-
-        await mcChangelogSch.create(article);
-        await new Promise((res) => setTimeout(() => res(), 1500));
       } catch (e) {
         Utils.Logger.error(e);
       }

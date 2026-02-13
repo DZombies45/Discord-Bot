@@ -28,6 +28,16 @@ export default async (client, messageArr) => {
           "article.id": latestJavaSnapshot?.id || 10000000,
         });
 
+        const latestBedrockStable = data.articles.find(
+          (a) =>
+            a.section_id == articleSections.BedrockRelease &&
+            a.title.includes("Java Edition"),
+        );
+        const bedrockReleases = await mcChangelogSch.findOne({
+          type: "java-stable-articles",
+          "article.id": latestBedrockStable?.id || 10000000,
+        });
+
         if (latestJavaSnapshot && !bedrockPreviews) {
           const article = Utils.formatArticle(latestJavaSnapshot);
           const name = Utils.getVersion(latestJavaSnapshot.name);
@@ -56,19 +66,7 @@ export default async (client, messageArr) => {
 
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
-        }
-
-        const latestBedrockStable = data.articles.find(
-          (a) =>
-            a.section_id == articleSections.BedrockRelease &&
-            a.title.includes("Java Edition"),
-        );
-        const bedrockReleases = await mcChangelogSch.findOne({
-          type: "java-stable-articles",
-          "article.id": latestBedrockStable?.id || 10000000,
-        });
-
-        if (latestBedrockStable && !bedrockReleases) {
+        } else if (latestBedrockStable && !bedrockReleases) {
           const article = Utils.formatArticle(latestBedrockStable);
           const name = Utils.getVersion(latestBedrockStable.name);
           const version = Utils.getMCVersion(latestBedrockStable.name);
@@ -94,59 +92,114 @@ export default async (client, messageArr) => {
 
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+        } else {
+          const data = parseVersionInfo(messageArr[0]);
+          const msg = messageArr.join("\n");
+          const article = {
+            version: Utils.getMCVersion(messageArr[0]),
+            thumbnail: Utils.extractImage(msg),
+            article: {
+              id:
+                data.type === "stable"
+                  ? latestBedrockStable.id + 1
+                  : latestJavaSnapshot.id + 1,
+              url: messageArr[1],
+              title: messageArr[0].replace("#", "").trim(),
+              created_at: Date.now(),
+              updated_at: Date.now(),
+              edited_at: Date.now(),
+            },
+          };
+
+          article.type =
+            data.type === "stable"
+              ? "java-stable-articles"
+              : "java-snapshot-articles";
+          const name = Utils.getVersion(messageArr[0]);
+          const version = article.version;
+          const thumbnail = article.thumbnail;
+          // Logger.debug(article);
+          if (!article.version) return;
+          createPost(
+            client,
+            article,
+            name,
+            version,
+            thumbnail,
+            data.type === "stable"
+              ? Config.javaTags.Stable
+              : Config.javaTags.Snapshot,
+            data.type === "stable"
+              ? articleSections.BedrockRelease
+              : articleSections.JavaSnapshot,
+            messageArr[0]?.match(
+              /(Release Candidate|Pre-Release) \d*/gi,
+            )?.[0] || false,
+          );
+
+          await mcChangelogSch.create(article);
+          await new Promise((res) => setTimeout(() => res(), 1500));
         }
-
-        const data = parseVersionInfo(messageArr[0]);
-        const msg = messageArr.join("\n");
-        const article = {
-          version: Utils.getMCVersion(messageArr[0]),
-          thumbnail: Utils.extractImage(msg),
-          article: {
-            id:
-              data.type === "stable"
-                ? latestBedrockStable.id + 1
-                : latestJavaSnapshot.id + 1,
-            url: messageArr[1],
-            title: messageArr[0].replace("#", "").trim(),
-            created_at: Date.now(),
-            updated_at: Date.now(),
-            edited_at: Date.now(),
-          },
-        };
-
-        article.type =
-          data.type === "stable"
-            ? "java-stable-articles"
-            : "java-snapshot-articles";
-        const name = Utils.getVersion(messageArr[0]);
-        const version = article.version;
-        const thumbnail = article.thumbnail;
-        // Logger.debug(article);
-        if (!article.version) return;
-        createPost(
-          client,
-          article,
-          name,
-          version,
-          thumbnail,
-          data.type === "stable"
-            ? Config.javaTags.Stable
-            : Config.javaTags.Snapshot,
-          data.type === "stable"
-            ? articleSections.BedrockRelease
-            : articleSections.JavaSnapshot,
-          messageArr[0]?.match(/(Release Candidate|Pre-Release) \d*/gi)?.[0] ||
-            false,
-        );
-
-        await mcChangelogSch.create(article);
-        await new Promise((res) => setTimeout(() => res(), 1500));
       } catch (e) {
         Utils.Logger.error(e.stack);
       }
     })
     .catch(() => {});
 };
+
+function parseVersionInfo(text) {
+  // Regex yang lebih komprehensif untuk menangani berbagai format
+  const versionRegex =
+    /\b(?:beta|snapshot|rc)?\s*(\d+(?:\.\d+)*(?:\.\d+[a-z]?)?)\s*(beta|snapshot|rc)?(?:\s*(\d+))?\b/gi;
+
+  const results = [];
+  let match;
+
+  while ((match = versionRegex.exec(text)) !== null) {
+    const fullMatch = match[0];
+    const version = match[1]; // Versi numerik
+    let type = match[2] || "stable"; // Tipe atau 'stable'
+    const subVersion = match[3]; // Angka tambahan (1, 2, 3, dll)
+
+    // Cek tipe yang muncul sebelum versi
+    if (!match[2]) {
+      if (fullMatch.toLowerCase().includes("beta")) {
+        type = "beta";
+      } else if (fullMatch.toLowerCase().includes("snapshot")) {
+        type = "snapshot";
+      } else if (fullMatch.toLowerCase().includes("rc")) {
+        type = "rc";
+      }
+    }
+
+    // Clean up type
+    type = type.toLowerCase().trim();
+
+    // Format version dengan subVersion jika ada
+    let formattedVersion = version;
+    let formattedType = type;
+
+    if (subVersion) {
+      if (type === "rc") {
+        formattedType = `rc${subVersion}`;
+      } else if (type === "snapshot") {
+        formattedType = `snapshot${subVersion}`;
+      } else if (type === "beta") {
+        formattedType = `beta${subVersion}`;
+      }
+    }
+
+    results.push({
+      original: fullMatch.trim(),
+      version: version,
+      type: type,
+      subVersion: subVersion || null,
+      formatted: `${formattedVersion}-${formattedType}`,
+    });
+  }
+
+  return results;
+}
 
 const createPost = (
   client,

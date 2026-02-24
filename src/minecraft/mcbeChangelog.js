@@ -99,17 +99,16 @@ export default async (client, messageArr) => {
           await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
         } else {
-          const data = parseVersionInfo(messageArr[0]);
-          const msg = messageArr.join("\n");
+          const data = parseVersionInfo(messageArr[0])[0];
           const article = {
-            version: Utils.getMCVersion(messageArr[0]),
-            thumbnail: Utils.extractImage(msg),
+            version: data.formatted,
+            thumbnail: undefined,
             article: {
               id:
                 data.type === "stable"
                   ? latestBedrockStable.id + 1
                   : latestBedrockPreview.id + 1,
-              url: messageArr[1],
+              url: messageArr[1].replace("-#", "").trim(),
               title: messageArr[0].replace("#", "").trim(),
               created_at: Date.now(),
               updated_at: Date.now(),

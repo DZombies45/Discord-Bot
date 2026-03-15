@@ -1,7 +1,6 @@
 // src/dashboard/server.js
 // Dashboard HTTP + WebSocket server
 // Letakkan file ini di: src/dashboard/server.js
-// ui made with caude ai
 
 import express from "express";
 import { createServer } from "http";

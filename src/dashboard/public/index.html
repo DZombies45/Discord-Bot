@@ -250,10 +250,11 @@
         margin-bottom: 8px;
       }
       .uptime-val {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 700;
         color: var(--green);
         font-family: "Syne", sans-serif;
+        letter-spacing: 0.02em;
       }
       .uptime-sub {
         font-size: 10px;
@@ -272,6 +273,28 @@
         background: linear-gradient(90deg, var(--green), #06b96f);
         border-radius: 2px;
         width: 94%;
+      }
+      .uptime-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 10px 0;
+      }
+      .uptime-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .uptime-row-label {
+        font-size: 9px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .uptime-row-val {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--cyan);
       }
 
       /* ─── STATS ─── */
@@ -802,6 +825,204 @@
       .reconnect-btn:hover {
         background: rgba(255, 62, 94, 0.2);
       }
+
+      /* ════════════════════════════════════════
+     MOBILE RESPONSIVE
+     Breakpoint: <= 768px
+  ════════════════════════════════════════ */
+      @media (max-width: 768px) {
+        /* Header: kompres */
+        .header {
+          padding: 12px 16px;
+        }
+        .header-title span {
+          display: none;
+        }
+        .time-display {
+          display: none;
+        }
+
+        /* Main grid: satu kolom penuh, tanpa sidebar/right-panel */
+        .main {
+          display: flex;
+          flex-direction: column;
+          height: calc(100vh - 57px - 56px); /* header + tab bar */
+        }
+
+        /* Sidebar & right-panel: sembunyikan, tampil via drawer */
+        .sidebar {
+          display: none;
+          position: fixed;
+          top: 57px;
+          left: 0;
+          width: 80vw;
+          max-width: 300px;
+          height: calc(100vh - 57px);
+          z-index: 200;
+          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+          transition: transform 0.25s ease;
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          display: block;
+          transform: translateX(0);
+        }
+
+        .right-panel {
+          display: none;
+          position: fixed;
+          top: 57px;
+          right: 0;
+          width: 90vw;
+          max-width: 340px;
+          height: calc(100vh - 57px - 56px);
+          z-index: 200;
+          box-shadow: -4px 0 24px rgba(0, 0, 0, 0.6);
+          transition: transform 0.25s ease;
+          transform: translateX(100%);
+          overflow-y: auto;
+        }
+        .right-panel.open {
+          display: flex;
+          transform: translateX(0);
+        }
+
+        /* Overlay untuk menutup drawer */
+        .drawer-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 199;
+          backdrop-filter: blur(2px);
+        }
+        .drawer-overlay.show {
+          display: block;
+        }
+
+        /* Stats row: 2x2 grid */
+        .stats-row {
+          grid-template-columns: 1fr 1fr;
+          order: -1;
+        }
+        .stat-card {
+          padding: 14px 14px;
+        }
+        .stat-val {
+          font-size: 22px;
+        }
+        .stat-icon {
+          display: none;
+        }
+
+        /* Log area: fill sisa ruang */
+        .log-area {
+          flex: 1;
+          min-height: 0;
+          order: 1;
+        }
+
+        /* Log toolbar: baris pertama filter, baris kedua search */
+        .log-toolbar {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 10px 12px;
+          gap: 8px;
+        }
+        .log-toolbar-left {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .log-toolbar h2 {
+          font-size: 11px;
+        }
+        .log-toolbar > div:last-child {
+          display: flex;
+          gap: 8px;
+        }
+        .log-search {
+          flex: 1;
+        }
+        .log-search input {
+          width: 100%;
+        }
+        .autoscroll-toggle span:last-child {
+          display: none;
+        } /* sembunyikan teks "auto-scroll" */
+
+        /* Log entry: layout lebih ringkas di mobile */
+        .log-entry {
+          grid-template-columns: 60px 44px 1fr;
+          grid-template-rows: auto auto;
+          padding: 8px 12px;
+          gap: 2px 6px;
+        }
+        .log-time {
+          font-size: 9px;
+        }
+        .log-src {
+          grid-column: 3;
+          grid-row: 1;
+          font-size: 9px;
+          text-align: right;
+        }
+        .log-msg {
+          grid-column: 1/-1;
+          grid-row: 2;
+          font-size: 11px;
+          padding-top: 3px;
+        }
+
+        /* Bottom tab bar */
+        .tab-bar {
+          display: flex !important;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 56px;
+          background: var(--panel);
+          border-top: 1px solid var(--border);
+          z-index: 300;
+        }
+        .tab-btn {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 3px;
+          cursor: pointer;
+          color: var(--text-muted);
+          font-size: 9px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          border: none;
+          background: transparent;
+          font-family: "JetBrains Mono";
+          transition: color 0.15s;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tab-btn.active {
+          color: var(--accent);
+        }
+        .tab-btn .tab-icon {
+          font-size: 18px;
+        }
+        .tab-btn.active .tab-icon {
+          filter: drop-shadow(0 0 6px var(--accent));
+        }
+
+        /* Body padding bawah supaya konten tidak ketutup tab bar */
+        body {
+          padding-bottom: 0;
+        }
+      }
+
+      /* Tab bar selalu hidden di desktop */
+      .tab-bar {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -810,6 +1031,29 @@
       ⚠️ WebSocket disconnected — bot offline or server stopped
       <button class="reconnect-btn" onclick="connect()">Reconnect</button>
     </div>
+
+    <!-- DRAWER OVERLAY (mobile) -->
+    <div
+      class="drawer-overlay"
+      id="drawerOverlay"
+      onclick="closeDrawers()"
+    ></div>
+
+    <!-- BOTTOM TAB BAR (mobile only) -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" id="tab-logs" onclick="mobileTab('logs')">
+        <span class="tab-icon">📋</span>Logs
+      </button>
+      <button class="tab-btn" id="tab-stats" onclick="mobileTab('stats')">
+        <span class="tab-icon">📊</span>Stats
+      </button>
+      <button class="tab-btn" id="tab-menu" onclick="mobileTab('menu')">
+        <span class="tab-icon">☰</span>Menu
+      </button>
+      <button class="tab-btn" id="tab-info" onclick="mobileTab('info')">
+        <span class="tab-icon">⚙️</span>Info
+      </button>
+    </nav>
 
     <!-- HEADER -->
     <header class="header">
@@ -879,11 +1123,14 @@
         <div class="sidebar-section">
           <div class="sidebar-label">Uptime</div>
           <div class="uptime-card">
-            <div class="uptime-title">Session uptime</div>
-            <div class="uptime-val" id="uptimeVal">00:00:00</div>
+            <div class="uptime-title">🤖 Bot uptime</div>
+            <div class="uptime-val" id="botUptimeVal">--:--:--</div>
             <div class="uptime-sub" id="uptimeSince">Waiting for bot...</div>
-            <div class="uptime-bar">
-              <div class="uptime-fill" id="uptimeFill"></div>
+            <div class="uptime-bar"><div class="uptime-fill"></div></div>
+            <hr class="uptime-divider" />
+            <div class="uptime-row">
+              <span class="uptime-row-label">🖥️ Dashboard</span>
+              <span class="uptime-row-val" id="dashUptimeVal">00:00:00</span>
             </div>
           </div>
         </div>
@@ -1103,10 +1350,21 @@
       let autoScroll = true;
       let activeFilter = "ALL";
       let searchQuery = "";
-      let allLogs = [];
+      let allLogs = []; // array of normalized {level, src, msg, time}
       let stats = { cmds: 0, events: 0, errors: 0 };
       let cmdUsage = {};
-      let startTime = null;
+      let botStartTime = null; // kapan bot mulai (dari process.uptime)
+      const dashStartTime = Date.now();
+
+      // Helper: normalisasi entry supaya selalu punya field yang benar
+      function normalizeEntry(raw) {
+        return {
+          level: raw.level || "INFO",
+          src: raw.src || "app",
+          msg: raw.msg || "",
+          time: raw.time || new Date().toISOString(),
+        };
+      }
 
       // ─── CLOCK ───
       setInterval(() => {
@@ -1115,14 +1373,26 @@
           .slice(0, 8);
       }, 1000);
 
-      // ─── UPTIME ───
+      // ─── UPTIME (bot + dashboard) ───
+      function fmtDuration(ms) {
+        const totalSec = Math.max(0, Math.floor(ms / 1000));
+        const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+        const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+        const s = String(totalSec % 60).padStart(2, "0");
+        return h + ":" + m + ":" + s;
+      }
+
       setInterval(() => {
-        if (!startTime) return;
-        const e = Math.floor((Date.now() - startTime) / 1000);
-        const h = String(Math.floor(e / 3600)).padStart(2, "0");
-        const m = String(Math.floor((e % 3600) / 60)).padStart(2, "0");
-        const s = String(e % 60).padStart(2, "0");
-        document.getElementById("uptimeVal").textContent = `${h}:${m}:${s}`;
+        // Dashboard uptime selalu jalan sejak halaman dibuka
+        document.getElementById("dashUptimeVal").textContent = fmtDuration(
+          Date.now() - dashStartTime,
+        );
+        // Bot uptime dari data process.uptime yang dikirim server
+        if (botStartTime) {
+          document.getElementById("botUptimeVal").textContent = fmtDuration(
+            Date.now() - botStartTime,
+          );
+        }
       }, 1000);
 
       // ─── WEBSOCKET ───
@@ -1135,7 +1405,6 @@
 
         ws.onopen = () => {
           setWsState("connected");
-          if (!startTime) startTime = Date.now();
           addSystemLog("Dashboard connected to bot server");
         };
 
@@ -1166,15 +1435,22 @@
       // ─── MESSAGE HANDLER ───
       function handleMessage(data) {
         if (data.type === "history") {
-          data.logs.forEach(renderLog);
-          if (data.logs.length > 0) {
+          // Normalize dan simpan ke allLogs supaya filter/search bisa bekerja
+          const entries = data.logs.map(normalizeEntry);
+          allLogs = entries;
+          if (entries.length > 0) {
             document.getElementById("emptyState")?.remove();
+            rerenderAll(); // render ulang semua dengan filter aktif
+            // Hitung ulang stats dari history
+            entries.forEach((e) => countStatsOnly(e));
+            updateStatCards();
           }
         } else if (data.type === "log") {
           document.getElementById("emptyState")?.remove();
-          allLogs.push(data);
-          renderLog(data);
-          updateStatsFromLog(data);
+          const entry = normalizeEntry(data);
+          allLogs.push(entry);
+          renderLog(entry); // hanya render jika cocok filter
+          updateStatsFromLog(entry);
         } else if (data.type === "stats") {
           updateGauges(data);
         } else if (data.type === "clear") {
@@ -1186,55 +1462,70 @@
         }
       }
 
-      function updateStatsFromLog(entry) {
+      // countStatsOnly: hitung stats tanpa update DOM (untuk history replay)
+      function countStatsOnly(entry) {
         stats.events++;
-        if (entry.level === "ERROR") {
-          stats.errors++;
-          document.getElementById("statErrors").textContent = stats.errors;
-          document.getElementById("errSub").textContent =
-            `↑ ${stats.errors} error(s)`;
-          document.getElementById("errBadge").textContent = stats.errors;
-        }
+        if (entry.level === "ERROR") stats.errors++;
         if (entry.level === "CMD") {
           stats.cmds++;
-          // Extract command name from message
           const match = entry.msg.match(/(\/\w+)/);
           if (match) {
             const cmd = match[1];
             cmdUsage[cmd] = (cmdUsage[cmd] || 0) + 1;
-            updateCmdBars();
           }
+        }
+      }
+
+      function updateStatsFromLog(entry) {
+        countStatsOnly(entry);
+        if (entry.level === "ERROR") {
+          document.getElementById("statErrors").textContent = stats.errors;
+          document.getElementById("errSub").textContent =
+            "↑ " + stats.errors + " error(s)";
+          document.getElementById("errBadge").textContent = stats.errors;
+        }
+        if (entry.level === "CMD") {
+          updateCmdBars();
           document.getElementById("statCmds").textContent = stats.cmds;
           document.getElementById("cmdTotal").textContent = stats.cmds;
         }
         document.getElementById("statEvents").textContent = stats.events;
         document.getElementById("statLogs").textContent = allLogs.length;
-        document.getElementById("logCount").textContent =
-          document.querySelectorAll(".log-entry").length;
-
-        // Recent events panel
+        // logCount = jumlah entry yg TAMPIL (sesuai filter), bukan total
+        document.getElementById("logCount").textContent = allLogs.length;
         addEventToPanel(entry);
       }
 
       // ─── RENDER LOG ───
-      function renderLog(entry) {
+      function renderLog(entry, doScroll = true) {
         if (!matchesFilter(entry) || !matchesSearch(entry)) return;
 
         const stream = document.getElementById("logStream");
-        const time = new Date(entry.time).toLocaleTimeString("en-GB");
+        // Format time — fallback ke string langsung kalau invalid
+        let timeStr = "--:--:--";
+        try {
+          timeStr = new Date(entry.time).toLocaleTimeString("en-GB");
+        } catch (_) {}
 
         const row = document.createElement("div");
         row.className = "log-entry";
-        row.dataset.level = entry.level;
-        row.dataset.msg = entry.msg.toLowerCase();
-        row.innerHTML = `
-    <span class="log-time">${time}</span>
-    <span class="log-level level-${entry.level}">${entry.level}</span>
-    <span class="log-src">${entry.src}</span>
-    <span class="log-msg">${escapeHtml(entry.msg)}</span>
-  `;
+        row.innerHTML =
+          '<span class="log-time">' +
+          timeStr +
+          "</span>" +
+          '<span class="log-level level-' +
+          entry.level +
+          '">' +
+          entry.level +
+          "</span>" +
+          '<span class="log-src">' +
+          escapeHtml(entry.src) +
+          "</span>" +
+          '<span class="log-msg">' +
+          escapeHtml(entry.msg) +
+          "</span>";
         stream.appendChild(row);
-        if (autoScroll) stream.scrollTop = stream.scrollHeight;
+        if (doScroll && autoScroll) stream.scrollTop = stream.scrollHeight;
       }
 
       function escapeHtml(str) {
@@ -1280,11 +1571,14 @@
             extMB + "M",
           );
         }
-        if (data.uptime !== undefined && !startTime) {
-          startTime = Date.now() - data.uptime * 1000;
-          const d = new Date(startTime);
-          document.getElementById("uptimeSince").textContent =
-            "Since " + d.toLocaleTimeString();
+        if (data.uptime !== undefined) {
+          const newBotStart = Date.now() - data.uptime * 1000;
+          if (!botStartTime) {
+            botStartTime = newBotStart;
+            const d = new Date(botStartTime);
+            document.getElementById("uptimeSince").textContent =
+              "Since " + d.toLocaleTimeString();
+          }
         }
       }
 
@@ -1356,9 +1650,12 @@
       }
       function matchesSearch(entry) {
         if (!searchQuery) return true;
-        return (entry.src + " " + entry.msg)
-          .toLowerCase()
-          .includes(searchQuery);
+        const haystack = (
+          (entry.src || "") +
+          " " +
+          (entry.msg || "")
+        ).toLowerCase();
+        return haystack.includes(searchQuery.toLowerCase());
       }
 
       function setFilter(f, el) {
@@ -1376,8 +1673,11 @@
         rerenderAll();
       }
       function rerenderAll() {
-        document.getElementById("logStream").innerHTML = "";
-        allLogs.forEach(renderLog);
+        const stream = document.getElementById("logStream");
+        stream.innerHTML = "";
+        allLogs.forEach((e) => renderLog(e, false)); // false = jangan auto-scroll satu-satu
+        if (autoScroll) stream.scrollTop = stream.scrollHeight;
+        document.getElementById("logCount").textContent = allLogs.length;
       }
 
       function toggleAutoscroll() {
@@ -1425,6 +1725,99 @@
         document.getElementById("statLogs").textContent = 0;
         document.getElementById("logCount").textContent = 0;
       }
+
+      // ════════════════════════════
+      // MOBILE TAB NAVIGATION
+      // ════════════════════════════
+      const isMobile = () => window.innerWidth <= 768;
+
+      function mobileTab(tab) {
+        if (!isMobile()) return;
+
+        // Update active tab button
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        const btn = document.getElementById("tab-" + tab);
+        if (btn) btn.classList.add("active");
+
+        const sidebar = document.querySelector(".sidebar");
+        const rightPanel = document.querySelector(".right-panel");
+        const statsRow = document.querySelector(".stats-row");
+        const logArea = document.querySelector(".log-area");
+        const overlay = document.getElementById("drawerOverlay");
+
+        // Reset semua dulu
+        sidebar.classList.remove("open");
+        rightPanel.classList.remove("open");
+        overlay.classList.remove("show");
+        statsRow.style.display = "";
+        logArea.style.display = "";
+
+        if (tab === "logs") {
+          // Default: stats 2x2 + log stream
+          statsRow.style.display = "grid";
+          logArea.style.display = "flex";
+        } else if (tab === "stats") {
+          // Right panel slide in dari kanan
+          rightPanel.classList.add("open");
+          overlay.classList.add("show");
+        } else if (tab === "menu") {
+          // Sidebar slide in dari kiri
+          sidebar.classList.add("open");
+          overlay.classList.add("show");
+        } else if (tab === "info") {
+          // Stats full + sembunyikan log
+          statsRow.style.display = "grid";
+          logArea.style.display = "none";
+          // Tampilkan right panel di bawah stats sebagai inline (bukan drawer)
+          rightPanel.classList.add("open");
+          rightPanel.style.position = "relative";
+          rightPanel.style.transform = "none";
+          rightPanel.style.width = "100%";
+          rightPanel.style.height = "auto";
+          rightPanel.style.maxHeight = "none";
+          rightPanel.style.boxShadow = "none";
+          overlay.classList.remove("show");
+        }
+
+        // Reset right panel ke drawer mode kalau bukan info
+        if (tab !== "info") {
+          rightPanel.style.position = "";
+          rightPanel.style.transform = "";
+          rightPanel.style.width = "";
+          rightPanel.style.height = "";
+          rightPanel.style.maxHeight = "";
+          rightPanel.style.boxShadow = "";
+        }
+      }
+
+      function closeDrawers() {
+        document.querySelector(".sidebar").classList.remove("open");
+        document.querySelector(".right-panel").classList.remove("open");
+        document.getElementById("drawerOverlay").classList.remove("show");
+        // Kembali ke tab logs
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        const logsBtn = document.getElementById("tab-logs");
+        if (logsBtn) logsBtn.classList.add("active");
+      }
+
+      // Re-init saat resize (desktop <-> mobile)
+      window.addEventListener("resize", () => {
+        if (!isMobile()) {
+          closeDrawers();
+          // Reset semua inline style
+          const rp = document.querySelector(".right-panel");
+          rp.style.cssText = "";
+          document.querySelector(".stats-row").style.display = "";
+          document.querySelector(".log-area").style.display = "";
+        } else {
+          // Masuk mobile — pastikan default view benar
+          mobileTab("logs");
+        }
+      });
 
       // ─── INIT ───
       connect();

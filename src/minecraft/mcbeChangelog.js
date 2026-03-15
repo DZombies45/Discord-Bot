@@ -20,7 +20,6 @@ export default async (client, messageArr) => {
     .then((res) => res.json())
     .then(async (data) => {
       try {
-        let trying = 0;
         const latestBedrockPreview = data.articles.find(
           (a) => a.section_id == articleSections.BedrockPreview,
         );
@@ -61,9 +60,8 @@ export default async (client, messageArr) => {
             articleSections.BedrockPreview,
           );
 
-          if (trying < 5) await mcChangelogSch.create(article);
+          await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
-          trying++;
         } else if (latestBedrockStable && !bedrockReleases) {
           const article = Utils.formatArticle(latestBedrockStable);
           const name = Utils.getVersion(latestBedrockStable.name);
@@ -98,20 +96,27 @@ export default async (client, messageArr) => {
             isHotfix,
           );
 
-          if (trying < 5) await mcChangelogSch.create(article);
+          await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
-          trying++;
         } else {
           const data = parseVersionInfo(messageArr[0])[0];
+
+          const articleType =
+            data.type === "stable" ? "stable-articles" : "preview-articles";
+
           const article = {
             version: data.formatted,
             thumbnail: undefined,
             article: {
               id:
                 data.type === "stable"
-                  ? latestBedrockStable.id + 1
-                  : latestBedrockPreview.id + 1,
-              url: messageArr[1].replace("-#", "").trim(),
+                  ? (latestBedrockStable?.id ?? 99999999) + 1
+                  : (latestBedrockPreview?.id ?? 99999999) + 1,
+              url:
+                messageArr
+                  .find((line) => line.includes("https://www.minecraft.net"))
+                  ?.replace("-#", "")
+                  .trim() ?? "",
               title: messageArr[0].replace("#", "").trim(),
               created_at: Date.now(),
               updated_at: Date.now(),
@@ -122,33 +127,34 @@ export default async (client, messageArr) => {
           const name = Utils.getVersion(messageArr[0]);
           const version = article.version;
           const thumbnail = article.thumbnail;
+
+          const rawMsg = messageArr[0] ?? "";
           const isHotfix =
-            msg.includes(
+            rawMsg.includes(
               "A new update has been released to address some issues that were introduced",
             ) ||
-            msg.includes("A new update has been released for") ||
-            (msg.includes("A new update has been released for") &&
-              msg.includes("only to address a top crash"));
+            rawMsg.includes("A new update has been released for") ||
+            (rawMsg.includes("A new update has been released for") &&
+              rawMsg.includes("only to address a top crash"));
 
-          article.type = "stable-articles";
-          Logger.debug(article);
-          if (!article.version) return;
-          createPost(
-            client,
-            article,
-            name,
-            version,
-            thumbnail,
-            (dats.type = "stable" ? Config.tags.Stable : Config.tags.Preview),
-            data.type === "stable"
-              ? articleSections.BedrockRelease
-              : articleSections.BedrockPreview,
-            isHotfix,
-          );
-
-          if (trying < 5) await mcChangelogSch.create(article);
-          await new Promise((res) => setTimeout(() => res(), 1500));
-          trying++;
+          // article.type = articleType;
+          // Logger.debug(article);
+          // if (!article.version) return;
+          // createPost(
+          //   client,
+          //   article,
+          //   name,
+          //   version,
+          //   thumbnail,
+          //   data.type === "stable" ? Config.tags.Stable : Config.tags.Preview,
+          //   data.type === "stable"
+          //     ? articleSections.BedrockRelease
+          //     : articleSections.BedrockPreview,
+          //   isHotfix,
+          // );
+          //
+          // await mcChangelogSch.create(article);
+          // await new Promise((res) => setTimeout(() => res(), 1500));
         }
       } catch (e) {
         Utils.Logger.error(e);
@@ -158,57 +164,47 @@ export default async (client, messageArr) => {
 };
 
 function parseVersionInfo(text) {
-  // Regex yang lebih komprehensif untuk menangani berbagai format
-  const versionRegex =
-    /\b(?:beta|snapshot|rc)?\s*(\d+(?:\.\d+)*(?:\.\d+[a-z]?)?)\s*(beta|snapshot|rc)?(?:\s*(\d+))?\b/gi;
+  let detectedType = "stable";
+  let detectedSubVersion = null;
 
-  const results = [];
-  let match;
+  const isJavaSnapshotFormat = /\b\d{2}w\d{2}[a-z]\b/i.test(text);
 
-  while ((match = versionRegex.exec(text)) !== null) {
-    const fullMatch = match[0];
-    const version = match[1]; // Versi numerik
-    let type = match[2] || "stable"; // Tipe atau 'stable'
-    const subVersion = match[3]; // Angka tambahan (1, 2, 3, dll)
-
-    // Cek tipe yang muncul sebelum versi
-    if (!match[2]) {
-      if (fullMatch.toLowerCase().includes("beta")) {
-        type = "beta";
-      } else if (fullMatch.toLowerCase().includes("snapshot")) {
-        type = "snapshot";
-      } else if (fullMatch.toLowerCase().includes("rc")) {
-        type = "rc";
-      }
-    }
-
-    // Clean up type
-    type = type.toLowerCase().trim();
-
-    // Format version dengan subVersion jika ada
-    let formattedVersion = version;
-    let formattedType = type;
-
-    if (subVersion) {
-      if (type === "rc") {
-        formattedType = `rc${subVersion}`;
-      } else if (type === "snapshot") {
-        formattedType = `snapshot${subVersion}`;
-      } else if (type === "beta") {
-        formattedType = `beta${subVersion}`;
-      }
-    }
-
-    results.push({
-      original: fullMatch.trim(),
-      version: version,
-      type: type,
-      subVersion: subVersion || null,
-      formatted: `${formattedVersion}-${formattedType}`,
-    });
+  if (/pre-release/i.test(text)) {
+    detectedType = "pre-release";
+    detectedSubVersion = text.match(/pre-release\s*(\d+)/i)?.[1] ?? null;
+  } else if (/release candidate/i.test(text)) {
+    detectedType = "rc";
+    detectedSubVersion = text.match(/release candidate\s*(\d+)/i)?.[1] ?? null;
+  } else if (/snapshot/i.test(text)) {
+    detectedType = "snapshot";
+    detectedSubVersion = isJavaSnapshotFormat
+      ? null
+      : (text.match(/snapshot\s+(\d+)/i)?.[1] ?? null);
+  } else if (/beta/i.test(text)) {
+    detectedType = "beta";
+    detectedSubVersion = text.match(/beta\s*(\d+)/i)?.[1] ?? null;
   }
 
-  return results;
+  const snapshotVersionMatch = text.match(/\b(\d{2}w\d{2}[a-z])\b/i);
+  const numericVersionMatch = text.match(/(\d+(?:\.\d+)+)/i);
+
+  const version = snapshotVersionMatch?.[1] ?? numericVersionMatch?.[1] ?? null;
+  if (!version) return [];
+
+  let formattedType = detectedType;
+  if (detectedSubVersion) {
+    formattedType = `${detectedType}${detectedSubVersion}`;
+  }
+
+  return [
+    {
+      original: text.trim(),
+      version: version,
+      type: detectedType,
+      subVersion: detectedSubVersion,
+      formatted: `${version}-${formattedType}`,
+    },
+  ];
 }
 
 const createPost = (
@@ -220,7 +216,9 @@ const createPost = (
   tag,
   articleSection,
   isHotfix = false,
+  trying = 0,
 ) => {
+  if (trying >= 5) return;
   const embed = Utils.createEmbed(article, thumbnail, articleSection);
   const forumChannel = client.channels.cache.get(Config.bedrockChannel);
   forumChannel.threads
@@ -320,6 +318,7 @@ const createPost = (
             tag,
             articleSection,
             isHotfix,
+            trying++,
           ),
         5000,
       );

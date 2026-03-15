@@ -20,6 +20,7 @@ export default async (client, messageArr) => {
     .then((res) => res.json())
     .then(async (data) => {
       try {
+        let trying = 0;
         const latestBedrockPreview = data.articles.find(
           (a) => a.section_id == articleSections.BedrockPreview,
         );
@@ -60,8 +61,9 @@ export default async (client, messageArr) => {
             articleSections.BedrockPreview,
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         } else if (latestBedrockStable && !bedrockReleases) {
           const article = Utils.formatArticle(latestBedrockStable);
           const name = Utils.getVersion(latestBedrockStable.name);
@@ -96,8 +98,9 @@ export default async (client, messageArr) => {
             isHotfix,
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         } else {
           const data = parseVersionInfo(messageArr[0])[0];
           const article = {
@@ -128,7 +131,7 @@ export default async (client, messageArr) => {
               msg.includes("only to address a top crash"));
 
           article.type = "stable-articles";
-          // Logger.debug(article);
+          Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -143,8 +146,9 @@ export default async (client, messageArr) => {
             isHotfix,
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         }
       } catch (e) {
         Utils.Logger.error(e);

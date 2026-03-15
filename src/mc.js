@@ -9,6 +9,8 @@ const articleSections = {
   JavaSnapshot: 360002267532,
 };
 
+import { Logger } from "./util.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const formatDate = (d = Date.now()) => {
@@ -16,30 +18,6 @@ const formatDate = (d = Date.now()) => {
   const [month, day, year] = date.toLocaleDateString().split("/");
   const time = date.toLocaleTimeString();
   return `${year}-${month}-${day} ${time}`;
-};
-
-import { startDate } from "../index.js";
-
-const Logger = {
-  _log: (name, date, color, ...data) => {
-    console.log(
-      "\x1B[0m[" +
-        formatDate(date) +
-        "] \x1B[" +
-        color +
-        "m\x1B[1m[" +
-        name.toUpperCase() +
-        "] \x1B[0m-",
-      ...data,
-    );
-  },
-  log: (...data) => Logger._log("info", Date.now(), 33, ...data),
-  debug: (...data) => Logger._log("debug", Date.now(), 33, ...data),
-  warn: (...data) => Logger._log("warning", Date.now(), 33, ...data),
-  success: (...data) => Logger._log("success", Date.now(), 32, ...data),
-  release: (releaseDate, ...data) =>
-    Logger._log("release", releaseDate, 32, ...data),
-  error: (...data) => Logger._log("errror", Date.now(), 31, ...data),
 };
 
 const Utils = {

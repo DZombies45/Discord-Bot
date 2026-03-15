@@ -8,6 +8,8 @@ const articleSections = {
   JavaSnapshot: 360002267532,
 };
 import mcChangelogSch from "../schemas/mcChangelogSch.js";
+import { throws } from "assert";
+import { Error } from "mongoose";
 
 export default async (client, messageArr) => {
   fetch(
@@ -20,6 +22,7 @@ export default async (client, messageArr) => {
     .then((res) => res.json())
     .then(async (data) => {
       try {
+        let trying = 0;
         const latestJavaSnapshot = data.articles.find(
           (a) => a.section_id == articleSections.JavaSnapshot,
         );
@@ -49,7 +52,7 @@ export default async (client, messageArr) => {
             latestJavaSnapshot.name,
           );
           article.type = "java-snapshot-articles";
-          Logger.debug(article);
+          // Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -64,8 +67,9 @@ export default async (client, messageArr) => {
             )?.[0] || false,
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         } else if (latestBedrockStable && !bedrockReleases) {
           const article = Utils.formatArticle(latestBedrockStable);
           const name = Utils.getVersion(latestBedrockStable.name);
@@ -77,7 +81,7 @@ export default async (client, messageArr) => {
             latestBedrockStable.name,
           );
           article.type = "java-stable-articles";
-          Logger.debug(article);
+          // Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -90,8 +94,9 @@ export default async (client, messageArr) => {
             "",
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         } else {
           const data = parseVersionInfo(messageArr[0])[0];
           const article = {
@@ -117,7 +122,7 @@ export default async (client, messageArr) => {
           const name = Utils.getVersion(messageArr[0].replace("#", "").trim());
           const version = article.version;
           const thumbnail = article.thumbnail;
-          // Logger.debug(article);
+          Logger.debug(article);
           if (!article.version) return;
           createPost(
             client,
@@ -136,8 +141,9 @@ export default async (client, messageArr) => {
             )?.[0] || false,
           );
 
-          await mcChangelogSch.create(article);
+          if (trying < 5) await mcChangelogSch.create(article);
           await new Promise((res) => setTimeout(() => res(), 1500));
+          trying++;
         }
       } catch (e) {
         Utils.Logger.error(e.stack);

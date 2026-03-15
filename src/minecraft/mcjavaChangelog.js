@@ -8,8 +8,7 @@ const articleSections = {
   JavaSnapshot: 360002267532,
 };
 import mcChangelogSch from "../schemas/mcChangelogSch.js";
-import { throws } from "assert";
-import { Error } from "mongoose";
+import { sendLog } from "../../log.js";
 
 export default async (client, messageArr) => {
   fetch(
@@ -96,6 +95,7 @@ export default async (client, messageArr) => {
           await new Promise((res) => setTimeout(() => res(), 1500));
         } else {
           const data = parseVersionInfo(messageArr[0])[0];
+          const now = new Date().toISOString();
           const article = {
             version: data.formatted,
             thumbnail: undefined,
@@ -110,9 +110,9 @@ export default async (client, messageArr) => {
                   ?.replace("-#", "")
                   .trim() ?? "",
               title: messageArr[0].replace("#", "").trim(),
-              created_at: Date.now(),
-              updated_at: Date.now(),
-              edited_at: Date.now(),
+              created_at: now,
+              updated_at: now,
+              edited_at: now,
             },
           };
 
@@ -123,27 +123,27 @@ export default async (client, messageArr) => {
           const name = Utils.getVersion(messageArr[0].replace("#", "").trim());
           const version = article.version;
           const thumbnail = article.thumbnail;
-          // Logger.debug(article);
-          // if (!article.version) return;
-          //
-          // createPost(
-          //   client,
-          //   article,
-          //   name,
-          //   version,
-          //   thumbnail,
-          //   data.type === "stable"
-          //     ? Config.javaTags.Stable
-          //     : Config.javaTags.Snapshot,
-          //   data.type === "stable"
-          //     ? articleSections.BedrockRelease
-          //     : articleSections.JavaSnapshot,
-          //   messageArr[0]?.match(
-          //     /(Release Candidate|Pre-Release) \d*/gi,
-          //   )?.[0] || false,
-          // );
-          // await mcChangelogSch.create(article);
-          // await new Promise((res) => setTimeout(() => res(), 1500));
+          // Logger.debug(JSON.stringify(article));
+          if (!article.version) return;
+
+          createPost(
+            client,
+            article,
+            name,
+            version,
+            thumbnail,
+            data.type === "stable"
+              ? Config.javaTags.Stable
+              : Config.javaTags.Snapshot,
+            data.type === "stable"
+              ? articleSections.BedrockRelease
+              : articleSections.JavaSnapshot,
+            messageArr[0]?.match(
+              /(Release Candidate|Pre-Release) \d*/gi,
+            )?.[0] || false,
+          );
+          await mcChangelogSch.create(article);
+          await new Promise((res) => setTimeout(() => res(), 1500));
         }
       } catch (e) {
         Utils.Logger.error(e.stack);
@@ -205,9 +205,8 @@ const createPost = (
   tag,
   articleSection,
   isHotfix,
-  trying = 0,
+  retryCount = 0,
 ) => {
-  if (trying >= 5) return;
   const embed = Utils.createJavaEmbed(article, thumbnail, articleSection);
   const forumChannel = client.channels.cache.get(Config.javaChannel);
   forumChannel.threads
@@ -285,6 +284,17 @@ const createPost = (
       );
     })
     .catch((e) => {
+      if (retryCount >= 5) {
+        Utils.Logger.error(
+          "Giving up on forum post for",
+          "v" + article.version + " after 5 retries.",
+        );
+        sendLog(
+          "❌ Failed to create Java forum post after 5 retries",
+          `Version: ${article.version}\nType: ${article.type}\nURL: ${article.article?.url}\n\n${e}`,
+        );
+        return;
+      }
       Utils.Logger.log(
         "Failed to create the forum post for",
         "v" + article.version + ", retrying...",
@@ -300,7 +310,7 @@ const createPost = (
             tag,
             articleSection,
             isHotfix,
-            trying++,
+            retryCount + 1,
           ),
         5000,
       );

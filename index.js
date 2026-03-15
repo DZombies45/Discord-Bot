@@ -56,10 +56,11 @@ const client = new Client({
   ],
 });
 
+loadError();
+
 eventHandler(client);
 
 client.login(process.env.TOKEN);
-loadError(client);
 
 startDashboard();
 

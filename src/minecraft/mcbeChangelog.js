@@ -100,6 +100,7 @@ export default async (client, messageArr) => {
           await new Promise((res) => setTimeout(() => res(), 1500));
         } else {
           const data = parseVersionInfo(messageArr[0])[0];
+          const now = new Date().toISOString();
 
           const articleType =
             data.type === "stable" ? "stable-articles" : "preview-articles";
@@ -118,9 +119,9 @@ export default async (client, messageArr) => {
                   ?.replace("-#", "")
                   .trim() ?? "",
               title: messageArr[0].replace("#", "").trim(),
-              created_at: Date.now(),
-              updated_at: Date.now(),
-              edited_at: Date.now(),
+              created_at: now,
+              updated_at: now,
+              edited_at: now,
             },
           };
 
@@ -137,24 +138,24 @@ export default async (client, messageArr) => {
             (rawMsg.includes("A new update has been released for") &&
               rawMsg.includes("only to address a top crash"));
 
-          // article.type = articleType;
+          article.type = articleType;
           // Logger.debug(article);
-          // if (!article.version) return;
-          // createPost(
-          //   client,
-          //   article,
-          //   name,
-          //   version,
-          //   thumbnail,
-          //   data.type === "stable" ? Config.tags.Stable : Config.tags.Preview,
-          //   data.type === "stable"
-          //     ? articleSections.BedrockRelease
-          //     : articleSections.BedrockPreview,
-          //   isHotfix,
-          // );
-          //
-          // await mcChangelogSch.create(article);
-          // await new Promise((res) => setTimeout(() => res(), 1500));
+          if (!article.version) return;
+          createPost(
+            client,
+            article,
+            name,
+            version,
+            thumbnail,
+            data.type === "stable" ? Config.tags.Stable : Config.tags.Preview,
+            data.type === "stable"
+              ? articleSections.BedrockRelease
+              : articleSections.BedrockPreview,
+            isHotfix,
+          );
+
+          await mcChangelogSch.create(article);
+          await new Promise((res) => setTimeout(() => res(), 1500));
         }
       } catch (e) {
         Utils.Logger.error(e);
@@ -216,9 +217,8 @@ const createPost = (
   tag,
   articleSection,
   isHotfix = false,
-  trying = 0,
+  retryCount = 0,
 ) => {
-  if (trying >= 5) return;
   const embed = Utils.createEmbed(article, thumbnail, articleSection);
   const forumChannel = client.channels.cache.get(Config.bedrockChannel);
   forumChannel.threads
@@ -302,7 +302,17 @@ const createPost = (
       );
     })
     .catch((e) => {
-      console.log(e);
+      if (retryCount >= 5) {
+        Utils.Logger.error(
+          "Giving up on forum post for",
+          "v" + article.version + " after 5 retries.",
+        );
+        sendLog(
+          "❌ Failed to create Java forum post after 5 retries",
+          `Version: ${article.version}\nType: ${article.type}\nURL: ${article.article?.url}\n\n${e}`,
+        );
+        return;
+      }
       Utils.Logger.log(
         "Failed to create the forum post for",
         "v" + article.version + ", retrying...",
@@ -318,7 +328,7 @@ const createPost = (
             tag,
             articleSection,
             isHotfix,
-            trying++,
+            retryCount + 1,
           ),
         5000,
       );

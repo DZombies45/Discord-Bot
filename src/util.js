@@ -46,12 +46,50 @@ function formatDate(date = Date.now()) {
   return format(date, "yyyy-MM-dd HH:mm:ss");
 }
 
+// ================================================================
+// === DASHBOARD HOOK ===
+// Lazy import supaya tidak circular dependency.
+// Kalau dashboard server belum ada / tidak jalan, diabaikan saja.
+// ================================================================
+let _emitLog = null;
+async function _loadEmitter() {
+  try {
+    const mod = await import("./dashboard/server.js");
+    _emitLog = mod.emitLog;
+  } catch (_) {
+    // Dashboard tidak tersedia, bot tetap jalan normal
+  }
+}
+_loadEmitter();
+
+// Peta nama level → string yang dipakai dashboard
+const _LEVEL_MAP = {
+  INFO: "INFO",
+  DEBUG: "INFO",
+  WARN: "WARN",
+  WARNING: "WARN",
+  SUCCESS: "OK",
+  ERROR: "ERROR",
+  RELEASE: "INFO",
+};
+// ================================================================
+
 // === Logger utama ===
 const Logger = {
   _log(name, color, ...data) {
     const line = `[${formatDate(new Date())}] [${name.toUpperCase()}] - ${data.join(" ")}`;
     console.log(`\x1b[${color}m${line}\x1b[0m`);
     fileLogger.info({ name, message: data.join(" ") });
+
+    // === Kirim ke dashboard ===
+    if (_emitLog) {
+      const level = _LEVEL_MAP[name.toUpperCase()] ?? "INFO";
+      const msg = data.join(" ");
+      // Coba baca src dari format "[namaModul] pesan"
+      const srcMatch = msg.match(/^\[([^\]]+)\]/);
+      const src = srcMatch ? srcMatch[1].toLowerCase() : name.toLowerCase();
+      _emitLog(level, src, msg);
+    }
   },
   log: (...data) => Logger.info(...data),
   info: (...data) => Logger._log("INFO", COLORS.info, ...data),
@@ -107,7 +145,6 @@ function parseDuration(time) {
   while ((match = regex.exec(time))) {
     const value = parseInt(match[1]);
     const unit = match[2];
-
     switch (unit) {
       case "s":
         duration += value * 1000;
@@ -148,17 +185,7 @@ const TabbleConsole = {
     console.log(
       "+----------------------------------------------+\n|                                              |",
     );
-    console.log(
-      /*
-            `|\x1B[96m${TabbleConsole._repeatText(
-                " ",
-                (46 - text.length) / 2
-            )}${text}${TabbleConsole._repeatText(
-                " ",
-                Math.ceil((46 - text.length) / 2)
-            )}\x1B[0m|`*/
-      `|\x1B[96m${padString(text, 46, " ")}\x1B[0m|`,
-    );
+    console.log(`|\x1B[96m${padString(text, 46, " ")}\x1B[0m|`);
     console.log(
       "|                                              |\n+---+------------------------------------------+",
     );
@@ -183,7 +210,6 @@ const TabbleConsole = {
   showLoading: (text) => {
     const frames = ["-", "\\", "|", "/"];
     let index = 0;
-
     return setInterval(() => {
       process.stdout.write(
         `\r| ${frames[index]}\x1B[0m | ${text}${TabbleConsole._repeatText(

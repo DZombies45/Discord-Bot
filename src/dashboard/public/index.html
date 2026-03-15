@@ -1,0 +1,1433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DZombies Bot — Control Panel</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0b0d;
+        --bg2: #0f1114;
+        --bg3: #141720;
+        --panel: #12151a;
+        --border: #1e2430;
+        --accent: #4c7bff;
+        --accent2: #7c3aed;
+        --green: #22d45a;
+        --red: #ff3e5e;
+        --yellow: #fbbf24;
+        --cyan: #22d3ee;
+        --text: #e2e8f0;
+        --text-dim: #64748b;
+        --text-muted: #334155;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      /* ─── HEADER ─── */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 32px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .logo {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 0 20px rgba(76, 123, 255, 0.4);
+        animation: logo-pulse 3s ease-in-out infinite;
+      }
+      @keyframes logo-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(76, 123, 255, 0.4);
+        }
+        50% {
+          box-shadow:
+            0 0 35px rgba(76, 123, 255, 0.7),
+            0 0 60px rgba(76, 123, 255, 0.2);
+        }
+      }
+      .header-title h1 {
+        font-family: "Syne", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+      }
+      .header-title span {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .ws-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 11px;
+        border: 1px solid;
+        transition: all 0.3s;
+      }
+      .ws-badge.connected {
+        background: rgba(34, 212, 90, 0.08);
+        border-color: rgba(34, 212, 90, 0.25);
+        color: var(--green);
+      }
+      .ws-badge.connecting {
+        background: rgba(251, 191, 36, 0.08);
+        border-color: rgba(251, 191, 36, 0.25);
+        color: var(--yellow);
+      }
+      .ws-badge.disconnected {
+        background: rgba(255, 62, 94, 0.08);
+        border-color: rgba(255, 62, 94, 0.25);
+        color: var(--red);
+      }
+      .ws-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        animation: blink 2s ease-in-out infinite;
+      }
+      .connected .ws-dot {
+        background: var(--green);
+      }
+      .connecting .ws-dot {
+        background: var(--yellow);
+      }
+      .disconnected .ws-dot {
+        background: var(--red);
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .time-display {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+
+      /* ─── LAYOUT ─── */
+      .main {
+        display: grid;
+        grid-template-columns: 260px 1fr 300px;
+        grid-template-rows: auto 1fr;
+        height: calc(100vh - 73px);
+      }
+
+      /* ─── SIDEBAR ─── */
+      .sidebar {
+        grid-row: 1/3;
+        border-right: 1px solid var(--border);
+        background: var(--panel);
+        padding: 24px 0;
+        overflow-y: auto;
+      }
+      .sidebar-section {
+        margin-bottom: 28px;
+      }
+      .sidebar-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        padding: 0 20px 8px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-left: 2px solid transparent;
+        transition: all 0.15s;
+        font-size: 12px;
+        color: var(--text-dim);
+      }
+      .nav-item:hover {
+        background: rgba(76, 123, 255, 0.06);
+        color: var(--text);
+      }
+      .nav-item.active {
+        background: rgba(76, 123, 255, 0.1);
+        border-left-color: var(--accent);
+        color: var(--text);
+      }
+      .nav-icon {
+        width: 16px;
+        text-align: center;
+        font-size: 14px;
+      }
+      .nav-badge {
+        margin-left: auto;
+        font-size: 9px;
+        padding: 2px 7px;
+        border-radius: 10px;
+      }
+      .nb-blue {
+        background: rgba(76, 123, 255, 0.2);
+        color: var(--accent);
+      }
+      .nb-green {
+        background: rgba(34, 212, 90, 0.15);
+        color: var(--green);
+      }
+      .nb-red {
+        background: rgba(255, 62, 94, 0.2);
+        color: var(--red);
+      }
+      .nb-yellow {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--yellow);
+      }
+
+      .uptime-card {
+        margin: 0 16px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .uptime-title {
+        font-size: 10px;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+      }
+      .uptime-val {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--green);
+        font-family: "Syne", sans-serif;
+      }
+      .uptime-sub {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      .uptime-bar {
+        height: 3px;
+        background: var(--bg);
+        border-radius: 2px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+      .uptime-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--green), #06b96f);
+        border-radius: 2px;
+        width: 94%;
+      }
+
+      /* ─── STATS ─── */
+      .stats-row {
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .stat-card {
+        background: var(--bg2);
+        padding: 20px 22px;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.2s;
+      }
+      .stat-card:hover {
+        background: var(--bg3);
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+      }
+      .stat-card.blue::before {
+        background: linear-gradient(90deg, var(--accent), transparent);
+      }
+      .stat-card.purple::before {
+        background: linear-gradient(90deg, var(--accent2), transparent);
+      }
+      .stat-card.green::before {
+        background: linear-gradient(90deg, var(--green), transparent);
+      }
+      .stat-card.yellow::before {
+        background: linear-gradient(90deg, var(--yellow), transparent);
+      }
+      .stat-label {
+        font-size: 10px;
+        color: var(--text-dim);
+        margin-bottom: 6px;
+        letter-spacing: 0.05em;
+      }
+      .stat-val {
+        font-size: 28px;
+        font-weight: 800;
+        font-family: "Syne", sans-serif;
+        line-height: 1;
+      }
+      .stat-val.blue {
+        color: var(--accent);
+      }
+      .stat-val.purple {
+        color: var(--accent2);
+      }
+      .stat-val.green {
+        color: var(--green);
+      }
+      .stat-val.yellow {
+        color: var(--yellow);
+      }
+      .stat-sub {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+      .stat-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 32px;
+        opacity: 0.06;
+      }
+
+      /* ─── LOG AREA ─── */
+      .log-area {
+        grid-column: 2;
+        background: var(--bg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .log-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .log-toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .log-toolbar h2 {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-family: "Syne", sans-serif;
+      }
+      .filter-pills {
+        display: flex;
+        gap: 6px;
+      }
+      .pill {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 10px;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        background: transparent;
+        transition: all 0.15s;
+      }
+      .pill.active {
+        background: rgba(76, 123, 255, 0.15);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .pill.warn.active {
+        background: rgba(251, 191, 36, 0.1);
+        border-color: var(--yellow);
+        color: var(--yellow);
+      }
+      .pill.err.active {
+        background: rgba(255, 62, 94, 0.1);
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .pill.cmd.active {
+        background: rgba(34, 211, 238, 0.1);
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
+      .log-search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 5px 12px;
+      }
+      .log-search input {
+        background: none;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-family: "JetBrains Mono";
+        font-size: 11px;
+        width: 160px;
+      }
+      .log-search input::placeholder {
+        color: var(--text-muted);
+      }
+      .autoscroll-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+      .toggle-track {
+        width: 28px;
+        height: 14px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        position: relative;
+        transition: background 0.2s;
+      }
+      .toggle-track.on {
+        background: rgba(34, 212, 90, 0.3);
+        border-color: var(--green);
+      }
+      .toggle-thumb {
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        width: 10px;
+        height: 10px;
+        background: var(--text-dim);
+        border-radius: 50%;
+        transition: all 0.2s;
+      }
+      .toggle-track.on .toggle-thumb {
+        left: 15px;
+        background: var(--green);
+      }
+      .live-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        color: var(--red);
+      }
+      .live-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--red);
+        border-radius: 50%;
+        animation: blink 1s ease-in-out infinite;
+      }
+
+      .log-stream {
+        flex: 1;
+        overflow-y: auto;
+        font-size: 11.5px;
+        scroll-behavior: smooth;
+      }
+      .log-stream::-webkit-scrollbar {
+        width: 4px;
+      }
+      .log-stream::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      .log-entry {
+        display: grid;
+        grid-template-columns: 90px 52px 90px 1fr;
+        gap: 0;
+        padding: 7px 20px;
+        border-bottom: 1px solid rgba(30, 36, 48, 0.5);
+        transition: background 0.1s;
+        animation: fade-in 0.25s ease;
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateX(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .log-entry:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .log-time {
+        color: var(--text-muted);
+        font-size: 10px;
+        padding-top: 1px;
+      }
+      .log-level {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 1px 6px;
+        border-radius: 3px;
+        height: fit-content;
+        width: fit-content;
+      }
+      .level-INFO {
+        background: rgba(76, 123, 255, 0.15);
+        color: var(--accent);
+      }
+      .level-WARN {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--yellow);
+      }
+      .level-ERROR {
+        background: rgba(255, 62, 94, 0.15);
+        color: var(--red);
+      }
+      .level-CMD {
+        background: rgba(34, 211, 238, 0.12);
+        color: var(--cyan);
+      }
+      .level-OK {
+        background: rgba(34, 212, 90, 0.12);
+        color: var(--green);
+      }
+      .log-src {
+        color: var(--text-muted);
+        font-size: 10px;
+        padding-top: 1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .log-msg {
+        color: var(--text);
+        word-break: break-all;
+      }
+
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 12px;
+        color: var(--text-muted);
+      }
+      .empty-state .icon {
+        font-size: 40px;
+        opacity: 0.3;
+      }
+      .empty-state p {
+        font-size: 12px;
+      }
+
+      /* ─── RIGHT PANEL ─── */
+      .right-panel {
+        grid-column: 3;
+        grid-row: 1/3;
+        border-left: 1px solid var(--border);
+        background: var(--panel);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .right-panel::-webkit-scrollbar {
+        width: 3px;
+      }
+      .right-panel::-webkit-scrollbar-thumb {
+        background: var(--border);
+      }
+      .rp-section {
+        padding: 18px;
+        border-bottom: 1px solid var(--border);
+      }
+      .rp-title {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+
+      /* Gauges */
+      .gauge-row {
+        display: flex;
+        gap: 8px;
+      }
+      .gauge {
+        flex: 1;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 8px;
+        text-align: center;
+      }
+      .gauge-label {
+        font-size: 9px;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .gauge-ring {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 6px;
+        position: relative;
+      }
+      .gauge-ring svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+      }
+      .gauge-ring circle {
+        fill: none;
+        stroke-width: 5;
+      }
+      .gauge-fill {
+        stroke-dasharray: 163;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 1.5s ease;
+      }
+      .gauge-num {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      /* Cmd bars */
+      .cmd-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .cmd-bar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .cmd-bar-name {
+        font-size: 11px;
+        color: var(--text-dim);
+        width: 72px;
+        flex-shrink: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cmd-bar-track {
+        flex: 1;
+        height: 5px;
+        background: var(--bg3);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .cmd-bar-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.8s ease;
+      }
+      .cmd-bar-count {
+        font-size: 10px;
+        color: var(--text-muted);
+        width: 20px;
+        text-align: right;
+      }
+
+      /* Events */
+      .event-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .event-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 10px 12px;
+        background: var(--bg3);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        animation: fade-in 0.3s ease;
+      }
+      .event-emoji {
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .event-title {
+        font-size: 11px;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .event-meta {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      /* Quick actions */
+      .action-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 8px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+        color: var(--text-dim);
+        transition: all 0.15s;
+      }
+      .action-btn:hover {
+        background: rgba(76, 123, 255, 0.08);
+        border-color: var(--accent);
+        color: var(--text);
+        transform: translateY(-1px);
+      }
+      .action-btn span {
+        font-size: 16px;
+      }
+      .action-btn.danger:hover {
+        background: rgba(255, 62, 94, 0.08);
+        border-color: var(--red);
+        color: var(--red);
+      }
+
+      /* Reconnect banner */
+      .reconnect-bar {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 8px;
+        background: rgba(255, 62, 94, 0.1);
+        border-bottom: 1px solid rgba(255, 62, 94, 0.3);
+        font-size: 11px;
+        color: var(--red);
+      }
+      .reconnect-bar.show {
+        display: flex;
+      }
+      .reconnect-btn {
+        padding: 3px 10px;
+        border: 1px solid var(--red);
+        border-radius: 4px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--red);
+        font-family: "JetBrains Mono";
+        font-size: 10px;
+      }
+      .reconnect-btn:hover {
+        background: rgba(255, 62, 94, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- RECONNECT BANNER -->
+    <div class="reconnect-bar" id="reconnectBar">
+      ⚠️ WebSocket disconnected — bot offline or server stopped
+      <button class="reconnect-btn" onclick="connect()">Reconnect</button>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">🤖</div>
+        <div class="header-title">
+          <h1>DZombies Bot</h1>
+          <span>Control Panel — discord.js v14</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="ws-badge connecting" id="wsBadge">
+          <div class="ws-dot"></div>
+          <span id="wsLabel">CONNECTING</span>
+        </div>
+        <div class="time-display" id="clock">--:--:--</div>
+      </div>
+    </header>
+
+    <div class="main">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">Navigation</div>
+          <div class="nav-item active">
+            <span class="nav-icon">📋</span> Log Stream
+            <span class="nav-badge nb-blue" id="logCount">0</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚡</span> Commands
+            <span class="nav-badge nb-blue" id="cmdTotal">0</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🛡️</span> Moderation
+            <span class="nav-badge nb-red" id="modCount">0</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">⚠️</span> Errors
+            <span class="nav-badge nb-red" id="errBadge">0</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">Bot Modules</div>
+          <div class="nav-item">
+            <span class="nav-icon">⛏️</span> Minecraft News
+            <span class="nav-badge nb-green">ON</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🦠</span> VirusTotal
+            <span class="nav-badge nb-green">ON</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">📷</span> QR Tools
+            <span class="nav-badge nb-green">ON</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🎮</span> Mini-Games
+            <span class="nav-badge nb-green">ON</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon">🗺️</span> Translate
+            <span class="nav-badge nb-yellow">BETA</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">Uptime</div>
+          <div class="uptime-card">
+            <div class="uptime-title">Session uptime</div>
+            <div class="uptime-val" id="uptimeVal">00:00:00</div>
+            <div class="uptime-sub" id="uptimeSince">Waiting for bot...</div>
+            <div class="uptime-bar">
+              <div class="uptime-fill" id="uptimeFill"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- STATS ROW -->
+      <div class="stats-row">
+        <div class="stat-card blue">
+          <div class="stat-label">COMMANDS RUN</div>
+          <div class="stat-val blue" id="statCmds">0</div>
+          <div class="stat-sub">this session</div>
+          <div class="stat-icon">⚡</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">EVENTS LOGGED</div>
+          <div class="stat-val purple" id="statEvents">0</div>
+          <div class="stat-sub">live stream</div>
+          <div class="stat-icon">📡</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">LOG ENTRIES</div>
+          <div class="stat-val green" id="statLogs">0</div>
+          <div class="stat-sub">total received</div>
+          <div class="stat-icon">📋</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-label">ERRORS</div>
+          <div class="stat-val yellow" id="statErrors">0</div>
+          <div class="stat-sub" id="errSub">clean session</div>
+          <div class="stat-icon">⚠️</div>
+        </div>
+      </div>
+
+      <!-- LOG AREA -->
+      <div class="log-area">
+        <div class="log-toolbar">
+          <div class="log-toolbar-left">
+            <h2>Log Stream</h2>
+            <div class="live-chip">
+              <div class="live-dot"></div>
+              LIVE
+            </div>
+            <div class="filter-pills">
+              <div class="pill active" onclick="setFilter('ALL', this)">
+                ALL
+              </div>
+              <div class="pill cmd" onclick="setFilter('CMD', this)">CMD</div>
+              <div class="pill warn" onclick="setFilter('WARN', this)">
+                WARN
+              </div>
+              <div class="pill err" onclick="setFilter('ERROR', this)">ERR</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="log-search">
+              <span style="color: var(--text-muted)">🔍</span>
+              <input
+                type="text"
+                placeholder="filter logs..."
+                id="searchInput"
+                oninput="applySearch()"
+              />
+            </div>
+            <div class="autoscroll-toggle" onclick="toggleAutoscroll()">
+              <div class="toggle-track on" id="autoToggle">
+                <div class="toggle-thumb"></div>
+              </div>
+              auto-scroll
+            </div>
+          </div>
+        </div>
+        <div class="log-stream" id="logStream">
+          <div class="empty-state" id="emptyState">
+            <div class="icon">📡</div>
+            <p>Waiting for bot to connect...</p>
+            <p style="font-size: 10px; margin-top: 4px">
+              Make sure bot is running
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <aside class="right-panel">
+        <div class="rp-section">
+          <div class="rp-title">Node.js Memory</div>
+          <div class="gauge-row">
+            <div class="gauge">
+              <div class="gauge-label">RSS</div>
+              <div class="gauge-ring">
+                <svg viewBox="0 0 56 56">
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#1e2430"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="gauge-fill"
+                    id="rssArc"
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#4c7bff"
+                    stroke-dashoffset="130"
+                  />
+                </svg>
+                <div class="gauge-num" style="color: #4c7bff" id="rssNum">
+                  —
+                </div>
+              </div>
+            </div>
+            <div class="gauge">
+              <div class="gauge-label">HEAP</div>
+              <div class="gauge-ring">
+                <svg viewBox="0 0 56 56">
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#1e2430"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="gauge-fill"
+                    id="heapArc"
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#7c3aed"
+                    stroke-dashoffset="100"
+                  />
+                </svg>
+                <div class="gauge-num" style="color: #7c3aed" id="heapNum">
+                  —
+                </div>
+              </div>
+            </div>
+            <div class="gauge">
+              <div class="gauge-label">EXT</div>
+              <div class="gauge-ring">
+                <svg viewBox="0 0 56 56">
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#1e2430"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="gauge-fill"
+                    id="extArc"
+                    cx="28"
+                    cy="28"
+                    r="26"
+                    stroke="#22d45a"
+                    stroke-dashoffset="140"
+                  />
+                </svg>
+                <div class="gauge-num" style="color: #22d45a" id="extNum">
+                  —
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rp-section">
+          <div class="rp-title">Command Usage</div>
+          <div class="cmd-bars" id="cmdBars">
+            <div style="font-size: 11px; color: var(--text-muted)">
+              No commands yet...
+            </div>
+          </div>
+        </div>
+
+        <div class="rp-section">
+          <div class="rp-title">Recent Events</div>
+          <div class="event-list" id="eventList">
+            <div style="font-size: 11px; color: var(--text-muted)">
+              Waiting for events...
+            </div>
+          </div>
+        </div>
+
+        <div class="rp-section">
+          <div class="rp-title">Quick Actions</div>
+          <div class="action-grid">
+            <div class="action-btn" onclick="sendAction('clear')">
+              <span>🧹</span>Clear Logs
+            </div>
+            <div class="action-btn" onclick="copyLogs()">
+              <span>📋</span>Copy Logs
+            </div>
+            <div class="action-btn" onclick="exportLogs()">
+              <span>💾</span>Export .txt
+            </div>
+            <div class="action-btn" onclick="location.reload()">
+              <span>🔄</span>Refresh UI
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      // ─── CONFIG ───
+      // WebSocket auto-detects host (works di localhost maupun server)
+      const WS_URL = `ws://${location.host}`;
+
+      // ─── STATE ───
+      let ws = null;
+      let autoScroll = true;
+      let activeFilter = "ALL";
+      let searchQuery = "";
+      let allLogs = [];
+      let stats = { cmds: 0, events: 0, errors: 0 };
+      let cmdUsage = {};
+      let startTime = null;
+
+      // ─── CLOCK ───
+      setInterval(() => {
+        document.getElementById("clock").textContent = new Date()
+          .toTimeString()
+          .slice(0, 8);
+      }, 1000);
+
+      // ─── UPTIME ───
+      setInterval(() => {
+        if (!startTime) return;
+        const e = Math.floor((Date.now() - startTime) / 1000);
+        const h = String(Math.floor(e / 3600)).padStart(2, "0");
+        const m = String(Math.floor((e % 3600) / 60)).padStart(2, "0");
+        const s = String(e % 60).padStart(2, "0");
+        document.getElementById("uptimeVal").textContent = `${h}:${m}:${s}`;
+      }, 1000);
+
+      // ─── WEBSOCKET ───
+      function connect() {
+        if (ws) ws.close();
+        setWsState("connecting");
+        document.getElementById("reconnectBar").classList.remove("show");
+
+        ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+          setWsState("connected");
+          if (!startTime) startTime = Date.now();
+          addSystemLog("Dashboard connected to bot server");
+        };
+
+        ws.onmessage = (e) => {
+          const data = JSON.parse(e.data);
+          handleMessage(data);
+        };
+
+        ws.onclose = () => {
+          setWsState("disconnected");
+          document.getElementById("reconnectBar").classList.add("show");
+          addSystemLog("⚠️ WebSocket disconnected — retrying in 5s...");
+          setTimeout(connect, 5000);
+        };
+
+        ws.onerror = () => {
+          setWsState("disconnected");
+        };
+      }
+
+      function setWsState(state) {
+        const badge = document.getElementById("wsBadge");
+        const label = document.getElementById("wsLabel");
+        badge.className = `ws-badge ${state}`;
+        label.textContent = state.toUpperCase();
+      }
+
+      // ─── MESSAGE HANDLER ───
+      function handleMessage(data) {
+        if (data.type === "history") {
+          data.logs.forEach(renderLog);
+          if (data.logs.length > 0) {
+            document.getElementById("emptyState")?.remove();
+          }
+        } else if (data.type === "log") {
+          document.getElementById("emptyState")?.remove();
+          allLogs.push(data);
+          renderLog(data);
+          updateStatsFromLog(data);
+        } else if (data.type === "stats") {
+          updateGauges(data);
+        } else if (data.type === "clear") {
+          allLogs = [];
+          document.getElementById("logStream").innerHTML = "";
+          stats = { cmds: 0, events: 0, errors: 0 };
+          cmdUsage = {};
+          updateStatCards();
+        }
+      }
+
+      function updateStatsFromLog(entry) {
+        stats.events++;
+        if (entry.level === "ERROR") {
+          stats.errors++;
+          document.getElementById("statErrors").textContent = stats.errors;
+          document.getElementById("errSub").textContent =
+            `↑ ${stats.errors} error(s)`;
+          document.getElementById("errBadge").textContent = stats.errors;
+        }
+        if (entry.level === "CMD") {
+          stats.cmds++;
+          // Extract command name from message
+          const match = entry.msg.match(/(\/\w+)/);
+          if (match) {
+            const cmd = match[1];
+            cmdUsage[cmd] = (cmdUsage[cmd] || 0) + 1;
+            updateCmdBars();
+          }
+          document.getElementById("statCmds").textContent = stats.cmds;
+          document.getElementById("cmdTotal").textContent = stats.cmds;
+        }
+        document.getElementById("statEvents").textContent = stats.events;
+        document.getElementById("statLogs").textContent = allLogs.length;
+        document.getElementById("logCount").textContent =
+          document.querySelectorAll(".log-entry").length;
+
+        // Recent events panel
+        addEventToPanel(entry);
+      }
+
+      // ─── RENDER LOG ───
+      function renderLog(entry) {
+        if (!matchesFilter(entry) || !matchesSearch(entry)) return;
+
+        const stream = document.getElementById("logStream");
+        const time = new Date(entry.time).toLocaleTimeString("en-GB");
+
+        const row = document.createElement("div");
+        row.className = "log-entry";
+        row.dataset.level = entry.level;
+        row.dataset.msg = entry.msg.toLowerCase();
+        row.innerHTML = `
+    <span class="log-time">${time}</span>
+    <span class="log-level level-${entry.level}">${entry.level}</span>
+    <span class="log-src">${entry.src}</span>
+    <span class="log-msg">${escapeHtml(entry.msg)}</span>
+  `;
+        stream.appendChild(row);
+        if (autoScroll) stream.scrollTop = stream.scrollHeight;
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function addSystemLog(msg) {
+        renderLog({
+          level: "INFO",
+          src: "dashboard",
+          msg,
+          time: new Date().toISOString(),
+        });
+      }
+
+      // ─── GAUGES (dari stats yang dikirim server) ───
+      function updateGauges(data) {
+        if (data.rss !== undefined) {
+          const rssMB = Math.round(data.rss / 1024 / 1024);
+          const rssMax = 512; // anggap max 512MB
+          setGauge(
+            "rssArc",
+            "rssNum",
+            Math.min((rssMB / rssMax) * 100, 100),
+            rssMB + "M",
+          );
+        }
+        if (data.heapUsed !== undefined) {
+          const hMB = Math.round(data.heapUsed / 1024 / 1024);
+          const hTMB = Math.round(data.heapTotal / 1024 / 1024);
+          const pct = Math.round((hMB / hTMB) * 100);
+          setGauge("heapArc", "heapNum", pct, hMB + "M");
+        }
+        if (data.external !== undefined) {
+          const extMB = Math.round(data.external / 1024 / 1024);
+          setGauge(
+            "extArc",
+            "extNum",
+            Math.min((extMB / 50) * 100, 100),
+            extMB + "M",
+          );
+        }
+        if (data.uptime !== undefined && !startTime) {
+          startTime = Date.now() - data.uptime * 1000;
+          const d = new Date(startTime);
+          document.getElementById("uptimeSince").textContent =
+            "Since " + d.toLocaleTimeString();
+        }
+      }
+
+      function setGauge(arcId, numId, pct, label) {
+        const offset = 163 - (pct / 100) * 163;
+        document.getElementById(arcId).style.strokeDashoffset = offset;
+        document.getElementById(numId).textContent = label;
+      }
+
+      // ─── CMD BARS ───
+      const barColors = [
+        "#4c7bff",
+        "#7c3aed",
+        "#22d45a",
+        "#22d3ee",
+        "#fbbf24",
+        "#f472b6",
+      ];
+      function updateCmdBars() {
+        const entries = Object.entries(cmdUsage)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 6);
+        if (!entries.length) return;
+        const max = entries[0][1] || 1;
+        document.getElementById("cmdBars").innerHTML = entries
+          .map(
+            ([cmd, count], i) => `
+    <div class="cmd-bar-item">
+      <span class="cmd-bar-name">${cmd}</span>
+      <div class="cmd-bar-track"><div class="cmd-bar-fill" style="width:${(count / max) * 100}%;background:${barColors[i % barColors.length]}"></div></div>
+      <span class="cmd-bar-count">${count}</span>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      // ─── EVENT PANEL ───
+      const eventEmojis = {
+        gateway: "👤",
+        moderation: "🛡️",
+        "mc-news": "⛏️",
+        games: "🎮",
+        virustotal: "🔍",
+        commands: "⚡",
+        mongo: "🍃",
+        dashboard: "🖥️",
+      };
+      function addEventToPanel(entry) {
+        const list = document.getElementById("eventList");
+        if (list.querySelector("[data-placeholder]")) list.innerHTML = "";
+        const el = document.createElement("div");
+        el.className = "event-item";
+        const time = new Date(entry.time).toLocaleTimeString("en-GB");
+        el.innerHTML = `
+    <span class="event-emoji">${eventEmojis[entry.src] || "📡"}</span>
+    <div class="event-body">
+      <div class="event-title">${escapeHtml(entry.msg)}</div>
+      <div class="event-meta">${entry.src} · ${time}</div>
+    </div>
+  `;
+        list.insertBefore(el, list.firstChild);
+        while (list.children.length > 6) list.removeChild(list.lastChild);
+      }
+
+      // ─── FILTER & SEARCH ───
+      function matchesFilter(entry) {
+        return activeFilter === "ALL" || entry.level === activeFilter;
+      }
+      function matchesSearch(entry) {
+        if (!searchQuery) return true;
+        return (entry.src + " " + entry.msg)
+          .toLowerCase()
+          .includes(searchQuery);
+      }
+
+      function setFilter(f, el) {
+        activeFilter = f;
+        document
+          .querySelectorAll(".pill")
+          .forEach((p) => p.classList.remove("active"));
+        el.classList.add("active");
+        rerenderAll();
+      }
+      function applySearch() {
+        searchQuery = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        rerenderAll();
+      }
+      function rerenderAll() {
+        document.getElementById("logStream").innerHTML = "";
+        allLogs.forEach(renderLog);
+      }
+
+      function toggleAutoscroll() {
+        autoScroll = !autoScroll;
+        document
+          .getElementById("autoToggle")
+          .classList.toggle("on", autoScroll);
+      }
+
+      // ─── ACTIONS ───
+      function sendAction(action) {
+        if (ws && ws.readyState === 1) ws.send(JSON.stringify({ action }));
+      }
+
+      function copyLogs() {
+        const text = allLogs
+          .map(
+            (l) =>
+              `[${new Date(l.time).toLocaleTimeString()}] [${l.level}] [${l.src}] ${l.msg}`,
+          )
+          .join("\n");
+        navigator.clipboard
+          .writeText(text)
+          .then(() => addSystemLog("Logs copied to clipboard"));
+      }
+
+      function exportLogs() {
+        const text = allLogs
+          .map(
+            (l) =>
+              `[${new Date(l.time).toISOString()}] [${l.level}] [${l.src}] ${l.msg}`,
+          )
+          .join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+        a.download = `bot-logs-${new Date().toISOString().slice(0, 10)}.txt`;
+        a.click();
+        addSystemLog("Logs exported to .txt file");
+      }
+
+      function updateStatCards() {
+        document.getElementById("statCmds").textContent = stats.cmds;
+        document.getElementById("statEvents").textContent = stats.events;
+        document.getElementById("statErrors").textContent = stats.errors;
+        document.getElementById("statLogs").textContent = 0;
+        document.getElementById("logCount").textContent = 0;
+      }
+
+      // ─── INIT ───
+      connect();
+    </script>
+  </body>
+</html>

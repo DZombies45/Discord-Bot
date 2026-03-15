@@ -5,6 +5,8 @@ import { GlobalFonts } from "@napi-rs/canvas";
 import { loadError } from "./log.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { startDashboard, emitStats } from "./src/dashboard/server.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 GlobalFonts.registerFromPath(
@@ -58,3 +60,16 @@ eventHandler(client);
 
 client.login(process.env.TOKEN);
 loadError(client);
+
+startDashboard();
+
+setInterval(() => {
+  const mem = process.memoryUsage();
+  emitStats({
+    rss: mem.rss,
+    heapUsed: mem.heapUsed,
+    heapTotal: mem.heapTotal,
+    external: mem.external,
+    uptime: process.uptime(),
+  });
+}, 5000);

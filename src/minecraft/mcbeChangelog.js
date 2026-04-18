@@ -8,6 +8,7 @@ const articleSections = {
   JavaSnapshot: 360002267532,
 };
 import mcChangelogSch from "../schemas/mcChangelogSch.js";
+import { sendLog } from "../../log.js";
 
 export default async (client, messageArr) => {
   fetch(

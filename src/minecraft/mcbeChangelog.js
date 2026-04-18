@@ -92,7 +92,7 @@ export default async (client, messageArr) => {
             name,
             version,
             thumbnail,
-            data.type === "stable" ? Config.tags.Stable : Config.tags.Preview,
+            Config.tags.Stable,
             articleSections.BedrockRelease,
             isHotfix,
           );
@@ -305,17 +305,18 @@ const createPost = (
     .catch((e) => {
       if (retryCount >= 5) {
         Utils.Logger.error(
-          "Giving up on forum post for",
+          "[Create Post] Giving up on forum post for",
           "v" + article.version + " after 5 retries.",
+          "error: " + e,
         );
         sendLog(
-          "❌ Failed to create Java forum post after 5 retries",
+          "❌ Failed to create bedrock forum post after 5 retries",
           `Version: ${article.version}\nType: ${article.type}\nURL: ${article.article?.url}\n\n${e}`,
         );
         return;
       }
       Utils.Logger.log(
-        "Failed to create the forum post for",
+        "[Create Post] Failed to create the forum post for",
         "v" + article.version + ", retrying...",
       );
       setTimeout(

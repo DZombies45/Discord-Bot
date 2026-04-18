@@ -106,8 +106,12 @@ export default async (client, messageArr) => {
                   : (latestJavaSnapshot?.id ?? 99999999) + 1,
               url:
                 messageArr
-                  .find((line) => line.includes("https://www.minecraft.net"))
-                  ?.replace("-#", "")
+                  .find(
+                    (line) =>
+                      line.includes("https://www.minecraft.net") ||
+                      line.includes("https://feedback.minecraft.net"),
+                  )
+                  ?.replace(/^-#\s*/, "")
                   .trim() ?? "",
               title: messageArr[0].replace("#", "").trim(),
               created_at: now,

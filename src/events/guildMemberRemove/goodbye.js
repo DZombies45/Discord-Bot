@@ -20,7 +20,7 @@ export default async (client, member) => {
       )
       .setBackground(
         "image",
-        "https://cdn.discordapp.com/attachments/1046721681445638224/1241817497754271785/Hyperion_mount.png?ex=68564eeb&is=6854fd6b&hm=e326318e7f152d18fa0b4ec373df29cf78762504c3237c14c6ea7bb2770c1f57&",
+        "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/hi3/hyperion_maunt.png",
       )
       .setTitle(member.displayName)
       .setDescription(msg, "#C21534")

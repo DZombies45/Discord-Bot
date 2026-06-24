@@ -147,13 +147,14 @@ const Utils = {
             ? "https://feedback.minecraft.net/hc/en-us/sections/360001185332-Beta-and-Preview-Information-and-Changelogs"
             : "https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs",
         icon_url:
-          "https://cdn.discordapp.com/attachments/1071081145149689857/1071089941985112064/Mojang.png",
+          "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc.png",
       },
       thumbnail: {
         url:
-          articleSection == articleSections.BedrockPreview
-            ? "https://cdn.discordapp.com/attachments/1046721681445638224/1207903467985838100/Bedrock_Preview.png?ex=65e156c4&is=65cee1c4&hm=ee26deb34947aac40187676b768425000dc4513a847ae9e7dd70ac63af476121&"
-            : "https://cdn.discordapp.com/attachments/1046721681445638224/1207903467654479904/Bedrock_Icon_Change.png?ex=65e156c4&is=65cee1c4&hm=279acda4fe0b7e9c400acc2a1cef6ad4c3ac485cc3bde7c71aa587c713d8af54&",
+          articleSection == articleSections.BedrockPrevie
+            ? "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Bedrock_Preview.png"
+            : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Bedrock_Icon_Change.png",
+        w,
       },
       image: image ? { url: image } : undefined,
       footer: { text: "Posted on" },
@@ -181,13 +182,14 @@ const Utils = {
             ? "https://feedback.minecraft.net/hc/en-us/sections/360002267532-Snapshot-Information-and-Changelogs"
             : "https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs",
         icon_url:
-          "https://cdn.discordapp.com/attachments/1071081145149689857/1071089941985112064/Mojang.png",
+          "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc.png",
       },
       thumbnail: {
         url:
-          articleSection == articleSections.JavaSnapshot
-            ? "https://cdn.discordapp.com/attachments/1046721681445638224/1207903468673826876/Java_Snapshot_Change.png?ex=65e156c4&is=65cee1c4&hm=d4c6d72126bdade024ff4c11ff6ee66df485ffca3ef0a78904c07f11177c0bde&"
-            : "https://cdn.discordapp.com/attachments/1046721681445638224/1207903468367388772/Java_Edition_Icon.png?ex=65e156c4&is=65cee1c4&hm=a88895560d82955edcb2fe750e22d14debaf893ac5af3f09458ba894c87b5ca8&",
+          articleSection == articleSections.JavaSnapsho
+            ? "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Java_Snapshot_Change.png"
+            : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Java_Edition_Icon.png",
+        t,
       },
       image: image ? { url: image } : undefined,
       footer: { text: "Posted on" },

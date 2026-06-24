@@ -324,13 +324,13 @@ const postChangelog = async (client, interaction, bedrock) => {
           author: {
             name: versionType + "Changelogs",
             icon_url:
-              "https://cdn.discordapp.com/attachments/1071081145149689857/1071089941985112064/Mojang.png",
+              "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc.png",
           },
           thumbnail: {
             url:
               versionType !== "Stable"
-                ? "https://cdn.discordapp.com/attachments/1071081145149689857/1093331067710226432/mcpreview.png"
-                : "https://cdn.discordapp.com/attachments/1071081145149689857/1093331067425005578/mc.png",
+                ? "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc_preview.png"
+                : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc_.png",
           },
           image: {
             url: article.thumbnail,
@@ -347,7 +347,7 @@ const postChangelog = async (client, interaction, bedrock) => {
           author: {
             name: "Minecraft Changelogs bot",
             icon_url:
-              "https://cdn.discordapp.com/attachments/1071081145149689857/1071089941985112064/Mojang.png",
+              "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/mc.png",
           },
           description: e.startsWith("**") ? e : "",
         },

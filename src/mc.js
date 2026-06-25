@@ -153,8 +153,7 @@ const Utils = {
         url:
           articleSection == articleSections.BedrockPrevie
             ? "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Bedrock_Preview.png"
-            : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Bedrock_Icon_Change.png",
-        w,
+            : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Bedrock_Icon_Change.png", 
       },
       image: image ? { url: image } : undefined,
       footer: { text: "Posted on" },

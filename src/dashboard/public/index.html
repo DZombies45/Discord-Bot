@@ -1,1826 +1,509 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DZombies Bot — Control Panel</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg: #0a0b0d;
-        --bg2: #0f1114;
-        --bg3: #141720;
-        --panel: #12151a;
-        --border: #1e2430;
-        --accent: #4c7bff;
-        --accent2: #7c3aed;
-        --green: #22d45a;
-        --red: #ff3e5e;
-        --yellow: #fbbf24;
-        --cyan: #22d3ee;
-        --text: #e2e8f0;
-        --text-dim: #64748b;
-        --text-muted: #334155;
-      }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: "JetBrains Mono", monospace;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 0, 0, 0.03) 2px,
-          rgba(0, 0, 0, 0.03) 4px
-        );
-        pointer-events: none;
-        z-index: 9999;
-      }
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0d10" />
+<title>Bot Dashboard</title>
+<style>
+  :root{
+    --bg:#0b0d10;
+    --bg-elev:#13161b;
+    --bg-elev-2:#1a1e25;
+    --border:#22262e;
+    --text:#e8eaed;
+    --text-dim:#8b919c;
+    --accent:#5b8cff;
+    --ok:#3ddc97;
+    --warn:#f5b942;
+    --err:#ff5d5d;
+    --cmd:#c792ea;
+    --info:#5b8cff;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+    font-size:14px;
+    overscroll-behavior-y:contain;
+  }
 
-      /* ─── HEADER ─── */
-      .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 32px;
-        border-bottom: 1px solid var(--border);
-        background: var(--panel);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-      .logo {
-        width: 38px;
-        height: 38px;
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        box-shadow: 0 0 20px rgba(76, 123, 255, 0.4);
-        animation: logo-pulse 3s ease-in-out infinite;
-      }
-      @keyframes logo-pulse {
-        0%,
-        100% {
-          box-shadow: 0 0 20px rgba(76, 123, 255, 0.4);
-        }
-        50% {
-          box-shadow:
-            0 0 35px rgba(76, 123, 255, 0.7),
-            0 0 60px rgba(76, 123, 255, 0.2);
-        }
-      }
-      .header-title h1 {
-        font-family: "Syne", sans-serif;
-        font-size: 16px;
-        font-weight: 800;
-        letter-spacing: 0.05em;
-      }
-      .header-title span {
-        font-size: 11px;
-        color: var(--text-dim);
-      }
-      .header-right {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-      }
+  header{
+    position:sticky; top:0; z-index:20;
+    padding:calc(12px + var(--safe-top)) 14px 10px;
+    background:rgba(11,13,16,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; align-items:center; gap:8px;}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim);transition:.2s;}
+  .brand .dot.connected{background:var(--ok); box-shadow:0 0 8px var(--ok);}
+  .brand .dot.disconnected{background:var(--err); box-shadow:0 0 8px var(--err);}
+  .brand h1{font-size:15px; font-weight:600; margin:0;}
+  .brand .sub{font-size:11px; color:var(--text-dim);}
+  .icon-btn{
+    background:var(--bg-elev); border:1px solid var(--border); color:var(--text);
+    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+  }
+  .icon-btn:active{background:var(--bg-elev-2);}
 
-      .ws-badge {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 14px;
-        border-radius: 6px;
-        font-size: 11px;
-        border: 1px solid;
-        transition: all 0.3s;
-      }
-      .ws-badge.connected {
-        background: rgba(34, 212, 90, 0.08);
-        border-color: rgba(34, 212, 90, 0.25);
-        color: var(--green);
-      }
-      .ws-badge.connecting {
-        background: rgba(251, 191, 36, 0.08);
-        border-color: rgba(251, 191, 36, 0.25);
-        color: var(--yellow);
-      }
-      .ws-badge.disconnected {
-        background: rgba(255, 62, 94, 0.08);
-        border-color: rgba(255, 62, 94, 0.25);
-        color: var(--red);
-      }
-      .ws-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        animation: blink 2s ease-in-out infinite;
-      }
-      .connected .ws-dot {
-        background: var(--green);
-      }
-      .connecting .ws-dot {
-        background: var(--yellow);
-      }
-      .disconnected .ws-dot {
-        background: var(--red);
-      }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-      .time-display {
-        font-size: 11px;
-        color: var(--text-dim);
-      }
+  .stats-wrap{padding:12px 14px 4px;}
+  .stats-scroll{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .stats-scroll::-webkit-scrollbar{display:none;}
+  .stat-card{
+    flex:0 0 auto; min-width:96px;
+    background:var(--bg-elev); border:1px solid var(--border); border-radius:14px;
+    padding:10px 12px;
+  }
+  .stat-card .label{font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px;}
+  .stat-card .value{font-size:18px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .stat-card .value.ok{color:var(--ok);}
+  .stat-card .value.warn{color:var(--warn);}
 
-      /* ─── LAYOUT ─── */
-      .main {
-        display: grid;
-        grid-template-columns: 260px 1fr 300px;
-        grid-template-rows: auto 1fr;
-        height: calc(100vh - 73px);
-      }
+  .toolbar{
+    padding:10px 14px; display:flex; gap:8px; align-items:center;
+    position:sticky; top:calc(54px + var(--safe-top)); z-index:15;
+    background:var(--bg);
+  }
+  .search{
+    flex:1; display:flex; align-items:center; gap:6px;
+    background:var(--bg-elev); border:1px solid var(--border); border-radius:12px;
+    padding:8px 12px;
+  }
+  .search input{
+    flex:1; background:none; border:none; outline:none; color:var(--text); font-size:14px;
+  }
+  .search input::placeholder{color:var(--text-dim);}
 
-      /* ─── SIDEBAR ─── */
-      .sidebar {
-        grid-row: 1/3;
-        border-right: 1px solid var(--border);
-        background: var(--panel);
-        padding: 24px 0;
-        overflow-y: auto;
-      }
-      .sidebar-section {
-        margin-bottom: 28px;
-      }
-      .sidebar-label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        padding: 0 20px 8px;
-      }
-      .nav-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-left: 2px solid transparent;
-        transition: all 0.15s;
-        font-size: 12px;
-        color: var(--text-dim);
-      }
-      .nav-item:hover {
-        background: rgba(76, 123, 255, 0.06);
-        color: var(--text);
-      }
-      .nav-item.active {
-        background: rgba(76, 123, 255, 0.1);
-        border-left-color: var(--accent);
-        color: var(--text);
-      }
-      .nav-icon {
-        width: 16px;
-        text-align: center;
-        font-size: 14px;
-      }
-      .nav-badge {
-        margin-left: auto;
-        font-size: 9px;
-        padding: 2px 7px;
-        border-radius: 10px;
-      }
-      .nb-blue {
-        background: rgba(76, 123, 255, 0.2);
-        color: var(--accent);
-      }
-      .nb-green {
-        background: rgba(34, 212, 90, 0.15);
-        color: var(--green);
-      }
-      .nb-red {
-        background: rgba(255, 62, 94, 0.2);
-        color: var(--red);
-      }
-      .nb-yellow {
-        background: rgba(251, 191, 36, 0.15);
-        color: var(--yellow);
-      }
+  .filters{
+    display:flex; gap:6px; overflow-x:auto; padding:0 14px 10px;
+    scrollbar-width:none;
+  }
+  .filters::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto;
+    padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600;
+    background:var(--bg-elev); border:1px solid var(--border); color:var(--text-dim);
+  }
+  .chip.active{color:var(--bg); border-color:transparent;}
+  .chip[data-level="ALL"].active{background:var(--text);}
+  .chip[data-level="INFO"].active{background:var(--info);}
+  .chip[data-level="OK"].active{background:var(--ok);}
+  .chip[data-level="WARN"].active{background:var(--warn);}
+  .chip[data-level="ERROR"].active{background:var(--err);}
+  .chip[data-level="CMD"].active{background:var(--cmd);}
 
-      .uptime-card {
-        margin: 0 16px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 14px;
-      }
-      .uptime-title {
-        font-size: 10px;
-        color: var(--text-dim);
-        margin-bottom: 8px;
-      }
-      .uptime-val {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--green);
-        font-family: "Syne", sans-serif;
-        letter-spacing: 0.02em;
-      }
-      .uptime-sub {
-        font-size: 10px;
-        color: var(--text-muted);
-        margin-top: 2px;
-      }
-      .uptime-bar {
-        height: 3px;
-        background: var(--bg);
-        border-radius: 2px;
-        margin-top: 10px;
-        overflow: hidden;
-      }
-      .uptime-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--green), #06b96f);
-        border-radius: 2px;
-        width: 94%;
-      }
-      .uptime-divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 10px 0;
-      }
-      .uptime-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-      }
-      .uptime-row-label {
-        font-size: 9px;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-      .uptime-row-val {
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--cyan);
-      }
+  #logList{
+    padding:4px 10px calc(90px + var(--safe-bottom));
+  }
+  .log-entry{
+    display:flex; gap:8px;
+    padding:9px 10px; margin-bottom:6px;
+    background:var(--bg-elev); border:1px solid var(--border); border-left:3px solid var(--text-dim);
+    border-radius:10px;
+    animation:slideIn .15s ease-out;
+  }
+  @keyframes slideIn{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+  .log-entry.INFO{border-left-color:var(--info);}
+  .log-entry.OK{border-left-color:var(--ok);}
+  .log-entry.WARN{border-left-color:var(--warn);}
+  .log-entry.ERROR{border-left-color:var(--err); background:rgba(255,93,93,0.06);}
+  .log-entry.CMD{border-left-color:var(--cmd);}
+  .log-main{flex:1; min-width:0;}
+  .log-top{display:flex; align-items:center; gap:6px; margin-bottom:2px;}
+  .log-level{font-size:10px; font-weight:700; letter-spacing:.03em;}
+  .log-level.INFO{color:var(--info);}
+  .log-level.OK{color:var(--ok);}
+  .log-level.WARN{color:var(--warn);}
+  .log-level.ERROR{color:var(--err);}
+  .log-level.CMD{color:var(--cmd);}
+  .log-src{font-size:10px; color:var(--text-dim); background:var(--bg-elev-2); padding:1px 6px; border-radius:6px;}
+  .log-time{font-size:10px; color:var(--text-dim); margin-left:auto; font-variant-numeric:tabular-nums;}
+  .log-msg{font-size:13px; line-height:1.4; word-break:break-word; white-space:pre-wrap;}
+  .empty-state{
+    text-align:center; color:var(--text-dim); padding:60px 20px; font-size:13px;
+  }
 
-      /* ─── STATS ─── */
-      .stats-row {
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1px;
-        background: var(--border);
-        border-bottom: 1px solid var(--border);
-      }
-      .stat-card {
-        background: var(--bg2);
-        padding: 20px 22px;
-        position: relative;
-        overflow: hidden;
-        transition: background 0.2s;
-      }
-      .stat-card:hover {
-        background: var(--bg3);
-      }
-      .stat-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-      }
-      .stat-card.blue::before {
-        background: linear-gradient(90deg, var(--accent), transparent);
-      }
-      .stat-card.purple::before {
-        background: linear-gradient(90deg, var(--accent2), transparent);
-      }
-      .stat-card.green::before {
-        background: linear-gradient(90deg, var(--green), transparent);
-      }
-      .stat-card.yellow::before {
-        background: linear-gradient(90deg, var(--yellow), transparent);
-      }
-      .stat-label {
-        font-size: 10px;
-        color: var(--text-dim);
-        margin-bottom: 6px;
-        letter-spacing: 0.05em;
-      }
-      .stat-val {
-        font-size: 28px;
-        font-weight: 800;
-        font-family: "Syne", sans-serif;
-        line-height: 1;
-      }
-      .stat-val.blue {
-        color: var(--accent);
-      }
-      .stat-val.purple {
-        color: var(--accent2);
-      }
-      .stat-val.green {
-        color: var(--green);
-      }
-      .stat-val.yellow {
-        color: var(--yellow);
-      }
-      .stat-sub {
-        font-size: 10px;
-        color: var(--text-muted);
-        margin-top: 6px;
-      }
-      .stat-icon {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 32px;
-        opacity: 0.06;
-      }
+  .bottombar{
+    position:fixed; left:0; right:0; bottom:0; z-index:20;
+    padding:10px 14px calc(10px + var(--safe-bottom));
+    background:rgba(11,13,16,0.9); backdrop-filter:blur(10px);
+    border-top:1px solid var(--border);
+    display:flex; gap:8px; align-items:center;
+  }
+  .toggle-btn{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:6px;
+    padding:11px; border-radius:12px; font-size:13px; font-weight:600;
+    background:var(--bg-elev); border:1px solid var(--border); color:var(--text-dim);
+  }
+  .toggle-btn.active{color:var(--accent); border-color:var(--accent);}
+  .clear-btn{
+    padding:11px 16px; border-radius:12px; font-size:13px; font-weight:600;
+    background:rgba(255,93,93,0.1); border:1px solid var(--err); color:var(--err);
+  }
+  .clear-btn:active, .toggle-btn:active{opacity:.7;}
 
-      /* ─── LOG AREA ─── */
-      .log-area {
-        grid-column: 2;
-        background: var(--bg);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-      .log-toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 20px;
-        border-bottom: 1px solid var(--border);
-        background: var(--panel);
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .log-toolbar-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .log-toolbar h2 {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        font-family: "Syne", sans-serif;
-      }
-      .filter-pills {
-        display: flex;
-        gap: 6px;
-      }
-      .pill {
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 10px;
-        cursor: pointer;
-        border: 1px solid var(--border);
-        color: var(--text-dim);
-        background: transparent;
-        transition: all 0.15s;
-      }
-      .pill.active {
-        background: rgba(76, 123, 255, 0.15);
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      .pill.warn.active {
-        background: rgba(251, 191, 36, 0.1);
-        border-color: var(--yellow);
-        color: var(--yellow);
-      }
-      .pill.err.active {
-        background: rgba(255, 62, 94, 0.1);
-        border-color: var(--red);
-        color: var(--red);
-      }
-      .pill.cmd.active {
-        background: rgba(34, 211, 238, 0.1);
-        border-color: var(--cyan);
-        color: var(--cyan);
-      }
-      .log-search {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 5px 12px;
-      }
-      .log-search input {
-        background: none;
-        border: none;
-        outline: none;
-        color: var(--text);
-        font-family: "JetBrains Mono";
-        font-size: 11px;
-        width: 160px;
-      }
-      .log-search input::placeholder {
-        color: var(--text-muted);
-      }
-      .autoscroll-toggle {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 10px;
-        color: var(--text-muted);
-        cursor: pointer;
-      }
-      .toggle-track {
-        width: 28px;
-        height: 14px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 7px;
-        position: relative;
-        transition: background 0.2s;
-      }
-      .toggle-track.on {
-        background: rgba(34, 212, 90, 0.3);
-        border-color: var(--green);
-      }
-      .toggle-thumb {
-        position: absolute;
-        top: 1px;
-        left: 1px;
-        width: 10px;
-        height: 10px;
-        background: var(--text-dim);
-        border-radius: 50%;
-        transition: all 0.2s;
-      }
-      .toggle-track.on .toggle-thumb {
-        left: 15px;
-        background: var(--green);
-      }
-      .live-chip {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 10px;
-        color: var(--red);
-      }
-      .live-dot {
-        width: 6px;
-        height: 6px;
-        background: var(--red);
-        border-radius: 50%;
-        animation: blink 1s ease-in-out infinite;
-      }
+  .jump-fab{
+    position:fixed; right:16px; bottom:calc(72px + var(--safe-bottom));
+    background:var(--accent); color:#fff; border:none; border-radius:999px;
+    padding:8px 14px; font-size:12px; font-weight:600;
+    box-shadow:0 4px 14px rgba(91,140,255,0.4);
+    display:none; align-items:center; gap:4px; z-index:19;
+  }
+  .jump-fab.show{display:flex;}
 
-      .log-stream {
-        flex: 1;
-        overflow-y: auto;
-        font-size: 11.5px;
-        scroll-behavior: smooth;
-      }
-      .log-stream::-webkit-scrollbar {
-        width: 4px;
-      }
-      .log-stream::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 2px;
-      }
+  /* ── Auth gate ── */
+  .auth-gate{
+    min-height:100vh; min-height:100dvh;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; padding-top:calc(24px + var(--safe-top));
+  }
+  .auth-card{
+    width:100%; max-width:340px;
+    background:var(--bg-elev); border:1px solid var(--border); border-radius:18px;
+    padding:24px 20px; text-align:center;
+  }
+  .auth-card h2{margin:0 0 6px; font-size:18px;}
+  .auth-card p{margin:0 0 16px; font-size:13px; color:var(--text-dim);}
+  .auth-card input{
+    width:100%; padding:12px 14px; border-radius:12px; margin-bottom:10px;
+    background:var(--bg-elev-2); border:1px solid var(--border); color:var(--text);
+    font-size:15px; outline:none; text-align:center;
+  }
+  .auth-card input:focus{border-color:var(--accent);}
+  .auth-card button{
+    width:100%; padding:12px; border-radius:12px; border:none;
+    background:var(--accent); color:#fff; font-size:14px; font-weight:700;
+  }
+  .auth-card button:active{opacity:.8;}
+  .auth-error{
+    margin-top:10px; font-size:12px; color:var(--err); min-height:14px;
+  }
+</style>
+</head>
+<body>
 
-      .log-entry {
-        display: grid;
-        grid-template-columns: 90px 52px 90px 1fr;
-        gap: 0;
-        padding: 7px 20px;
-        border-bottom: 1px solid rgba(30, 36, 48, 0.5);
-        transition: background 0.1s;
-        animation: fade-in 0.25s ease;
-      }
-      @keyframes fade-in {
-        from {
-          opacity: 0;
-          transform: translateX(-4px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      .log-entry:hover {
-        background: rgba(255, 255, 255, 0.02);
-      }
-      .log-time {
-        color: var(--text-muted);
-        font-size: 10px;
-        padding-top: 1px;
-      }
-      .log-level {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        padding: 1px 6px;
-        border-radius: 3px;
-        height: fit-content;
-        width: fit-content;
-      }
-      .level-INFO {
-        background: rgba(76, 123, 255, 0.15);
-        color: var(--accent);
-      }
-      .level-WARN {
-        background: rgba(251, 191, 36, 0.15);
-        color: var(--yellow);
-      }
-      .level-ERROR {
-        background: rgba(255, 62, 94, 0.15);
-        color: var(--red);
-      }
-      .level-CMD {
-        background: rgba(34, 211, 238, 0.12);
-        color: var(--cyan);
-      }
-      .level-OK {
-        background: rgba(34, 212, 90, 0.12);
-        color: var(--green);
-      }
-      .log-src {
-        color: var(--text-muted);
-        font-size: 10px;
-        padding-top: 1px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .log-msg {
-        color: var(--text);
-        word-break: break-all;
-      }
+<div id="authGate" class="auth-gate">
+  <div class="auth-card">
+    <h2>🔒 Akses Dashboard</h2>
+    <p>Masukkan token untuk membuka dashboard bot.</p>
+    <input type="password" id="tokenInput" placeholder="Token" autocomplete="off" />
+    <button id="tokenSubmit">Masuk</button>
+    <div class="auth-error" id="authError"></div>
+  </div>
+</div>
 
-      .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        gap: 12px;
-        color: var(--text-muted);
-      }
-      .empty-state .icon {
-        font-size: 40px;
-        opacity: 0.3;
-      }
-      .empty-state p {
-        font-size: 12px;
-      }
-
-      /* ─── RIGHT PANEL ─── */
-      .right-panel {
-        grid-column: 3;
-        grid-row: 1/3;
-        border-left: 1px solid var(--border);
-        background: var(--panel);
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-      }
-      .right-panel::-webkit-scrollbar {
-        width: 3px;
-      }
-      .right-panel::-webkit-scrollbar-thumb {
-        background: var(--border);
-      }
-      .rp-section {
-        padding: 18px;
-        border-bottom: 1px solid var(--border);
-      }
-      .rp-title {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        margin-bottom: 14px;
-      }
-
-      /* Gauges */
-      .gauge-row {
-        display: flex;
-        gap: 8px;
-      }
-      .gauge {
-        flex: 1;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 12px 8px;
-        text-align: center;
-      }
-      .gauge-label {
-        font-size: 9px;
-        color: var(--text-muted);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
-      .gauge-ring {
-        width: 58px;
-        height: 58px;
-        margin: 0 auto 6px;
-        position: relative;
-      }
-      .gauge-ring svg {
-        width: 100%;
-        height: 100%;
-        transform: rotate(-90deg);
-      }
-      .gauge-ring circle {
-        fill: none;
-        stroke-width: 5;
-      }
-      .gauge-fill {
-        stroke-dasharray: 163;
-        stroke-linecap: round;
-        transition: stroke-dashoffset 1.5s ease;
-      }
-      .gauge-num {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      /* Cmd bars */
-      .cmd-bars {
-        display: flex;
-        flex-direction: column;
-        gap: 9px;
-      }
-      .cmd-bar-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .cmd-bar-name {
-        font-size: 11px;
-        color: var(--text-dim);
-        width: 72px;
-        flex-shrink: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .cmd-bar-track {
-        flex: 1;
-        height: 5px;
-        background: var(--bg3);
-        border-radius: 3px;
-        overflow: hidden;
-      }
-      .cmd-bar-fill {
-        height: 100%;
-        border-radius: 3px;
-        transition: width 0.8s ease;
-      }
-      .cmd-bar-count {
-        font-size: 10px;
-        color: var(--text-muted);
-        width: 20px;
-        text-align: right;
-      }
-
-      /* Events */
-      .event-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .event-item {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        padding: 10px 12px;
-        background: var(--bg3);
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        animation: fade-in 0.3s ease;
-      }
-      .event-emoji {
-        font-size: 15px;
-        flex-shrink: 0;
-      }
-      .event-title {
-        font-size: 11px;
-        color: var(--text);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .event-meta {
-        font-size: 10px;
-        color: var(--text-muted);
-        margin-top: 2px;
-      }
-
-      /* Quick actions */
-      .action-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-      .action-btn {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 8px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        cursor: pointer;
-        font-family: "JetBrains Mono";
-        font-size: 10px;
-        color: var(--text-dim);
-        transition: all 0.15s;
-      }
-      .action-btn:hover {
-        background: rgba(76, 123, 255, 0.08);
-        border-color: var(--accent);
-        color: var(--text);
-        transform: translateY(-1px);
-      }
-      .action-btn span {
-        font-size: 16px;
-      }
-      .action-btn.danger:hover {
-        background: rgba(255, 62, 94, 0.08);
-        border-color: var(--red);
-        color: var(--red);
-      }
-
-      /* Reconnect banner */
-      .reconnect-bar {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 8px;
-        background: rgba(255, 62, 94, 0.1);
-        border-bottom: 1px solid rgba(255, 62, 94, 0.3);
-        font-size: 11px;
-        color: var(--red);
-      }
-      .reconnect-bar.show {
-        display: flex;
-      }
-      .reconnect-btn {
-        padding: 3px 10px;
-        border: 1px solid var(--red);
-        border-radius: 4px;
-        cursor: pointer;
-        background: transparent;
-        color: var(--red);
-        font-family: "JetBrains Mono";
-        font-size: 10px;
-      }
-      .reconnect-btn:hover {
-        background: rgba(255, 62, 94, 0.2);
-      }
-
-      /* ════════════════════════════════════════
-     MOBILE RESPONSIVE
-     Breakpoint: <= 768px
-  ════════════════════════════════════════ */
-      @media (max-width: 768px) {
-        /* Header: kompres */
-        .header {
-          padding: 12px 16px;
-        }
-        .header-title span {
-          display: none;
-        }
-        .time-display {
-          display: none;
-        }
-
-        /* Main grid: satu kolom penuh, tanpa sidebar/right-panel */
-        .main {
-          display: flex;
-          flex-direction: column;
-          height: calc(100vh - 57px - 56px); /* header + tab bar */
-        }
-
-        /* Sidebar & right-panel: sembunyikan, tampil via drawer */
-        .sidebar {
-          display: none;
-          position: fixed;
-          top: 57px;
-          left: 0;
-          width: 80vw;
-          max-width: 300px;
-          height: calc(100vh - 57px);
-          z-index: 200;
-          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
-          transition: transform 0.25s ease;
-          transform: translateX(-100%);
-        }
-        .sidebar.open {
-          display: block;
-          transform: translateX(0);
-        }
-
-        .right-panel {
-          display: none;
-          position: fixed;
-          top: 57px;
-          right: 0;
-          width: 90vw;
-          max-width: 340px;
-          height: calc(100vh - 57px - 56px);
-          z-index: 200;
-          box-shadow: -4px 0 24px rgba(0, 0, 0, 0.6);
-          transition: transform 0.25s ease;
-          transform: translateX(100%);
-          overflow-y: auto;
-        }
-        .right-panel.open {
-          display: flex;
-          transform: translateX(0);
-        }
-
-        /* Overlay untuk menutup drawer */
-        .drawer-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 199;
-          backdrop-filter: blur(2px);
-        }
-        .drawer-overlay.show {
-          display: block;
-        }
-
-        /* Stats row: 2x2 grid */
-        .stats-row {
-          grid-template-columns: 1fr 1fr;
-          order: -1;
-        }
-        .stat-card {
-          padding: 14px 14px;
-        }
-        .stat-val {
-          font-size: 22px;
-        }
-        .stat-icon {
-          display: none;
-        }
-
-        /* Log area: fill sisa ruang */
-        .log-area {
-          flex: 1;
-          min-height: 0;
-          order: 1;
-        }
-
-        /* Log toolbar: baris pertama filter, baris kedua search */
-        .log-toolbar {
-          flex-direction: column;
-          align-items: stretch;
-          padding: 10px 12px;
-          gap: 8px;
-        }
-        .log-toolbar-left {
-          flex-wrap: wrap;
-          gap: 8px;
-        }
-        .log-toolbar h2 {
-          font-size: 11px;
-        }
-        .log-toolbar > div:last-child {
-          display: flex;
-          gap: 8px;
-        }
-        .log-search {
-          flex: 1;
-        }
-        .log-search input {
-          width: 100%;
-        }
-        .autoscroll-toggle span:last-child {
-          display: none;
-        } /* sembunyikan teks "auto-scroll" */
-
-        /* Log entry: layout lebih ringkas di mobile */
-        .log-entry {
-          grid-template-columns: 60px 44px 1fr;
-          grid-template-rows: auto auto;
-          padding: 8px 12px;
-          gap: 2px 6px;
-        }
-        .log-time {
-          font-size: 9px;
-        }
-        .log-src {
-          grid-column: 3;
-          grid-row: 1;
-          font-size: 9px;
-          text-align: right;
-        }
-        .log-msg {
-          grid-column: 1/-1;
-          grid-row: 2;
-          font-size: 11px;
-          padding-top: 3px;
-        }
-
-        /* Bottom tab bar */
-        .tab-bar {
-          display: flex !important;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 56px;
-          background: var(--panel);
-          border-top: 1px solid var(--border);
-          z-index: 300;
-        }
-        .tab-btn {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 3px;
-          cursor: pointer;
-          color: var(--text-muted);
-          font-size: 9px;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          border: none;
-          background: transparent;
-          font-family: "JetBrains Mono";
-          transition: color 0.15s;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .tab-btn.active {
-          color: var(--accent);
-        }
-        .tab-btn .tab-icon {
-          font-size: 18px;
-        }
-        .tab-btn.active .tab-icon {
-          filter: drop-shadow(0 0 6px var(--accent));
-        }
-
-        /* Body padding bawah supaya konten tidak ketutup tab bar */
-        body {
-          padding-bottom: 0;
-        }
-      }
-
-      /* Tab bar selalu hidden di desktop */
-      .tab-bar {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- RECONNECT BANNER -->
-    <div class="reconnect-bar" id="reconnectBar">
-      ⚠️ WebSocket disconnected — bot offline or server stopped
-      <button class="reconnect-btn" onclick="connect()">Reconnect</button>
+<div id="app" style="display:none;">
+<header>
+  <div class="brand">
+    <span class="dot" id="connDot"></span>
+    <div>
+      <h1>Bot Dashboard</h1>
+      <div class="sub" id="connSub">Menghubungkan...</div>
     </div>
+  </div>
+  <button class="icon-btn" id="refreshBtn" title="Reload">⟳</button>
+</header>
 
-    <!-- DRAWER OVERLAY (mobile) -->
-    <div
-      class="drawer-overlay"
-      id="drawerOverlay"
-      onclick="closeDrawers()"
-    ></div>
+<div class="stats-wrap">
+  <div class="stats-scroll">
+    <div class="stat-card"><div class="label">Status</div><div class="value" id="statStatus">—</div></div>
+    <div class="stat-card"><div class="label">Uptime</div><div class="value" id="statUptime">—</div></div>
+    <div class="stat-card"><div class="label">Guilds</div><div class="value" id="statGuilds">—</div></div>
+    <div class="stat-card"><div class="label">Members</div><div class="value" id="statMembers">—</div></div>
+    <div class="stat-card"><div class="label">Ping</div><div class="value" id="statPing">—</div></div>
+    <div class="stat-card"><div class="label">Memory</div><div class="value" id="statMem">—</div></div>
+  </div>
+</div>
 
-    <!-- BOTTOM TAB BAR (mobile only) -->
-    <nav class="tab-bar">
-      <button class="tab-btn active" id="tab-logs" onclick="mobileTab('logs')">
-        <span class="tab-icon">📋</span>Logs
-      </button>
-      <button class="tab-btn" id="tab-stats" onclick="mobileTab('stats')">
-        <span class="tab-icon">📊</span>Stats
-      </button>
-      <button class="tab-btn" id="tab-menu" onclick="mobileTab('menu')">
-        <span class="tab-icon">☰</span>Menu
-      </button>
-      <button class="tab-btn" id="tab-info" onclick="mobileTab('info')">
-        <span class="tab-icon">⚙️</span>Info
-      </button>
-    </nav>
+<div class="toolbar">
+  <div class="search">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Cari log…" />
+  </div>
+</div>
 
-    <!-- HEADER -->
-    <header class="header">
-      <div class="header-left">
-        <div class="logo">🤖</div>
-        <div class="header-title">
-          <h1>DZombies Bot</h1>
-          <span>Control Panel — discord.js v14</span>
+<div class="filters" id="filterChips">
+  <div class="chip active" data-level="ALL">Semua</div>
+  <div class="chip" data-level="INFO">Info</div>
+  <div class="chip" data-level="OK">OK</div>
+  <div class="chip" data-level="WARN">Warn</div>
+  <div class="chip" data-level="ERROR">Error</div>
+  <div class="chip" data-level="CMD">Cmd</div>
+</div>
+
+<div id="logList"></div>
+
+<button class="jump-fab" id="jumpFab">⬇ Log baru</button>
+
+<div class="bottombar">
+  <button class="toggle-btn active" id="autoScrollBtn">⬇ Auto-scroll</button>
+  <button class="clear-btn" id="clearBtn">Clear</button>
+</div>
+</div>
+
+<script>
+(function(){
+  const logList = document.getElementById('logList');
+  const connDot = document.getElementById('connDot');
+  const connSub = document.getElementById('connSub');
+  const searchInput = document.getElementById('searchInput');
+  const filterChips = document.getElementById('filterChips');
+  const autoScrollBtn = document.getElementById('autoScrollBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const jumpFab = document.getElementById('jumpFab');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const authGate = document.getElementById('authGate');
+  const appRoot = document.getElementById('app');
+  const tokenInput = document.getElementById('tokenInput');
+  const tokenSubmit = document.getElementById('tokenSubmit');
+  const authError = document.getElementById('authError');
+
+  const TOKEN_KEY = 'dashboard_token';
+  let logs = [];
+  let activeLevel = 'ALL';
+  let searchTerm = '';
+  let autoScroll = true;
+  let ws = null;
+  let rejectedOnce = false;
+
+  function fmtTime(iso){
+    const d = new Date(iso);
+    return d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+  function fmtUptime(sec){
+    sec = Math.floor(sec);
+    const d = Math.floor(sec/86400); sec%=86400;
+    const h = Math.floor(sec/3600); sec%=3600;
+    const m = Math.floor(sec/60);
+    if(d>0) return `${d}d ${h}h`;
+    if(h>0) return `${h}h ${m}m`;
+    return `${m}m`;
+  }
+  function fmtBytes(b){
+    if(b > 1024*1024*1024) return (b/1024/1024/1024).toFixed(1)+'GB';
+    return (b/1024/1024).toFixed(0)+'MB';
+  }
+  function isNearBottom(){
+    return (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 150);
+  }
+
+  function matchesFilter(entry){
+    if(activeLevel !== 'ALL' && entry.level !== activeLevel) return false;
+    if(searchTerm){
+      const hay = (entry.msg + ' ' + entry.src).toLowerCase();
+      if(!hay.includes(searchTerm)) return false;
+    }
+    return true;
+  }
+
+  function renderAll(){
+    const filtered = logs.filter(matchesFilter);
+    if(filtered.length === 0){
+      logList.innerHTML = '<div class="empty-state">Belum ada log yang cocok.</div>';
+      return;
+    }
+    logList.innerHTML = filtered.map(entryHtml).join('');
+    if(autoScroll) scrollToBottom();
+  }
+
+  function entryHtml(entry){
+    const level = entry.level || 'INFO';
+    return `<div class="log-entry ${level}">
+      <div class="log-main">
+        <div class="log-top">
+          <span class="log-level ${level}">${level}</span>
+          <span class="log-src">${escapeHtml(entry.src||'-')}</span>
+          <span class="log-time">${fmtTime(entry.time)}</span>
         </div>
+        <div class="log-msg">${escapeHtml(entry.msg)}</div>
       </div>
-      <div class="header-right">
-        <div class="ws-badge connecting" id="wsBadge">
-          <div class="ws-dot"></div>
-          <span id="wsLabel">CONNECTING</span>
-        </div>
-        <div class="time-display" id="clock">--:--:--</div>
-      </div>
-    </header>
+    </div>`;
+  }
 
-    <div class="main">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-section">
-          <div class="sidebar-label">Navigation</div>
-          <div class="nav-item active">
-            <span class="nav-icon">📋</span> Log Stream
-            <span class="nav-badge nb-blue" id="logCount">0</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚡</span> Commands
-            <span class="nav-badge nb-blue" id="cmdTotal">0</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">🛡️</span> Moderation
-            <span class="nav-badge nb-red" id="modCount">0</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">⚠️</span> Errors
-            <span class="nav-badge nb-red" id="errBadge">0</span>
-          </div>
-        </div>
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+  }
 
-        <div class="sidebar-section">
-          <div class="sidebar-label">Bot Modules</div>
-          <div class="nav-item">
-            <span class="nav-icon">⛏️</span> Minecraft News
-            <span class="nav-badge nb-green">ON</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">🦠</span> VirusTotal
-            <span class="nav-badge nb-green">ON</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">📷</span> QR Tools
-            <span class="nav-badge nb-green">ON</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">🎮</span> Mini-Games
-            <span class="nav-badge nb-green">ON</span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-icon">🗺️</span> Translate
-            <span class="nav-badge nb-yellow">BETA</span>
-          </div>
-        </div>
+  function appendEntry(entry){
+    logs.push(entry);
+    if(logs.length > 500) logs.shift();
+    if(!matchesFilter(entry)) return;
 
-        <div class="sidebar-section">
-          <div class="sidebar-label">Uptime</div>
-          <div class="uptime-card">
-            <div class="uptime-title">🤖 Bot uptime</div>
-            <div class="uptime-val" id="botUptimeVal">--:--:--</div>
-            <div class="uptime-sub" id="uptimeSince">Waiting for bot...</div>
-            <div class="uptime-bar"><div class="uptime-fill"></div></div>
-            <hr class="uptime-divider" />
-            <div class="uptime-row">
-              <span class="uptime-row-label">🖥️ Dashboard</span>
-              <span class="uptime-row-val" id="dashUptimeVal">00:00:00</span>
-            </div>
-          </div>
-        </div>
-      </aside>
+    const wasNearBottom = isNearBottom();
+    const empty = logList.querySelector('.empty-state');
+    if(empty) empty.remove();
 
-      <!-- STATS ROW -->
-      <div class="stats-row">
-        <div class="stat-card blue">
-          <div class="stat-label">COMMANDS RUN</div>
-          <div class="stat-val blue" id="statCmds">0</div>
-          <div class="stat-sub">this session</div>
-          <div class="stat-icon">⚡</div>
-        </div>
-        <div class="stat-card purple">
-          <div class="stat-label">EVENTS LOGGED</div>
-          <div class="stat-val purple" id="statEvents">0</div>
-          <div class="stat-sub">live stream</div>
-          <div class="stat-icon">📡</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-label">LOG ENTRIES</div>
-          <div class="stat-val green" id="statLogs">0</div>
-          <div class="stat-sub">total received</div>
-          <div class="stat-icon">📋</div>
-        </div>
-        <div class="stat-card yellow">
-          <div class="stat-label">ERRORS</div>
-          <div class="stat-val yellow" id="statErrors">0</div>
-          <div class="stat-sub" id="errSub">clean session</div>
-          <div class="stat-icon">⚠️</div>
-        </div>
-      </div>
+    logList.insertAdjacentHTML('beforeend', entryHtml(entry));
 
-      <!-- LOG AREA -->
-      <div class="log-area">
-        <div class="log-toolbar">
-          <div class="log-toolbar-left">
-            <h2>Log Stream</h2>
-            <div class="live-chip">
-              <div class="live-dot"></div>
-              LIVE
-            </div>
-            <div class="filter-pills">
-              <div class="pill active" onclick="setFilter('ALL', this)">
-                ALL
-              </div>
-              <div class="pill cmd" onclick="setFilter('CMD', this)">CMD</div>
-              <div class="pill warn" onclick="setFilter('WARN', this)">
-                WARN
-              </div>
-              <div class="pill err" onclick="setFilter('ERROR', this)">ERR</div>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px">
-            <div class="log-search">
-              <span style="color: var(--text-muted)">🔍</span>
-              <input
-                type="text"
-                placeholder="filter logs..."
-                id="searchInput"
-                oninput="applySearch()"
-              />
-            </div>
-            <div class="autoscroll-toggle" onclick="toggleAutoscroll()">
-              <div class="toggle-track on" id="autoToggle">
-                <div class="toggle-thumb"></div>
-              </div>
-              auto-scroll
-            </div>
-          </div>
-        </div>
-        <div class="log-stream" id="logStream">
-          <div class="empty-state" id="emptyState">
-            <div class="icon">📡</div>
-            <p>Waiting for bot to connect...</p>
-            <p style="font-size: 10px; margin-top: 4px">
-              Make sure bot is running
-            </p>
-          </div>
-        </div>
-      </div>
+    if(autoScroll && wasNearBottom){
+      scrollToBottom();
+    } else if(!autoScroll || !wasNearBottom){
+      jumpFab.classList.add('show');
+    }
+  }
 
-      <!-- RIGHT PANEL -->
-      <aside class="right-panel">
-        <div class="rp-section">
-          <div class="rp-title">Node.js Memory</div>
-          <div class="gauge-row">
-            <div class="gauge">
-              <div class="gauge-label">RSS</div>
-              <div class="gauge-ring">
-                <svg viewBox="0 0 56 56">
-                  <circle
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#1e2430"
-                    stroke-width="5"
-                    fill="none"
-                  />
-                  <circle
-                    class="gauge-fill"
-                    id="rssArc"
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#4c7bff"
-                    stroke-dashoffset="130"
-                  />
-                </svg>
-                <div class="gauge-num" style="color: #4c7bff" id="rssNum">
-                  —
-                </div>
-              </div>
-            </div>
-            <div class="gauge">
-              <div class="gauge-label">HEAP</div>
-              <div class="gauge-ring">
-                <svg viewBox="0 0 56 56">
-                  <circle
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#1e2430"
-                    stroke-width="5"
-                    fill="none"
-                  />
-                  <circle
-                    class="gauge-fill"
-                    id="heapArc"
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#7c3aed"
-                    stroke-dashoffset="100"
-                  />
-                </svg>
-                <div class="gauge-num" style="color: #7c3aed" id="heapNum">
-                  —
-                </div>
-              </div>
-            </div>
-            <div class="gauge">
-              <div class="gauge-label">EXT</div>
-              <div class="gauge-ring">
-                <svg viewBox="0 0 56 56">
-                  <circle
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#1e2430"
-                    stroke-width="5"
-                    fill="none"
-                  />
-                  <circle
-                    class="gauge-fill"
-                    id="extArc"
-                    cx="28"
-                    cy="28"
-                    r="26"
-                    stroke="#22d45a"
-                    stroke-dashoffset="140"
-                  />
-                </svg>
-                <div class="gauge-num" style="color: #22d45a" id="extNum">
-                  —
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  function scrollToBottom(){
+    window.scrollTo({top: document.body.scrollHeight, behavior:'auto'});
+    jumpFab.classList.remove('show');
+  }
 
-        <div class="rp-section">
-          <div class="rp-title">Command Usage</div>
-          <div class="cmd-bars" id="cmdBars">
-            <div style="font-size: 11px; color: var(--text-muted)">
-              No commands yet...
-            </div>
-          </div>
-        </div>
+  function updateStats(s){
+    document.getElementById('statStatus').textContent = s.status === 'online' ? 'Online' : 'Connecting';
+    document.getElementById('statStatus').className = 'value ' + (s.status === 'online' ? 'ok' : 'warn');
+    if(typeof s.uptime === 'number') document.getElementById('statUptime').textContent = fmtUptime(s.uptime);
+    if(typeof s.guildCount === 'number') document.getElementById('statGuilds').textContent = s.guildCount;
+    if(typeof s.memberCount === 'number') document.getElementById('statMembers').textContent = s.memberCount.toLocaleString('id-ID');
+    if(typeof s.ping === 'number') document.getElementById('statPing').textContent = (s.ping < 0 ? '—' : s.ping + 'ms');
+    if(typeof s.rss === 'number') document.getElementById('statMem').textContent = fmtBytes(s.rss);
+  }
 
-        <div class="rp-section">
-          <div class="rp-title">Recent Events</div>
-          <div class="event-list" id="eventList">
-            <div style="font-size: 11px; color: var(--text-muted)">
-              Waiting for events...
-            </div>
-          </div>
-        </div>
+  function showGate(message){
+    authGate.style.display = 'flex';
+    appRoot.style.display = 'none';
+    authError.textContent = message || '';
+  }
 
-        <div class="rp-section">
-          <div class="rp-title">Quick Actions</div>
-          <div class="action-grid">
-            <div class="action-btn" onclick="sendAction('clear')">
-              <span>🧹</span>Clear Logs
-            </div>
-            <div class="action-btn" onclick="copyLogs()">
-              <span>📋</span>Copy Logs
-            </div>
-            <div class="action-btn" onclick="exportLogs()">
-              <span>💾</span>Export .txt
-            </div>
-            <div class="action-btn" onclick="location.reload()">
-              <span>🔄</span>Refresh UI
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
+  function showApp(){
+    authGate.style.display = 'none';
+    appRoot.style.display = 'block';
+  }
 
-    <script>
-      // ─── CONFIG ───
-      // WebSocket auto-detects host (works di localhost maupun server)
-      const WS_URL = `ws://${location.host}`;
+  function getStoredToken(){
+    try{ return localStorage.getItem(TOKEN_KEY) || ''; } catch(e){ return ''; }
+  }
+  function storeToken(t){
+    try{ localStorage.setItem(TOKEN_KEY, t); } catch(e){}
+  }
+  function clearStoredToken(){
+    try{ localStorage.removeItem(TOKEN_KEY); } catch(e){}
+  }
 
-      // ─── STATE ───
-      let ws = null;
-      let autoScroll = true;
-      let activeFilter = "ALL";
-      let searchQuery = "";
-      let allLogs = []; // array of normalized {level, src, msg, time}
-      let stats = { cmds: 0, events: 0, errors: 0 };
-      let cmdUsage = {};
-      let botStartTime = null; // kapan bot mulai (dari process.uptime)
-      const dashStartTime = Date.now();
+  function connect(token){
+    showApp();
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const qs = token ? `?token=${encodeURIComponent(token)}` : '';
+    ws = new WebSocket(`${proto}//${location.host}/${qs}`);
 
-      // Helper: normalisasi entry supaya selalu punya field yang benar
-      function normalizeEntry(raw) {
-        return {
-          level: raw.level || "INFO",
-          src: raw.src || "app",
-          msg: raw.msg || "",
-          time: raw.time || new Date().toISOString(),
-        };
+    let openedOk = false;
+
+    ws.onopen = () => {
+      openedOk = true;
+      rejectedOnce = false;
+      connDot.className = 'dot connected';
+      connSub.textContent = 'Terhubung';
+    };
+    ws.onclose = (ev) => {
+      connDot.className = 'dot disconnected';
+      // Kode 1006 langsung di percobaan pertama biasanya berarti server menolak upgrade (token salah/kosong)
+      if(!openedOk && token !== null){
+        clearStoredToken();
+        showGate('Token salah atau dashboard butuh token. Coba lagi.');
+        return;
       }
+      connSub.textContent = 'Terputus — mencoba lagi…';
+      setTimeout(() => connect(token), 2000);
+    };
+    ws.onerror = () => ws.close();
+    ws.onmessage = (ev) => {
+      let data;
+      try{ data = JSON.parse(ev.data); } catch(e){ return; }
 
-      // ─── CLOCK ───
-      setInterval(() => {
-        document.getElementById("clock").textContent = new Date()
-          .toTimeString()
-          .slice(0, 8);
-      }, 1000);
-
-      // ─── UPTIME (bot + dashboard) ───
-      function fmtDuration(ms) {
-        const totalSec = Math.max(0, Math.floor(ms / 1000));
-        const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
-        const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
-        const s = String(totalSec % 60).padStart(2, "0");
-        return h + ":" + m + ":" + s;
+      if(data.type === 'history'){
+        logs = data.logs || [];
+        renderAll();
+      } else if(data.type === 'log'){
+        appendEntry(data);
+      } else if(data.type === 'stats'){
+        updateStats(data);
+      } else if(data.type === 'clear'){
+        logs = [];
+        renderAll();
       }
+    };
+  }
 
-      setInterval(() => {
-        // Dashboard uptime selalu jalan sejak halaman dibuka
-        document.getElementById("dashUptimeVal").textContent = fmtDuration(
-          Date.now() - dashStartTime,
-        );
-        // Bot uptime dari data process.uptime yang dikirim server
-        if (botStartTime) {
-          document.getElementById("botUptimeVal").textContent = fmtDuration(
-            Date.now() - botStartTime,
-          );
-        }
-      }, 1000);
+  function tryEnter(){
+    const t = tokenInput.value.trim();
+    storeToken(t);
+    authError.textContent = '';
+    connect(t || null);
+  }
 
-      // ─── WEBSOCKET ───
-      function connect() {
-        if (ws) ws.close();
-        setWsState("connecting");
-        document.getElementById("reconnectBar").classList.remove("show");
+  tokenSubmit.addEventListener('click', tryEnter);
+  tokenInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') tryEnter();
+  });
 
-        ws = new WebSocket(WS_URL);
+  // ── Startup: cek apakah server butuh token ──
+  fetch('/api/auth-required').then(r => r.json()).then(({required}) => {
+    if(!required){
+      connect(null);
+      return;
+    }
+    const stored = getStoredToken();
+    if(stored){
+      tokenInput.value = stored;
+      connect(stored);
+    } else {
+      showGate('');
+    }
+  }).catch(() => {
+    // Kalau endpoint gagal diakses, tetap coba connect tanpa token sebagai fallback
+    connect(getStoredToken() || null);
+  });
 
-        ws.onopen = () => {
-          setWsState("connected");
-          addSystemLog("Dashboard connected to bot server");
-        };
+  filterChips.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if(!chip) return;
+    filterChips.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeLevel = chip.dataset.level;
+    renderAll();
+  });
 
-        ws.onmessage = (e) => {
-          const data = JSON.parse(e.data);
-          handleMessage(data);
-        };
+  let searchDebounce;
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      renderAll();
+    }, 150);
+  });
 
-        ws.onclose = () => {
-          setWsState("disconnected");
-          document.getElementById("reconnectBar").classList.add("show");
-          addSystemLog("⚠️ WebSocket disconnected — retrying in 5s...");
-          setTimeout(connect, 5000);
-        };
+  autoScrollBtn.addEventListener('click', () => {
+    autoScroll = !autoScroll;
+    autoScrollBtn.classList.toggle('active', autoScroll);
+    if(autoScroll) scrollToBottom();
+  });
 
-        ws.onerror = () => {
-          setWsState("disconnected");
-        };
-      }
+  clearBtn.addEventListener('click', () => {
+    if(!confirm('Hapus semua log dari layar ini?')) return;
+    if(ws && ws.readyState === 1){
+      ws.send(JSON.stringify({action:'clear'}));
+    }
+  });
 
-      function setWsState(state) {
-        const badge = document.getElementById("wsBadge");
-        const label = document.getElementById("wsLabel");
-        badge.className = `ws-badge ${state}`;
-        label.textContent = state.toUpperCase();
-      }
+  jumpFab.addEventListener('click', scrollToBottom);
 
-      // ─── MESSAGE HANDLER ───
-      function handleMessage(data) {
-        if (data.type === "history") {
-          // Normalize dan simpan ke allLogs supaya filter/search bisa bekerja
-          const entries = data.logs.map(normalizeEntry);
-          allLogs = entries;
-          if (entries.length > 0) {
-            document.getElementById("emptyState")?.remove();
-            rerenderAll(); // render ulang semua dengan filter aktif
-            // Hitung ulang stats dari history
-            entries.forEach((e) => countStatsOnly(e));
-            updateStatCards();
-          }
-        } else if (data.type === "log") {
-          document.getElementById("emptyState")?.remove();
-          const entry = normalizeEntry(data);
-          allLogs.push(entry);
-          renderLog(entry); // hanya render jika cocok filter
-          updateStatsFromLog(entry);
-        } else if (data.type === "stats") {
-          updateGauges(data);
-        } else if (data.type === "clear") {
-          allLogs = [];
-          document.getElementById("logStream").innerHTML = "";
-          stats = { cmds: 0, events: 0, errors: 0 };
-          cmdUsage = {};
-          updateStatCards();
-        }
-      }
+  refreshBtn.addEventListener('click', () => location.reload());
 
-      // countStatsOnly: hitung stats tanpa update DOM (untuk history replay)
-      function countStatsOnly(entry) {
-        stats.events++;
-        if (entry.level === "ERROR") stats.errors++;
-        if (entry.level === "CMD") {
-          stats.cmds++;
-          const match = entry.msg.match(/(\/\w+)/);
-          if (match) {
-            const cmd = match[1];
-            cmdUsage[cmd] = (cmdUsage[cmd] || 0) + 1;
-          }
-        }
-      }
-
-      function updateStatsFromLog(entry) {
-        countStatsOnly(entry);
-        if (entry.level === "ERROR") {
-          document.getElementById("statErrors").textContent = stats.errors;
-          document.getElementById("errSub").textContent =
-            "↑ " + stats.errors + " error(s)";
-          document.getElementById("errBadge").textContent = stats.errors;
-        }
-        if (entry.level === "CMD") {
-          updateCmdBars();
-          document.getElementById("statCmds").textContent = stats.cmds;
-          document.getElementById("cmdTotal").textContent = stats.cmds;
-        }
-        document.getElementById("statEvents").textContent = stats.events;
-        document.getElementById("statLogs").textContent = allLogs.length;
-        // logCount = jumlah entry yg TAMPIL (sesuai filter), bukan total
-        document.getElementById("logCount").textContent = allLogs.length;
-        addEventToPanel(entry);
-      }
-
-      // ─── RENDER LOG ───
-      function renderLog(entry, doScroll = true) {
-        if (!matchesFilter(entry) || !matchesSearch(entry)) return;
-
-        const stream = document.getElementById("logStream");
-        // Format time — fallback ke string langsung kalau invalid
-        let timeStr = "--:--:--";
-        try {
-          timeStr = new Date(entry.time).toLocaleTimeString("en-GB");
-        } catch (_) {}
-
-        const row = document.createElement("div");
-        row.className = "log-entry";
-        row.innerHTML =
-          '<span class="log-time">' +
-          timeStr +
-          "</span>" +
-          '<span class="log-level level-' +
-          entry.level +
-          '">' +
-          entry.level +
-          "</span>" +
-          '<span class="log-src">' +
-          escapeHtml(entry.src) +
-          "</span>" +
-          '<span class="log-msg">' +
-          escapeHtml(entry.msg) +
-          "</span>";
-        stream.appendChild(row);
-        if (doScroll && autoScroll) stream.scrollTop = stream.scrollHeight;
-      }
-
-      function escapeHtml(str) {
-        return str
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      function addSystemLog(msg) {
-        renderLog({
-          level: "INFO",
-          src: "dashboard",
-          msg,
-          time: new Date().toISOString(),
-        });
-      }
-
-      // ─── GAUGES (dari stats yang dikirim server) ───
-      function updateGauges(data) {
-        if (data.rss !== undefined) {
-          const rssMB = Math.round(data.rss / 1024 / 1024);
-          const rssMax = 512; // anggap max 512MB
-          setGauge(
-            "rssArc",
-            "rssNum",
-            Math.min((rssMB / rssMax) * 100, 100),
-            rssMB + "M",
-          );
-        }
-        if (data.heapUsed !== undefined) {
-          const hMB = Math.round(data.heapUsed / 1024 / 1024);
-          const hTMB = Math.round(data.heapTotal / 1024 / 1024);
-          const pct = Math.round((hMB / hTMB) * 100);
-          setGauge("heapArc", "heapNum", pct, hMB + "M");
-        }
-        if (data.external !== undefined) {
-          const extMB = Math.round(data.external / 1024 / 1024);
-          setGauge(
-            "extArc",
-            "extNum",
-            Math.min((extMB / 50) * 100, 100),
-            extMB + "M",
-          );
-        }
-        if (data.uptime !== undefined) {
-          const newBotStart = Date.now() - data.uptime * 1000;
-          if (!botStartTime) {
-            botStartTime = newBotStart;
-            const d = new Date(botStartTime);
-            document.getElementById("uptimeSince").textContent =
-              "Since " + d.toLocaleTimeString();
-          }
-        }
-      }
-
-      function setGauge(arcId, numId, pct, label) {
-        const offset = 163 - (pct / 100) * 163;
-        document.getElementById(arcId).style.strokeDashoffset = offset;
-        document.getElementById(numId).textContent = label;
-      }
-
-      // ─── CMD BARS ───
-      const barColors = [
-        "#4c7bff",
-        "#7c3aed",
-        "#22d45a",
-        "#22d3ee",
-        "#fbbf24",
-        "#f472b6",
-      ];
-      function updateCmdBars() {
-        const entries = Object.entries(cmdUsage)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 6);
-        if (!entries.length) return;
-        const max = entries[0][1] || 1;
-        document.getElementById("cmdBars").innerHTML = entries
-          .map(
-            ([cmd, count], i) => `
-    <div class="cmd-bar-item">
-      <span class="cmd-bar-name">${cmd}</span>
-      <div class="cmd-bar-track"><div class="cmd-bar-fill" style="width:${(count / max) * 100}%;background:${barColors[i % barColors.length]}"></div></div>
-      <span class="cmd-bar-count">${count}</span>
-    </div>
-  `,
-          )
-          .join("");
-      }
-
-      // ─── EVENT PANEL ───
-      const eventEmojis = {
-        gateway: "👤",
-        moderation: "🛡️",
-        "mc-news": "⛏️",
-        games: "🎮",
-        virustotal: "🔍",
-        commands: "⚡",
-        mongo: "🍃",
-        dashboard: "🖥️",
-      };
-      function addEventToPanel(entry) {
-        const list = document.getElementById("eventList");
-        if (list.querySelector("[data-placeholder]")) list.innerHTML = "";
-        const el = document.createElement("div");
-        el.className = "event-item";
-        const time = new Date(entry.time).toLocaleTimeString("en-GB");
-        el.innerHTML = `
-    <span class="event-emoji">${eventEmojis[entry.src] || "📡"}</span>
-    <div class="event-body">
-      <div class="event-title">${escapeHtml(entry.msg)}</div>
-      <div class="event-meta">${entry.src} · ${time}</div>
-    </div>
-  `;
-        list.insertBefore(el, list.firstChild);
-        while (list.children.length > 6) list.removeChild(list.lastChild);
-      }
-
-      // ─── FILTER & SEARCH ───
-      function matchesFilter(entry) {
-        return activeFilter === "ALL" || entry.level === activeFilter;
-      }
-      function matchesSearch(entry) {
-        if (!searchQuery) return true;
-        const haystack = (
-          (entry.src || "") +
-          " " +
-          (entry.msg || "")
-        ).toLowerCase();
-        return haystack.includes(searchQuery.toLowerCase());
-      }
-
-      function setFilter(f, el) {
-        activeFilter = f;
-        document
-          .querySelectorAll(".pill")
-          .forEach((p) => p.classList.remove("active"));
-        el.classList.add("active");
-        rerenderAll();
-      }
-      function applySearch() {
-        searchQuery = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
-        rerenderAll();
-      }
-      function rerenderAll() {
-        const stream = document.getElementById("logStream");
-        stream.innerHTML = "";
-        allLogs.forEach((e) => renderLog(e, false)); // false = jangan auto-scroll satu-satu
-        if (autoScroll) stream.scrollTop = stream.scrollHeight;
-        document.getElementById("logCount").textContent = allLogs.length;
-      }
-
-      function toggleAutoscroll() {
-        autoScroll = !autoScroll;
-        document
-          .getElementById("autoToggle")
-          .classList.toggle("on", autoScroll);
-      }
-
-      // ─── ACTIONS ───
-      function sendAction(action) {
-        if (ws && ws.readyState === 1) ws.send(JSON.stringify({ action }));
-      }
-
-      function copyLogs() {
-        const text = allLogs
-          .map(
-            (l) =>
-              `[${new Date(l.time).toLocaleTimeString()}] [${l.level}] [${l.src}] ${l.msg}`,
-          )
-          .join("\n");
-        navigator.clipboard
-          .writeText(text)
-          .then(() => addSystemLog("Logs copied to clipboard"));
-      }
-
-      function exportLogs() {
-        const text = allLogs
-          .map(
-            (l) =>
-              `[${new Date(l.time).toISOString()}] [${l.level}] [${l.src}] ${l.msg}`,
-          )
-          .join("\n");
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
-        a.download = `bot-logs-${new Date().toISOString().slice(0, 10)}.txt`;
-        a.click();
-        addSystemLog("Logs exported to .txt file");
-      }
-
-      function updateStatCards() {
-        document.getElementById("statCmds").textContent = stats.cmds;
-        document.getElementById("statEvents").textContent = stats.events;
-        document.getElementById("statErrors").textContent = stats.errors;
-        document.getElementById("statLogs").textContent = 0;
-        document.getElementById("logCount").textContent = 0;
-      }
-
-      // ════════════════════════════
-      // MOBILE TAB NAVIGATION
-      // ════════════════════════════
-      const isMobile = () => window.innerWidth <= 768;
-
-      function mobileTab(tab) {
-        if (!isMobile()) return;
-
-        // Update active tab button
-        document
-          .querySelectorAll(".tab-btn")
-          .forEach((b) => b.classList.remove("active"));
-        const btn = document.getElementById("tab-" + tab);
-        if (btn) btn.classList.add("active");
-
-        const sidebar = document.querySelector(".sidebar");
-        const rightPanel = document.querySelector(".right-panel");
-        const statsRow = document.querySelector(".stats-row");
-        const logArea = document.querySelector(".log-area");
-        const overlay = document.getElementById("drawerOverlay");
-
-        // Reset semua dulu
-        sidebar.classList.remove("open");
-        rightPanel.classList.remove("open");
-        overlay.classList.remove("show");
-        statsRow.style.display = "";
-        logArea.style.display = "";
-
-        if (tab === "logs") {
-          // Default: stats 2x2 + log stream
-          statsRow.style.display = "grid";
-          logArea.style.display = "flex";
-        } else if (tab === "stats") {
-          // Right panel slide in dari kanan
-          rightPanel.classList.add("open");
-          overlay.classList.add("show");
-        } else if (tab === "menu") {
-          // Sidebar slide in dari kiri
-          sidebar.classList.add("open");
-          overlay.classList.add("show");
-        } else if (tab === "info") {
-          // Stats full + sembunyikan log
-          statsRow.style.display = "grid";
-          logArea.style.display = "none";
-          // Tampilkan right panel di bawah stats sebagai inline (bukan drawer)
-          rightPanel.classList.add("open");
-          rightPanel.style.position = "relative";
-          rightPanel.style.transform = "none";
-          rightPanel.style.width = "100%";
-          rightPanel.style.height = "auto";
-          rightPanel.style.maxHeight = "none";
-          rightPanel.style.boxShadow = "none";
-          overlay.classList.remove("show");
-        }
-
-        // Reset right panel ke drawer mode kalau bukan info
-        if (tab !== "info") {
-          rightPanel.style.position = "";
-          rightPanel.style.transform = "";
-          rightPanel.style.width = "";
-          rightPanel.style.height = "";
-          rightPanel.style.maxHeight = "";
-          rightPanel.style.boxShadow = "";
-        }
-      }
-
-      function closeDrawers() {
-        document.querySelector(".sidebar").classList.remove("open");
-        document.querySelector(".right-panel").classList.remove("open");
-        document.getElementById("drawerOverlay").classList.remove("show");
-        // Kembali ke tab logs
-        document
-          .querySelectorAll(".tab-btn")
-          .forEach((b) => b.classList.remove("active"));
-        const logsBtn = document.getElementById("tab-logs");
-        if (logsBtn) logsBtn.classList.add("active");
-      }
-
-      // Re-init saat resize (desktop <-> mobile)
-      window.addEventListener("resize", () => {
-        if (!isMobile()) {
-          closeDrawers();
-          // Reset semua inline style
-          const rp = document.querySelector(".right-panel");
-          rp.style.cssText = "";
-          document.querySelector(".stats-row").style.display = "";
-          document.querySelector(".log-area").style.display = "";
-        } else {
-          // Masuk mobile — pastikan default view benar
-          mobileTab("logs");
-        }
-      });
-
-      // ─── INIT ───
-      connect();
-    </script>
-  </body>
+  window.addEventListener('scroll', () => {
+    if(isNearBottom()) jumpFab.classList.remove('show');
+  });
+})();
+</script>
+</body>
 </html>

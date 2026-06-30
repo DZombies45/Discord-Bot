@@ -72,5 +72,12 @@ setInterval(() => {
     heapTotal: mem.heapTotal,
     external: mem.external,
     uptime: process.uptime(),
+    guildCount: client.guilds.cache.size,
+    memberCount: client.guilds.cache.reduce(
+      (acc, g) => acc + (g.memberCount || 0),
+      0,
+    ),
+    ping: client.ws.ping,
+    status: client.isReady() ? "online" : "connecting",
   });
 }, 5000);

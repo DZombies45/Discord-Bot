@@ -14,7 +14,7 @@ const app = express();
 const httpServer = createServer(app);
 const wss = new WebSocketServer({ server: httpServer });
 
-const PORT = process.env.DASHBOARD_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 
 // ─── Static files (dashboard HTML) ───
 app.use(express.static(path.join(__dirname, "public")));
@@ -85,8 +85,8 @@ wss.on("connection", (ws) => {
 
 // ─── Start server ───
 function startDashboard() {
-  httpServer.listen(PORT, () => {
-    console.log(`[Dashboard] Running at http://localhost:${PORT}`);
+  httpServer.listen(PORT, "0.0.0.0", () => {
+    console.log(`[Dashboard] Running at http://0.0.0.0:${PORT}`);
   });
 }
 

@@ -188,7 +188,6 @@ const Utils = {
           articleSection == articleSections.JavaSnapsho
             ? "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Java_Snapshot_Change.png"
             : "https://cdn.jsdelivr.net/gh/DZombies45/img-assets@main/mc/Java_Edition_Icon.png",
-        t,
       },
       image: image ? { url: image } : undefined,
       footer: { text: "Posted on" },

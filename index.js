@@ -1,4 +1,6 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+// import { Client, Events, GatewayIntentBits } from "discord.js";
+import _pkg from "discord.js";
+const { Client, Events, GatewayIntentBits } = _pkg;
 import eventHandler from "./src/handlers/eventHandlers.js";
 import "dotenv/config";
 import { GlobalFonts } from "@napi-rs/canvas";

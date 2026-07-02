@@ -1,6 +1,7 @@
 import { Logger } from "../../util.js";
 import { ActivityType } from "discord.js";
-import { mongoose  } from "mongoose";
+import mongoose from "mongoose";
+
 const mongooURL = process.env.MONGOOURL;
 
 export default async (client) => {
@@ -22,7 +23,11 @@ export default async (client) => {
   mongoose.set("strictQuery", true);
 
   await mongoose
-    .connect(mongooURL)
+    .connect(mongooURL, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      heartbeatFrequencyMS: 10000, // ping Atlas tiap 10 detik, jaga koneksi tetap hidup
+    })
     .then(() => {
       Logger.success(`database connected`);
     })

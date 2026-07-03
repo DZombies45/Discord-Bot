@@ -22,6 +22,18 @@ export default async (client) => {
   Logger.log(`connecting to db...`);
   mongoose.set("strictQuery", true);
 
+  mongoose.connection.on("error", (err) => {
+    Logger.error(`mongoose connection error\n${err.stack}`);
+  });
+
+  mongoose.connection.on("disconnected", () => {
+    Logger.log("mongoose disconnected, reconnecting...");
+  });
+
+  mongoose.connection.on("reconnected", () => {
+    Logger.success("mongoose reconnected");
+  });
+
   await mongoose
     .connect(mongooURL, {
       serverSelectionTimeoutMS: 5000,

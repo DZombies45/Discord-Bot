@@ -77,5 +77,5 @@ export default async (client) => {
     }
   }
   checkYt();
-  setInterval(checkYt, 60000);
+  setInterval(checkYt, 1800000);
 };

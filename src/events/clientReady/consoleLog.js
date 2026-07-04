@@ -41,7 +41,7 @@ export default async (client) => {
   };
 
   await mongoose
-    .connect(mongooURL)
+    .connect(mongooURL, mongooseOpt)
     .then(() => {
       Logger.success(`database connected`);
     })

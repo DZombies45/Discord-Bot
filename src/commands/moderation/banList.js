@@ -5,7 +5,7 @@ import {
 } from "discord.js";
 import paginator from "../../utils/buttonPaginator.js";
 import mConfig from "../../messageConfig.json" with { type: "json" };
-import { formatDate, parseDate } from "../../util.js";
+import { formatDate, parseDate, chunkSubstr } from "../../util.js";
 import tempBanSch from "../../schemas/tempBanSch.js";
 
 export default {
@@ -19,7 +19,7 @@ export default {
   run: async (client, interaction) => {
     const { options, guildId, guild, member } = interaction;
     const banObj = await interaction.guild.bans.fetch();
-    if (banObj.length === 0) {
+    if (banObj.size === 0) {
       return interaction.reply({
         content: "no banned user to list",
         flags: 64,
@@ -30,7 +30,7 @@ export default {
 
     const banList = banObj
       .map((v) => {
-        const ada = db.find((b) => memberId === v.user.id);
+        const ada = db.find((b) => b.memberId === v.user.id);
         return `\`\`\`name: ${v.user.username}\nreason: ${
           v.reason || "-"
         }\ntime: ${ada ? parseDate(ada.endTime - Date.now()) : "perma"}\`\`\``;

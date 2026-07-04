@@ -1,5 +1,6 @@
 import { Logger } from "../../util.js";
 import ytNotifSch from "../../schemas/ytNotifSch.js";
+import mongoose from "mongoose";
 import rssParserObj from "rss-parser";
 const rssParser = new rssParserObj();
 
@@ -8,6 +9,16 @@ const __filename = fileURLToPath(import.meta.url);
 
 export default async (client) => {
   async function checkYt() {
+    // Skip cycle ini kalau koneksi DB belum siap (misal: sedang reconnect
+    // gara-gara jaringan hosting putus). Mencegah query gantung sampai
+    // connectTimeoutMS habis dan lempar error mentah tiap 60 detik.
+    if (mongoose.connection.readyState !== 1) {
+      Logger.log(
+        `[timerYtNotif] Melewati cycle ini, koneksi DB belum siap (readyState: ${mongoose.connection.readyState})`,
+      );
+      return;
+    }
+
     try {
       const ytConfigs = await ytNotifSch.find();
       for (const ytConfig of ytConfigs) {

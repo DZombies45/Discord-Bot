@@ -34,12 +34,14 @@ export default async (client) => {
     Logger.success("mongoose reconnected");
   });
 
+  const mongooseOpt = {
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    heartbeatFrequencyMS: 10000, // ping Atlas tiap 10 detik, jaga koneksi tetap hidup
+  };
+
   await mongoose
-    .connect(mongooURL, {
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      heartbeatFrequencyMS: 10000, // ping Atlas tiap 10 detik, jaga koneksi tetap hidup
-    })
+    .connect(mongooURL)
     .then(() => {
       Logger.success(`database connected`);
     })

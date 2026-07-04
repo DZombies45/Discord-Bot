@@ -2,7 +2,8 @@ import { PermissionFlagsBits, EmbedBuilder } from "discord.js";
 import moderationSchema from "../schemas/moderationSch.js";
 import jsonMessageConfig from "../messageConfig.json" with { type: "json" };
 const { mConfig } = jsonMessageConfig;
-import { formatDate, testServerId } from "../util.js";
+import { formatDate } from "../util.js";
+import Config from "../config.json" with { type: "json" };
 import getAppCommand from "../utils/getAppCommands.js";
 
 export default {
@@ -12,14 +13,22 @@ export default {
   run: async (client, interaction) => {
     const { message, channel, guildId, guild, user } = interaction;
     const embedAuthor = message.embeds[0].author;
-    const unbanCmdObj = await getAppCommand(client, testServerId);
-    const unbanCmdId = unbanCmdObj.cache.find((cmd) => cmd.name === "unban").id;
-    const targetMember = await guild.members
-      .fetch({
-        query: embedAuthor.name,
-        limit: 1,
-      })
-      .first();
+
+    const targetMembers = await guild.members.fetch({
+      query: embedAuthor.name,
+      limit: 1,
+    });
+    const targetMember = targetMembers.first();
+    if (!targetMember) {
+      return interaction.reply({
+        content: "❗ Could not find that member (they may have left the server).",
+        flags: 64,
+      });
+    }
+
+    const unbanCmdObj = await getAppCommand(client, Config.testServerId);
+    const unbanCmd = unbanCmdObj.cache.find((cmd) => cmd.name === "unban");
+    const unbanCmdId = unbanCmd?.id ?? null;
 
     const embed = new EmbedBuilder()
       .setFooter({
@@ -81,14 +90,28 @@ export default {
     let dataDB = await moderationSchema.findOne({
       GuildId: guildId,
     });
-    if (dataDB) return;
+    if (!dataDB) {
+      embed
+        .setColor(mConfig.embedColorError)
+        .setDescription("moderation system is not configured for this server.");
+      message.edit({ embeds: [embed], components: [] });
+      return;
+    }
     const { LogChannelId } = dataDB;
     const logChannel = guild.channels.cache.get(LogChannelId);
 
-    targetMember.ban({
-      reasons: `${reason}`,
-      deleteMessageSeconds: 60 * 60 * 24 * 7,
-    });
+    try {
+      await targetMember.ban({
+        reason: `${reason}`,
+        deleteMessageSeconds: 60 * 60 * 24 * 7,
+      });
+    } catch (e) {
+      embed
+        .setColor(mConfig.embedColorError)
+        .setDescription(`failed to ban ${targetMember.user.username}: bot may be missing permissions.`);
+      message.edit({ embeds: [embed] });
+      return;
+    }
 
     const embedLog = new EmbedBuilder()
       .setColor("#962abd")
@@ -100,7 +123,11 @@ export default {
         name: `${targetMember.user.username}`,
       })
       .setDescription(
-        `successfully ban ${targetMember.user.username}.\n\nto unban type </unban ${targetMember.user.id}:unbanCmdId>`,
+        `successfully ban ${targetMember.user.username}.${
+          unbanCmdId
+            ? `\n\nto unban type </unban:${unbanCmdId}>`
+            : `\n\nuse /unban ${targetMember.user.id} to unban.`
+        }`,
       )
       .addFields(
         { name: "banned by: ", value: `<@${user.id}>`, inline: true },
@@ -111,7 +138,7 @@ export default {
         iconURL: `${client.user.displayAvatarURL({ dynamic: true })}`,
         text: `${client.user.username} - moderate user`,
       });
-    logChannel.send({ embeds: [embedLog] });
+    if (logChannel) logChannel.send({ embeds: [embedLog] }).catch(() => null);
 
     embed
       .setColor(mConfig.embedColorSuccess)

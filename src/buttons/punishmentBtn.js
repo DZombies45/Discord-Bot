@@ -16,12 +16,16 @@ export default{
 
     try {
       const embedAuthor = message.embeds[0].author;
-      const targetMember = await guild.members
-        .fetch({
-          query: embedAuthor.name,
-          limit: 1,
-        })
-        .first();
+      const targetMembers = await guild.members.fetch({
+        query: embedAuthor.name,
+        limit: 1,
+      });
+      const targetMember = targetMembers.first();
+      if (!targetMember) {
+        return interaction.editReply({
+          content: "❗ Could not find that member (they may have left the server).",
+        });
+      }
 
       const embed = new EmbedBuilder()
         .setColor("#e00e0e")
@@ -57,7 +61,7 @@ export default{
           .setLabel("Cancel")
           .setStyle(ButtonStyle.Secondary),
       );
-      await interaction.editReplay({
+      await interaction.editReply({
         embeds: [embed],
         components: [punishButton],
       });

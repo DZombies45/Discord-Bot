@@ -7,9 +7,11 @@ export default {
   userPermissions: [],
   run: async (client, interaction) => {
     const focusedOption = interaction.options.getFocused(true);
-    if (focusedOption.name === "id") {
+    if (focusedOption.name !== "id") return;
+
+    try {
       const focusedObj = await interaction.guild.bans.fetch();
-      const db = (await tempBanSch.find({ GuildId: guild.id })) || {};
+      const db = (await tempBanSch.find({ GuildId: interaction.guild.id })) || [];
       const filteredFocused = focusedObj.filter(
         (v) =>
           v.user.username
@@ -18,7 +20,7 @@ export default {
           v.user.id.startsWith(focusedOption.value),
       );
       const result = filteredFocused.map((filtered) => {
-        const ada = db.find((b) => memberId === filtered.user.id);
+        const ada = db.find((b) => b.memberId === filtered.user.id);
         return {
           name: ada
             ? `${filtered.user.username}(${parseDate(
@@ -28,11 +30,10 @@ export default {
           value: filtered.user.id,
         };
       });
-      interaction
-        .respond(result.slice(0, 25))
-        .catch((err) =>
-          Logger.error(`from autocomplete/unban.js :\n${err.stack}`),
-        );
+      await interaction.respond(result.slice(0, 25));
+    } catch (err) {
+      Logger.error(`from autocomplete/unban.js :\n${err.stack}`);
+      await interaction.respond([]).catch(() => null);
     }
   },
 };

@@ -18,12 +18,18 @@ export default {
     const { message, channel, guildId, guild, user, fields } = interaction;
     try {
       const embedAuthor = message.embeds[0].author;
-      const targetMember = await guild.members
-        .fetch({
-          query: embedAuthor.name,
-          limit: 1,
-        })
-        .first();
+      const targetMembers = await guild.members.fetch({
+        query: embedAuthor.name,
+        limit: 1,
+      });
+      const targetMember = targetMembers.first();
+      if (!targetMember) {
+        return interaction.reply({
+          content: "❗ Could not find that member (they may have left the server).",
+          flags: 64,
+        });
+      }
+
       const banTime = fields
         .getTextInputValue("tempBanTime")
         .replace(/(\d+)([s])/g, "");
@@ -31,6 +37,13 @@ export default {
         fields.getTextInputValue("tempBanReason") || "no reason profided";
 
       const banDuration = parseDuration(banTime);
+      if (!banDuration || banDuration <= 0) {
+        return interaction.reply({
+          content:
+            "❗ Invalid time format. Use combinations like `1D`, `2h`, `30m` (m = minutes, h = hours, D = days, M = month, Y = years).",
+          flags: 64,
+        });
+      }
       const banEndTimeFull = Date.now() + banDuration;
       const banEndTime = Math.floor(banEndTimeFull / 1000);
       const embed = new EmbedBuilder()
@@ -55,23 +68,25 @@ export default {
           .setDescription(
             "moderation system is not configured for this server.",
           );
-        return interaction.reply({ embeds: [embed], flags: 64 });
+        return interaction.editReply({ embeds: [embed] });
       }
-      await targetMember
-        .ban({
+
+      try {
+        await targetMember.ban({
           reason: `you has been temporarly banned for ${formatDate(
             banDuration,
           )}\nreason: ${banReason}`,
-        })
-        .catch((err) => {
-          Logger.log(
-            `some error at temp banning ${targetMember.user.username}`,
-          );
-          return interaction.editReply({
-            embeds: "error, try again latter",
-            components: [],
-          });
         });
+      } catch (err) {
+        Logger.log(
+          `some error at temp banning ${targetMember.user.username}`,
+        );
+        return interaction.editReply({
+          content: "❗ Failed to ban: bot may be missing permissions.",
+          components: [],
+        });
+      }
+
       const obj = {
         GuildId: guildId,
         memberId: targetMember.user.id,
@@ -119,7 +134,7 @@ export default {
           })}`,
           text: `${client.user.username} - temp ban user`,
         });
-      logChannel.send({ embeds: [embedLog] });
+      if (logChannel) logChannel.send({ embeds: [embedLog] }).catch(() => null);
       interaction.editReply({ embeds: [embed], components: [] });
     } catch (e) {
       Logger.error(`from tempBanMdl.js :\n${e.stack}`);

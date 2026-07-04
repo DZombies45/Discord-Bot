@@ -106,7 +106,6 @@ function parseDate(time) {
   let Y, M, D, h, m, s;
   let jj = 0;
   while (time > 1000) {
-    console.log(time);
     if (jj > 50) break;
     if (time >= 365 * 24 * 60 * 60 * 1000) {
       Y = Math.floor(time / (365 * 24 * 60 * 60 * 1000));

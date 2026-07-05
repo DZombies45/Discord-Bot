@@ -1,7 +1,15 @@
+/**
+ * @param {import("discord.js").Client} client
+ * @param {import("discord.js").Message} message
+ */
 export default async (client, message) => {
   if (!message.guild || message.author.bot) return;
-  if (message.content.length <= 5) return;
-  if (message.content.match(/[A-Z]/g).length / message.content.length < 0.8)
+  let msg = message.content;
+  if (msg?.length <= 5) return;
+  if (
+    msg.trim().match(/[A-Z]/g).length / msg.trim().replaceAll(" ", "").length <
+    0.8
+  )
     return;
   //do something
   const a = await message

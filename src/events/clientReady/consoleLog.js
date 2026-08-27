@@ -6,6 +6,7 @@ const mongooURL = process.env.MONGOOURL;
 
 export default async (client) => {
   Logger.success(`bot login as ${client.user.username}`);
+  let isShuttingDown = false;
 
   client.user.setPresence({
     activities: [
@@ -48,4 +49,27 @@ export default async (client) => {
     .catch((e) => {
       Logger.error(`fail to connect to database\n${e.stack}`);
     });
+
+  async function shutdown(signal) {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    Logger.info(`Received ${signal}, closing database...`);
+
+    const forceExitTimer = setTimeout(() => {
+      Logger.error("Shutdown timed out, forcing exit");
+      process.exit(1);
+    }, 10_000);
+    forceExitTimer.unref();
+
+    client.destroy();
+    await mongoose.disconnect();
+
+    clearTimeout(forceExitTimer);
+    Logger.info("Shutdown, successully exit");
+    process.exit(0);
+  }
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
 };
